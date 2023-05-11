@@ -35,6 +35,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <random>
 #include <iostream>
 #include <stdint.h>
+#include <opencv2/opencv.hpp>
 #include "Bundler.h"
 #include "LossGPU.h"
 
@@ -42,6 +43,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 typedef std::pair<int,int> IndexPair;
 using namespace std;
 using namespace Eigen;
+#define BLOCK 60;
+#define BLUR_THRES 1.0;
 
 Bundler::Bundler(std::shared_ptr<YAML::Node> yml1, DataLoaderBase *data_loader)
 {
@@ -84,7 +87,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     frame->segmentationByMaskFile();
   }
 
-
+  // Check if mask is too small
   if (frame->_roi(1)-frame->_roi(0)<10 || frame->_roi(3)-frame->_roi(2)<10)
   {
     frame->_status = Frame::FAIL;
@@ -94,6 +97,21 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
 
   if (frame->_status==Frame::FAIL)
+  {
+    _fm->forgetFrame(frame);
+    _need_reinit = true;
+    return;
+  }
+
+  cv::Scalar blurScore = detectBlur(frame);
+  if (blurScore < BLUR_THRES)
+  {
+    frame->_status = Frame::FAIL;
+    printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
+    return;
+  }
+
+  if (frame->status==Frame::FAIL)
   {
     _fm->forgetFrame(frame);
     _need_reinit = true;
@@ -409,4 +427,66 @@ void Bundler::saveNewframeResult()
     }
     cv::imwrite(raw_dir+_newframe->_id_str+"_color_raw.png",_newframe->_color);
   }
+}
+
+// Blur detection with FFT
+// https://docs.opencv.org/4.x/d8/d01/tutorial_discrete_fourier_transform.html
+cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
+{
+  int cx = frame->H / 2;
+  int cy = frame->W / 2;
+  cv::Mat fourierTransform;
+  cv::Mat colorImage;
+  frame->_color.copyTo(colorImage);
+  cv::dft(colorImage, fourierTransform);
+  cv::Mat q0(fourierTransform, Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  cv::Mat q1(fourierTransform, Rect(cx, 0, cx, cy));      // Top-Right
+  cv::Mat q2(fourierTransform, Rect(0, cy, cx, cy));      // Bottom-Left
+  cv::Mat q3(fourierTransform, Rect(cx, cy, cx, cy));     // Bottom-Right
+  cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
+  q0.copyTo(tmp);
+  q3.copyTo(q0);
+  tmp.copyTo(q3);
+  q1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+  q2.copyTo(q1);
+  tmp.copyTo(q2);
+
+  fourierTransform(Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
+
+  //shuffle the quadrants to their original position
+  cv::Mat orgFFT;
+  fourierTransform.copyTo(orgFFT);
+  cv::Mat p0(orgFFT, Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  cv::Mat p1(orgFFT, Rect(cx, 0, cx, cy));      // Top-Right
+  cv::Mat p2(orgFFT, Rect(0, cy, cx, cy));      // Bottom-Left
+  cv::Mat p3(orgFFT, Rect(cx, cy, cx, cy));     // Bottom-Right
+
+  p0.copyTo(tmp);
+  p3.copyTo(p0);
+  tmp.copyTo(p3);
+
+  p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+  p2.copyTo(p1);
+  tmp.copyTo(p2);
+
+  cv::Mat invFFT;
+  cv::Mat logFFT;
+  double minVal,maxVal;
+
+  cv::dft(orgFFT, invFFT);
+  invFFT = cv::abs(invFFT);
+  cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
+  
+  //check for impossible values
+  if(maxVal<=0.0){
+      cerr << "No information, complete black image!\n";
+      return 1;
+  }
+
+  cv::log(invFFT,logFFT);
+  logFFT *= 20;
+
+  cv::Scalar result= cv::mean(logFFT);
+  std::cout << "Result : "<< result.val[0] << std::endl;
+  return result;
 }
