@@ -5,3 +5,4 @@ build/
 *.pkl
 lf-net-release/release/models
 .vscode/
+*.sh
