@@ -249,6 +249,9 @@ void Bundler::selectKeyFramesForBA()
       frames.insert(kf);
     }
     _local_frames = std::vector<std::shared_ptr<Frame>>(frames.begin(),frames.end());
+    printf("Directly adding new frame into keyframe pool");
+    cv::Mat color_viz = _newframe->_vis.clone();
+    cv::imwrite(debug_dir+"/keyframes/"+_newframe->_id_str+"_directly.jpg",color_viz,{CV_IMWRITE_JPEG_QUALITY, 80});
     return;
   }
 
@@ -258,6 +261,9 @@ void Bundler::selectKeyFramesForBA()
 
   if (method=="greedy_rot")
   {
+    printf("Doing greedy selection of keyframes");
+    cv::Mat color_viz = _newframe->_vis.clone();
+    cv::imwrite(debug_dir+"/keyframes/"+_newframe->_id_str+"_greedy.jpg",color_viz,{CV_IMWRITE_JPEG_QUALITY, 80});
     while (frames.size()<max_BA_frames)
     {
       float best_dist = std::numeric_limits<float>::max();
