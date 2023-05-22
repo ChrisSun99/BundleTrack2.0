@@ -444,66 +444,73 @@ void Bundler::saveNewframeResult()
 
 // Blur detection with FFT
 // https://docs.opencv.org/4.x/d8/d01/tutorial_discrete_fourier_transform.html
-// cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
-// { 
-//   int cx = frame->_H / 2;
-//   int cy = frame->_W / 2;
-//   cv::Mat fourierTransform;
-//   cv::Mat colorImage;
-//   cv::Mat image;
-//   frame->_color.copyTo(colorImage);
-//   cv::cvtColor(colorImage, image, cv::COLOR_BGR2GRAY);
-//   fprintf(stderr, "%s\n", typeid(colorImage).name());
-//   fprintf(stderr, "%s\n", typeid(image).name());
-//   cv::dft(image, fourierTransform);
-//   cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-//   cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
-//   cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
-//   cv::Mat q3(fourierTransform, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
-//   cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
-//   q0.copyTo(tmp);
-//   q3.copyTo(q0);
-//   tmp.copyTo(q3);
-//   q1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
-//   q2.copyTo(q1);
-//   tmp.copyTo(q2);
+cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
+{
+  int cx = frame->_H / 2;
+  int cy = frame->_W / 2;
+  cv::Mat fourierTransform;
+  cv::Mat colorImage;
+  frame->_color.copyTo(colorImage);
 
-//   fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
+  // Convert colorImage to the appropriate type
+  cv::cvtColor(colorImage, colorImage, cv::COLOR_BGR2GRAY);
+  colorImage.convertTo(colorImage, CV_32FC1);
 
-//   //shuffle the quadrants to their original position
-//   cv::Mat orgFFT;
-//   fourierTransform.copyTo(orgFFT);
-//   cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-//   cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
-//   cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
-//   cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
+  cv::dft(colorImage, fourierTransform);
+  std::cout << "TEST1 cx" << cx << " cy" << cy << std::endl;
+  cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  std::cout << "TEST21" << std::endl;
+  cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
+  std::cout << "TEST22" << std::endl;
+  cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+  std::cout << "TEST23" << std::endl;
+  cv::Mat q3(fourierTransform, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
+  std::cout << "TEST3" << std::endl;
 
-//   p0.copyTo(tmp);
-//   p3.copyTo(p0);
-//   tmp.copyTo(p3);
+  cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
+  q0.copyTo(tmp);
+  q3.copyTo(q0);
+  tmp.copyTo(q3);
+  q1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+  q2.copyTo(q1);
+  tmp.copyTo(q2);
 
-//   p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
-//   p2.copyTo(p1);
-//   tmp.copyTo(p2);
+  fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
 
-//   cv::Mat invFFT;
-//   cv::Mat logFFT;
-//   double minVal,maxVal;
+  //shuffle the quadrants to their original position
+  cv::Mat orgFFT;
+  fourierTransform.copyTo(orgFFT);
+  cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
+  cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+  cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
 
-//   cv::dft(orgFFT, invFFT);
-//   invFFT = cv::abs(invFFT);
-//   cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
-  
-//   //check for impossible values
-//   if(maxVal<=0.0){
-//       cerr << "No information, complete black image!\n";
-//       return 1;
-//   }
+  p0.copyTo(tmp);
+  p3.copyTo(p0);
+  tmp.copyTo(p3);
 
-//   cv::log(invFFT,logFFT);
-//   logFFT *= 20;
+  p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+  p2.copyTo(p1);
+  tmp.copyTo(p2);
 
-//   cv::Scalar result = cv::mean(logFFT);
-//   std::cout << "Result : "<< result.val[0] << std::endl;
-//   return result;
-// }
+  cv::Mat invFFT;
+  cv::Mat logFFT;
+  double minVal,maxVal;
+
+  cv::dft(orgFFT, invFFT);
+  invFFT = cv::abs(invFFT);
+  cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
+
+  //check for impossible values
+  if(maxVal<=0.0){
+      cerr << "No information, complete black image!\n";
+      return 1;
+  }
+
+  cv::log(invFFT,logFFT);
+  logFFT *= 20;
+
+  cv::Scalar result = cv::mean(logFFT);
+  std::cout << "Result : "<< result.val[0] << std::endl;
+  return result;
+}

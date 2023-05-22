@@ -80,7 +80,7 @@ public:
   void optimizeGPU();
   void selectKeyFramesForBA();
   void saveNewframeResult();
-  // cv::Scalar detectBlur(std::shared_ptr<Frame> frame);
+  cv::Scalar detectBlur(std::shared_ptr<Frame> frame);
 };
 
 #endif
