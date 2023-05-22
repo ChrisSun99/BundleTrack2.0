@@ -35,7 +35,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <random>
 #include <iostream>
 #include <stdint.h>
-#include <opencv2/opencv.hpp>
 #include "Bundler.h"
 #include "LossGPU.h"
 
@@ -43,8 +42,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 typedef std::pair<int,int> IndexPair;
 using namespace std;
 using namespace Eigen;
-#define BLOCK 60;
-#define BLUR_THRES 1.0;
+int BLOCK = 60;
+double BLUR_THRES = 1.0;
 
 Bundler::Bundler(std::shared_ptr<YAML::Node> yml1, DataLoaderBase *data_loader)
 {
@@ -103,15 +102,16 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     return;
   }
 
-  cv::Scalar blurScore = detectBlur(frame);
-  if (blurScore < BLUR_THRES)
+  cv::Scalar blurScore;
+  blurScore = detectBlur(frame);
+  if (blurScore.val[0] < BLUR_THRES)
   {
     frame->_status = Frame::FAIL;
     printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
     return;
   }
 
-  if (frame->status==Frame::FAIL)
+  if (frame->_status==Frame::FAIL)
   {
     _fm->forgetFrame(frame);
     _need_reinit = true;
@@ -239,6 +239,7 @@ void Bundler::checkAndAddKeyframe(std::shared_ptr<Frame> frame)
 
 void Bundler::selectKeyFramesForBA()
 {
+  const std::string debug_dir = (*yml)["debug_dir"].as<std::string>();
   std::set<std::shared_ptr<Frame>> frames = {_newframe};
   const int max_BA_frames = (*yml)["bundle"]["max_BA_frames"].as<int>();
   printf("total keyframes=%d, already chosen _local_frames=%d, want to select %d\n", _keyframes.size(), frames.size(), max_BA_frames);
@@ -439,16 +440,16 @@ void Bundler::saveNewframeResult()
 // https://docs.opencv.org/4.x/d8/d01/tutorial_discrete_fourier_transform.html
 cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
 {
-  int cx = frame->H / 2;
-  int cy = frame->W / 2;
+  int cx = frame->_H / 2;
+  int cy = frame->_W / 2;
   cv::Mat fourierTransform;
   cv::Mat colorImage;
   frame->_color.copyTo(colorImage);
   cv::dft(colorImage, fourierTransform);
-  cv::Mat q0(fourierTransform, Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-  cv::Mat q1(fourierTransform, Rect(cx, 0, cx, cy));      // Top-Right
-  cv::Mat q2(fourierTransform, Rect(0, cy, cx, cy));      // Bottom-Left
-  cv::Mat q3(fourierTransform, Rect(cx, cy, cx, cy));     // Bottom-Right
+  cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
+  cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+  cv::Mat q3(fourierTransform, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
   cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
   q0.copyTo(tmp);
   q3.copyTo(q0);
@@ -457,15 +458,15 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   q2.copyTo(q1);
   tmp.copyTo(q2);
 
-  fourierTransform(Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
+  fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
 
   //shuffle the quadrants to their original position
   cv::Mat orgFFT;
   fourierTransform.copyTo(orgFFT);
-  cv::Mat p0(orgFFT, Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-  cv::Mat p1(orgFFT, Rect(cx, 0, cx, cy));      // Top-Right
-  cv::Mat p2(orgFFT, Rect(0, cy, cx, cy));      // Bottom-Left
-  cv::Mat p3(orgFFT, Rect(cx, cy, cx, cy));     // Bottom-Right
+  cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
+  cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+  cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
 
   p0.copyTo(tmp);
   p3.copyTo(p0);
@@ -492,7 +493,7 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   cv::log(invFFT,logFFT);
   logFFT *= 20;
 
-  cv::Scalar result= cv::mean(logFFT);
+  cv::Scalar result = cv::mean(logFFT);
   std::cout << "Result : "<< result.val[0] << std::endl;
   return result;
 }
