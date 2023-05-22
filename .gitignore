@@ -6,3 +6,5 @@ build/
 lf-net-release/release/models
 .vscode/
 *.sh
+Data/
+results/

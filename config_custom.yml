@@ -1,11 +1,11 @@
-data_dir: /home/kausik/Documents/BundleTrack2.0/Data
+data_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss
 mask_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss/masks  # Path to segmentation masks
 use_6pack_datalist: True
 
 model_name: bottle_red_stanford_norm
 debug_dir: /home/kausik/Documents/BundleTrack2.0/   # The path to save results
 
-LOG: 0
+LOG: 3
 port: '5555'
 seg_dilation_iter: 3
 

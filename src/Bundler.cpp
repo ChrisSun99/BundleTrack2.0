@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdint.h>
 #include "Bundler.h"
 #include "LossGPU.h"
-
+#include <typeinfo>
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
@@ -102,14 +102,15 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     return;
   }
 
-  cv::Scalar blurScore;
-  blurScore = detectBlur(frame);
-  if (blurScore.val[0] < BLUR_THRES)
-  {
-    frame->_status = Frame::FAIL;
-    printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
-    return;
-  }
+  // cv::Scalar blurScore;
+  // fprintf(stderr, "Running blur detection\n");
+  // blurScore = detectBlur(frame);
+  // if (blurScore.val[0] < BLUR_THRES)
+  // {
+  //   frame->_status = Frame::FAIL;
+  //   printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
+  //   return;
+  // }
 
   if (frame->_status==Frame::FAIL)
   {
@@ -240,6 +241,11 @@ void Bundler::checkAndAddKeyframe(std::shared_ptr<Frame> frame)
 void Bundler::selectKeyFramesForBA()
 {
   const std::string debug_dir = (*yml)["debug_dir"].as<std::string>();
+  std::string keyframe_dir = debug_dir+"/keyframes/";
+  if (!boost::filesystem::exists(keyframe_dir))
+  {
+    system(std::string("mkdir -p "+keyframe_dir).c_str());
+  }
   std::set<std::shared_ptr<Frame>> frames = {_newframe};
   const int max_BA_frames = (*yml)["bundle"]["max_BA_frames"].as<int>();
   printf("total keyframes=%d, already chosen _local_frames=%d, want to select %d\n", _keyframes.size(), frames.size(), max_BA_frames);
@@ -250,7 +256,7 @@ void Bundler::selectKeyFramesForBA()
       frames.insert(kf);
     }
     _local_frames = std::vector<std::shared_ptr<Frame>>(frames.begin(),frames.end());
-    printf("Directly adding new frame into keyframe pool");
+    fprintf(stderr, "Directly adding new frame into keyframe pool\n");
     cv::Mat color_viz = _newframe->_vis.clone();
     cv::imwrite(debug_dir+"/keyframes/"+_newframe->_id_str+"_directly.jpg",color_viz,{CV_IMWRITE_JPEG_QUALITY, 80});
     return;
@@ -262,7 +268,7 @@ void Bundler::selectKeyFramesForBA()
 
   if (method=="greedy_rot")
   {
-    printf("Doing greedy selection of keyframes");
+    fprintf(stderr, "Doing greedy selection of keyframes\n");
     cv::Mat color_viz = _newframe->_vis.clone();
     cv::imwrite(debug_dir+"/keyframes/"+_newframe->_id_str+"_greedy.jpg",color_viz,{CV_IMWRITE_JPEG_QUALITY, 80});
     while (frames.size()<max_BA_frames)
@@ -438,62 +444,66 @@ void Bundler::saveNewframeResult()
 
 // Blur detection with FFT
 // https://docs.opencv.org/4.x/d8/d01/tutorial_discrete_fourier_transform.html
-cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
-{
-  int cx = frame->_H / 2;
-  int cy = frame->_W / 2;
-  cv::Mat fourierTransform;
-  cv::Mat colorImage;
-  frame->_color.copyTo(colorImage);
-  cv::dft(colorImage, fourierTransform);
-  cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-  cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
-  cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
-  cv::Mat q3(fourierTransform, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
-  cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
-  q0.copyTo(tmp);
-  q3.copyTo(q0);
-  tmp.copyTo(q3);
-  q1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
-  q2.copyTo(q1);
-  tmp.copyTo(q2);
+// cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
+// { 
+//   int cx = frame->_H / 2;
+//   int cy = frame->_W / 2;
+//   cv::Mat fourierTransform;
+//   cv::Mat colorImage;
+//   cv::Mat image;
+//   frame->_color.copyTo(colorImage);
+//   cv::cvtColor(colorImage, image, cv::COLOR_BGR2GRAY);
+//   fprintf(stderr, "%s\n", typeid(colorImage).name());
+//   fprintf(stderr, "%s\n", typeid(image).name());
+//   cv::dft(image, fourierTransform);
+//   cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+//   cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
+//   cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+//   cv::Mat q3(fourierTransform, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
+//   cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
+//   q0.copyTo(tmp);
+//   q3.copyTo(q0);
+//   tmp.copyTo(q3);
+//   q1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+//   q2.copyTo(q1);
+//   tmp.copyTo(q2);
 
-  fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
+//   fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
 
-  //shuffle the quadrants to their original position
-  cv::Mat orgFFT;
-  fourierTransform.copyTo(orgFFT);
-  cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-  cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
-  cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
-  cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
+//   //shuffle the quadrants to their original position
+//   cv::Mat orgFFT;
+//   fourierTransform.copyTo(orgFFT);
+//   cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+//   cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
+//   cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+//   cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
 
-  p0.copyTo(tmp);
-  p3.copyTo(p0);
-  tmp.copyTo(p3);
+//   p0.copyTo(tmp);
+//   p3.copyTo(p0);
+//   tmp.copyTo(p3);
 
-  p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
-  p2.copyTo(p1);
-  tmp.copyTo(p2);
+//   p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+//   p2.copyTo(p1);
+//   tmp.copyTo(p2);
 
-  cv::Mat invFFT;
-  cv::Mat logFFT;
-  double minVal,maxVal;
+//   cv::Mat invFFT;
+//   cv::Mat logFFT;
+//   double minVal,maxVal;
 
-  cv::dft(orgFFT, invFFT);
-  invFFT = cv::abs(invFFT);
-  cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
+//   cv::dft(orgFFT, invFFT);
+//   invFFT = cv::abs(invFFT);
+//   cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
   
-  //check for impossible values
-  if(maxVal<=0.0){
-      cerr << "No information, complete black image!\n";
-      return 1;
-  }
+//   //check for impossible values
+//   if(maxVal<=0.0){
+//       cerr << "No information, complete black image!\n";
+//       return 1;
+//   }
 
-  cv::log(invFFT,logFFT);
-  logFFT *= 20;
+//   cv::log(invFFT,logFFT);
+//   logFFT *= 20;
 
-  cv::Scalar result = cv::mean(logFFT);
-  std::cout << "Result : "<< result.val[0] << std::endl;
-  return result;
-}
+//   cv::Scalar result = cv::mean(logFFT);
+//   std::cout << "Result : "<< result.val[0] << std::endl;
+//   return result;
+// }

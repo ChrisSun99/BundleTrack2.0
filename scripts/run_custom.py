@@ -50,7 +50,7 @@ import pdb
 def run_one_video(data_dir,model_name,model_dir,cfg1,port):
   cfg = copy.deepcopy(cfg1)
 
-  cur_out_dir = '/home/kausik/Documents/BundleTrack2.0/results/{}/'.format(model_name)
+  cur_out_dir = '/home/kausik/Documents/BundleTrack2.0/results/{}'.format(model_name)
   os.system(f'mkdir -p {cur_out_dir}')
 
   cfg['data_dir'] = data_dir
@@ -58,7 +58,7 @@ def run_one_video(data_dir,model_name,model_dir,cfg1,port):
   cfg['model_name'] = model_name
   cfg['model_dir'] = model_dir
   cfg['debug_dir'] = cur_out_dir
-  cfg['LOG'] = 0
+  cfg['LOG'] = 3
   cfg['port'] = port
   tmp_config_dir = '/tmp/config_custom.yml'
   with open(tmp_config_dir,'w') as ff:
