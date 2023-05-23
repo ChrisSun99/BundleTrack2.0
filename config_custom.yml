@@ -33,6 +33,7 @@ bundle:
   robust_delta: 0.005
   min_fm_edges_newframe: 5 #10
   image_downscale: 4
+  blur_thres: 193.0
 
 keyframe:
   min_interval: 1

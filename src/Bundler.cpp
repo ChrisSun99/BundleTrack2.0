@@ -43,7 +43,6 @@ typedef std::pair<int,int> IndexPair;
 using namespace std;
 using namespace Eigen;
 int BLOCK = 60;
-double BLUR_THRES = 1.0;
 
 Bundler::Bundler(std::shared_ptr<YAML::Node> yml1, DataLoaderBase *data_loader)
 {
@@ -102,22 +101,23 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     return;
   }
 
-  // cv::Scalar blurScore;
-  // fprintf(stderr, "Running blur detection\n");
-  // blurScore = detectBlur(frame);
-  // if (blurScore.val[0] < BLUR_THRES)
-  // {
-  //   frame->_status = Frame::FAIL;
-  //   printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
-  //   return;
-  // }
+  cv::Scalar blurScore;
+  fprintf(stderr, "Running blur detection\n");
+  blurScore = detectBlur(frame);
+  double BLUR_THRES = (*yml)["bundle"]["blur_thres"].as<double>();
+  if (blurScore.val[0] < BLUR_THRES)
+  {
+    frame->_status = Frame::FAIL;
+    printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
+    return;
+  }
 
-  // if (frame->_status==Frame::FAIL)
-  // {
-  //   _fm->forgetFrame(frame);
-  //   _need_reinit = true;
-  //   return;
-  // }
+  if (frame->_status==Frame::FAIL)
+  {
+    _fm->forgetFrame(frame);
+    _need_reinit = true;
+    return;
+  }
 
   try
   {
@@ -446,8 +446,8 @@ void Bundler::saveNewframeResult()
 // https://docs.opencv.org/4.x/d8/d01/tutorial_discrete_fourier_transform.html
 cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
 {
-  int cx = frame->_H / 2;
-  int cy = frame->_W / 2;
+  int cx = frame->_W / 2;
+  int cy = frame->_H / 2;
   cv::Mat fourierTransform;
   cv::Mat colorImage;
   frame->_color.copyTo(colorImage);
@@ -457,15 +457,10 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   colorImage.convertTo(colorImage, CV_32FC1);
 
   cv::dft(colorImage, fourierTransform);
-  std::cout << "TEST1 cx" << cx << " cy" << cy << std::endl;
   cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-  std::cout << "TEST21" << std::endl;
   cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
-  std::cout << "TEST22" << std::endl;
   cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
-  std::cout << "TEST23" << std::endl;
   cv::Mat q3(fourierTransform, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
-  std::cout << "TEST3" << std::endl;
 
   cv::Mat tmp;                                            // swap quadrants (Top-Left with Bottom-Right)
   q0.copyTo(tmp);
