@@ -112,12 +112,12 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
   //   return;
   // }
 
-  if (frame->_status==Frame::FAIL)
-  {
-    _fm->forgetFrame(frame);
-    _need_reinit = true;
-    return;
-  }
+  // if (frame->_status==Frame::FAIL)
+  // {
+  //   _fm->forgetFrame(frame);
+  //   _need_reinit = true;
+  //   return;
+  // }
 
   try
   {

@@ -47,10 +47,10 @@ except:
 import pdb
 
 
-def run_one_video(data_dir,model_name,model_dir,cfg1,port):
+def run_one_video(data_dir,model_name,model_dir,result_dir,cfg1,port):
   cfg = copy.deepcopy(cfg1)
 
-  cur_out_dir = '/home/kausik/Documents/BundleTrack2.0/results/{}'.format(model_name)
+  cur_out_dir = result_dir+"/"+model_name
   os.system(f'mkdir -p {cur_out_dir}')
 
   cfg['data_dir'] = data_dir
@@ -80,7 +80,7 @@ if __name__=='__main__':
   parser.add_argument('--port', type=int, default=5555)
   parser.add_argument('--model_name', type=str, default='contact_nets_new_first_toss')
   parser.add_argument('--model_dir', type=str, default='/media/bowen/e25c9489-2f57-42dd-b076-021c59369fec/DATASET/YCB_Video_Dataset/CADmodels/021_bleach_cleanser/textured.obj')
-
+  parser.add_argument('--result_dir', type=str, default='/home/kausik/Documents/BundleTrack2.0/results')
 
   args = parser.parse_args()
 
@@ -93,4 +93,4 @@ if __name__=='__main__':
   with open(config_dir,'r') as ff:
     cfg = yaml.safe_load(ff)
 
-  run_one_video(args.data_dir,args.model_name,args.model_dir,cfg,args.port)
+  run_one_video(args.data_dir,args.model_name,args.model_dir,args.result_dir,cfg,args.port)

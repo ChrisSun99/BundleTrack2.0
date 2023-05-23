@@ -1,5 +1,6 @@
 data_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss
 mask_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss/masks  # Path to segmentation masks
+result_dir: /home/kausik/Documents/BundleTrack2.0/results
 use_6pack_datalist: True
 
 model_name: bottle_red_stanford_norm
@@ -30,7 +31,7 @@ bundle:
   max_BA_frames: 15
   subset_selection_method: greedy_rot
   robust_delta: 0.005
-  min_fm_edges_newframe: 10
+  min_fm_edges_newframe: 5 #10
   image_downscale: 4
 
 keyframe:
@@ -50,18 +51,18 @@ feature_corres:
   mutual: True
   max_dist_no_neighbor: 0.02
   max_normal_no_neighbor: 45
-  max_dist_neighbor: 10000
-  max_normal_neighbor: 180
+  max_dist_neighbor: 0.03 #10000
+  max_normal_neighbor: 45 #180
 
 ransac:
   max_iter: 2000
   num_sample: 3
-  inlier_dist: 0.005
+  inlier_dist: 0.01 #0.005
   inlier_normal_angle: 45
-  max_trans_neighbor: 0.2   #ransac model estimated pose shouldnt be too far
-  max_rot_deg_neighbor: 25
-  max_trans_no_neighbor: 0.02
-  max_rot_no_neighbor: 10
+  max_trans_neighbor: 2.0 #0.2   #ransac model estimated pose shouldnt be too far
+  max_rot_deg_neighbor: 720 #25
+  max_trans_no_neighbor: 2.0 #0.02
+  max_rot_no_neighbor: 720 #10
 
 p2p:
   max_dist: 0.02
