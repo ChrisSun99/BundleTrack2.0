@@ -225,6 +225,66 @@ void drawProjectPoints(PointCloudRGBNormal::Ptr cloud, const Eigen::Matrix3f &K,
   }
 }
 
+// Spherical linear interpolation
+// https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/index.htm
+Eigen::Matrix3f slerp(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2)
+{
+  Eigen::Quaterniond qa(pose1.topLeftCorner<3, 3>());
+  Eigen::Quaterniond qb(pose2.topLeftCorner<3, 3>());
+	Eigen::Quaterniond qm;
+  Eigen::Matrix3f mat;
+	// Calculate angle between them.
+	double cosHalfTheta = qa.w() * qb.w() + qa.x() * qb.x() + qa.y() * qb.y() + qa.z() * qb.z();
+	// if qa=qb or qa=-qb then theta = 0 and we can return qa
+	if (std::abs(cosHalfTheta) >= 1.0){
+		qm.w = qa.w();
+    qm.x = qa.x();
+    qm.y = qa.y();
+    qm.z = qa.z();
+    mat = qm.toRotationMatrix();
+		return mat;
+	}
+	// Calculate temporary values.
+	double halfTheta = std::acos(cosHalfTheta);
+	double sinHalfTheta = std::sqrt(1.0 - cosHalfTheta*cosHalfTheta);
+	// if theta = 180 degrees then result is not fully defined
+	// we could rotate around any axis normal to qa or qb
+	if (std::fabs(sinHalfTheta) < 0.001){ // fabs is floating point absolute
+		qm.w = (qa.w() * 0.5 + qb.w() * 0.5);
+		qm.x = (qa.x() * 0.5 + qb.x() * 0.5);
+		qm.y = (qa.y() * 0.5 + qb.y() * 0.5);
+		qm.z = (qa.z() * 0.5 + qb.z() * 0.5);
+    mat = qm.toRotationMatrix();
+		return mat;
+	}
+	double ratioA = std::sin((1 - t) * halfTheta) / sinHalfTheta;
+	double ratioB = std::sin(t * halfTheta) / sinHalfTheta; 
+	//calculate Quaternion.
+	qm.w = (qa.w() * ratioA + qb.w() * ratioB);
+	qm.x = (qa.x() * ratioA + qb.x() * ratioB);
+	qm.y = (qa.y() * ratioA + qb.y() * ratioB);
+	qm.z = (qa.z() * ratioA + qb.z() * ratioB);
+  mat = qm.toRotationMatrix();
+	return mat;
+}
+
+// https://gamedev.stackexchange.com/questions/30746/interpolation-between-two-3d-points
+Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eigen::Matrix4f &pose3)
+{
+  Eigen::Matrix4f H = Eigen::Matrix4f::Identity();
+  Eigen::Matrix3f rot = slerp(pose1, pose2);
+  H.block(0,0,3,3) = rot;
+  Eigen::Vector3f p1 = pose1.block<0, 3, 3, 1>;
+  Eigen::Vector3f p2 = pose2.block<0, 3, 3, 1>;
+  Eigen::Vector3f p = pose3.block<0, 3, 3, 1>;
+  Eigen::Vector3f dist = p2-p1;
+  double L = (p-p1).dot(p2-p1) / std::sqrt(std::accumulate(dist.begin(), dist.end(), 0));
+  double proportion = L / std::sqrt(std::accumulate(dist.begin(), dist.end(), 0));
+  Eigen::Vector3f trans = (1-proportion)*p1 + proportion*p2
+  H.block(0,3,3,1) = trans;
+  return H;
+}
+
 } // namespace Utils
 
 

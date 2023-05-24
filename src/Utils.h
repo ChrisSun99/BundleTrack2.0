@@ -177,6 +177,8 @@ bool isPixelInsideImage(const int H, const int W, float u, float v);
 
 void solveRigidTransformBetweenPoints(const Eigen::MatrixXf &points1, const Eigen::MatrixXf &points2, Eigen::Matrix4f &pose);
 void drawProjectPoints(PointCloudRGBNormal::Ptr cloud, const Eigen::Matrix3f &K, cv::Mat &out);
+Eigen::Matrix3f slerp(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2);
+Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eigen::Matrix4f &pose3);
 
 template<int rows, int cols>
 void parseMatrixTxt(std::string filename, Eigen::Matrix<float,rows,cols> &out)
