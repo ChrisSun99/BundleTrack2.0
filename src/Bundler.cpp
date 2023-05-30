@@ -38,11 +38,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "Bundler.h"
 #include "LossGPU.h"
 #include <typeinfo>
+#include <vector>
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
 using namespace Eigen;
 int BLOCK = 60;
+////////////////////////////////////
+int num_last_frames_corr = 3;
+////////////////////////////////////
+
 
 Bundler::Bundler(std::shared_ptr<YAML::Node> yml1, DataLoaderBase *data_loader)
 {
@@ -72,13 +77,49 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
   }
 
   std::shared_ptr<Frame> last_frame;
+
+  ////////////////////////////////////
+  std::vector<std::shared_ptr<Frame>> last_good_frames;
+  std::shared_ptr<Frame> next_good_frame;
+  bool last_frame_blurry = false;
+  ////////////////////////////////////
+
   if (_frames.size()>0)
   {
     last_frame = _frames.back();
-    assert(last_frame->_status!=Frame::FAIL);
-    frame->_id = last_frame->_id+1;
-    frame->_pose_in_model = last_frame->_pose_in_model;
+
+    ////////////////////////////////////
+    // check if the last frame is blurry
+    int iter = 1;
+    int count_found = 0;
+    std::shared_ptr<Frame> last_good_frame = last_frame;
+    if (last_good_frame->_status != Frame::FAIL) {
+      last_good_frames.push_back(last_good_frame);
+      count_found++;
+    } else {
+      last_frame_blurry = true;
+    }
+
+    // if needed, keep finding num_last_frames_corr nonblurry frames in _frames
+    if (last_frame_blurry) {
+      while (count_found < num_last_frames_corr) {
+        last_good_frame = *(_frames.rbegin() + iter);
+
+        // if this frame is not blurry, add it to the last_good_frames array
+        if (last_good_frame->_status != Frame::FAIL) {
+          last_good_frames.push_back(last_good_frame);
+          count_found++;
+        }
+        iter++;
+      }
+    }
+
+    // assign frame->last_good_frame as the nearest last_good_frame
+    frame->last_good_frame = last_good_frames.front();
+    frame->_id = frame->last_good_frame->_id + iter;
+    frame->_pose_in_model = frame->last_good_frame->_pose_in_model;
     frame->segmentationByMaskFile();
+    ////////////////////////////////////
   }
   else
   {
@@ -99,6 +140,17 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     _fm->forgetFrame(frame);
     _need_reinit = true;
     return;
+  } else {
+    ////////////////////////////////////
+    // if previous frames has no next_good_frame, either blurry or not, assign them with the current frame
+    // they must be consecutive, so stop when we find one that already has next_good_frame
+    int iter = 2;
+    while (last_frame->next_good_frame) {
+      last_frame->next_good_frame = frame;
+      last_frame = *(_frames.rbegin() + iter);
+      iter++;
+    }
+    ////////////////////////////////////
   }
 
   cv::Scalar blurScore;
@@ -137,22 +189,39 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
   if (_frames.size()>0)
   {
-    _fm->findCorres(frame, last_frame);
+    ////////////////////////////////////
+    // if the last frame is blurry, use num_last_frames_corr of frames to find an average pose
+    // by findCorres num_last_frames_corr times, otherwise, findCorres only once
+    int num_to_average = 1;
+    if (last_frame_blurry) {
+      num_to_average = num_last_frames_corr;
+    }
+    Eigen::Matrix4f mean_offset;
 
-    if (frame->_status==Frame::FAIL)
-    {
-      _need_reinit = true;
-      _fm->forgetFrame(frame);
-      return;
+    for (int i = 0; i < num_to_average; i++) {
+      // re-assign last_frame as one of the nonblurry frames in the last_good_frames array
+      last_frame = last_good_frames[i]
+
+      _fm->findCorres(frame, last_frame);
+
+      if (frame->_status==Frame::FAIL)
+      {
+        _need_reinit = true;
+        _fm->forgetFrame(frame);
+        return;
+      }
+
+      PointCloudRGBNormal::Ptr cloud = _data_loader->_real_model;
+      PointCloudRGBNormal::Ptr tmp(new PointCloudRGBNormal);
+      Eigen::Matrix4f model_in_cam = frame->_pose_in_model.inverse();
+
+      mean_offset += _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
     }
 
-    PointCloudRGBNormal::Ptr cloud = _data_loader->_real_model;
-    PointCloudRGBNormal::Ptr tmp(new PointCloudRGBNormal);
-    Eigen::Matrix4f model_in_cam = frame->_pose_in_model.inverse();
-
-    Eigen::Matrix4f offset = _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
-    frame->_pose_in_model = offset * frame->_pose_in_model;
+    // use the average offset calculated from num_to_average previous nonblurry frames
+    frame->_pose_in_model = (mean_offset / num_to_average) * frame->_pose_in_model;
     frame->_pose_inited = true;
+    ////////////////////////////////////
 
   }
 
