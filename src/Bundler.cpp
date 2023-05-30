@@ -156,6 +156,13 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
   }
 
+  // tmp
+  Eigen::Matrix4f last_good_frame = last_frame->_pose_in_model; 
+  Eigen::Matrix4f next_good_frame = last_frame->_pose_in_model;
+
+  // Update frame's initial pose based on last and next good frames
+  frame->_pose_in_model = Utils::interpolate(last_good_frame, next_good_frame, frame->_pose_in_model, 0.5);
+
   if (frame->_status==Frame::FAIL)
   {
     _fm->forgetFrame(frame);
