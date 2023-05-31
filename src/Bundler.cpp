@@ -39,6 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "LossGPU.h"
 #include <typeinfo>
 #include <vector>
+#include <cuda_runtime.h>
+
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
@@ -47,6 +49,15 @@ int BLOCK = 60;
 ////////////////////////////////////
 int num_last_frames_corr = 3;
 ////////////////////////////////////
+
+
+void printGPUMemoryUsage(const char* label) {
+    size_t freeMemory, totalMemory;
+    cudaMemGetInfo(&freeMemory, &totalMemory);
+    size_t usedMemory = totalMemory - freeMemory;
+
+    std::cout << label << " - GPU Memory Usage: " << usedMemory / 1024.0 / 1024.0 << " MB" << std::endl;
+}
 
 
 Bundler::Bundler(std::shared_ptr<YAML::Node> yml1, DataLoaderBase *data_loader)
@@ -61,6 +72,7 @@ Bundler::Bundler(std::shared_ptr<YAML::Node> yml1, DataLoaderBase *data_loader)
 
 void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 {
+  printGPUMemoryUsage("----- Before processNewFrame");
   std::cout<<"\n\n";
   printf("New frame %s\n",frame->_id_str.c_str());
   _newframe = frame;
@@ -92,6 +104,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     // check if the last frame is blurry
     int iter = 1;
     int count_found = 0;
+
     std::shared_ptr<Frame> last_good_frame = last_frame;
     if (last_good_frame->_status != Frame::FAIL) {
       last_good_frames.push_back(last_good_frame);
@@ -102,7 +115,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
     // if needed, keep finding num_last_frames_corr nonblurry frames in _frames
     if (last_frame_blurry) {
-      while (count_found < num_last_frames_corr) {
+      while (count_found < min(_frames.size(), num_last_frames_corr) && iter < _frames.size()) {
         last_good_frame = *(_frames.rbegin() + iter);
 
         // if this frame is not blurry, add it to the last_good_frames array
@@ -117,6 +130,13 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     // assign frame->last_good_frame as the nearest last_good_frame
     frame->last_good_frame = last_good_frames.front();
     frame->_id = frame->last_good_frame->_id + iter;
+    std::cout << "Last good frame is " << frame->last_good_frame->_id_str.c_str() << std::endl;
+    std::cout <<  "Current frame is " << frame->_id_str.c_str() << std::endl;
+    std::cout << "Frame vector: " << std::endl;
+    for (auto& frame: last_good_frames)
+    {
+      std::cout << frame->_id_str.c_str() << " " << std::endl;
+    }
     frame->_pose_in_model = frame->last_good_frame->_pose_in_model;
     frame->segmentationByMaskFile();
     ////////////////////////////////////
@@ -142,13 +162,16 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     return;
   } else {
     ////////////////////////////////////
-    // if previous frames has no next_good_frame, either blurry or not, assign them with the current frame
-    // they must be consecutive, so stop when we find one that already has next_good_frame
-    int iter = 2;
-    while (last_frame->next_good_frame) {
-      last_frame->next_good_frame = frame;
-      last_frame = *(_frames.rbegin() + iter);
-      iter++;
+    if (_frames.size()>0) {
+      // if previous frames has no next_good_frame, either blurry or not, assign them with the current frame
+      // they must be consecutive, so stop when we find one that already has next_good_frame
+      int iter = 2;
+      while (!last_frame->next_good_frame && iter < _frames.size()) {
+        last_frame->next_good_frame = frame;
+        std::cout <<  "Frame " << last_frame->_id_str.c_str() << "'s next good frame is " << last_frame->next_good_frame->_id_str.c_str() << std::endl;
+        last_frame = *(_frames.rbegin() + iter);
+        iter++;
+      }
     }
     ////////////////////////////////////
   }
@@ -200,7 +223,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
     for (int i = 0; i < num_to_average; i++) {
       // re-assign last_frame as one of the nonblurry frames in the last_good_frames array
-      last_frame = last_good_frames[i]
+      last_frame = last_good_frames[i];
 
       _fm->findCorres(frame, last_frame);
 
@@ -225,12 +248,12 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
   }
 
-  // tmp
-  Eigen::Matrix4f last_good_frame = last_frame->_pose_in_model; 
-  Eigen::Matrix4f next_good_frame = last_frame->_pose_in_model;
-
   // Update frame's initial pose based on last and next good frames
-  frame->_pose_in_model = Utils::interpolate(last_good_frame, next_good_frame, frame->_pose_in_model, 0.5);
+  // if (last_good_frames.size()>0) 
+  // {
+  //   Eigen::Matrix4f last_good_frame = last_good_frames.front()->_pose_in_model;
+  //   frame->_pose_in_model = Utils::interpolate(frame->last_good_frame->_pose_in_model, frame->next_good_frame->_pose_in_model, frame->_pose_in_model, 0.5);
+  // }
 
   if (frame->_status==Frame::FAIL)
   {
@@ -274,11 +297,13 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
   }
 
   checkAndAddKeyframe(frame);
+  printGPUMemoryUsage("----- After processNewFrame");
 
 }
 
 void Bundler::checkAndAddKeyframe(std::shared_ptr<Frame> frame)
 {
+  printGPUMemoryUsage("----- Before checkAndAddKeyframe");
   if (frame->_id==0)
   {
     _keyframes.push_back(frame);
@@ -311,11 +336,13 @@ void Bundler::checkAndAddKeyframe(std::shared_ptr<Frame> frame)
 
 
   _keyframes.push_back(frame);
+  printGPUMemoryUsage("----- After checkAndAddKeyframe");
 }
 
 
 void Bundler::selectKeyFramesForBA()
 {
+  printGPUMemoryUsage("----- Before selectKeyFramesForBA");
   const std::string debug_dir = (*yml)["debug_dir"].as<std::string>();
   std::string keyframe_dir = debug_dir+"/keyframes/";
   if (!boost::filesystem::exists(keyframe_dir))
@@ -377,14 +404,13 @@ void Bundler::selectKeyFramesForBA()
   }
 
   _local_frames = std::vector<std::shared_ptr<Frame>>(frames.begin(),frames.end());
-
+  printGPUMemoryUsage("----- After selectKeyFramesForBA");
 }
-
-
 
 
 void Bundler::optimizeGPU()
 {
+  printGPUMemoryUsage("----- Before optimizeGPU");
   const int num_iter_outter = (*yml)["bundle"]["num_iter_outter"].as<int>();
   const int num_iter_inner = (*yml)["bundle"]["num_iter_inner"].as<int>();
   const int min_fm_edges_newframe = (*yml)["bundle"]["min_fm_edges_newframe"].as<int>();
@@ -463,11 +489,13 @@ void Bundler::optimizeGPU()
     f->_pose_in_model = poses[i];
   }
 
+  printGPUMemoryUsage("----- After optimizeGPU");
 }
 
 
 void Bundler::saveNewframeResult()
 {
+  printGPUMemoryUsage("----- Before saveNewframeResult");
   const std::string debug_dir = (*yml)["debug_dir"].as<std::string>();
   const std::string out_dir = debug_dir+"/"+_newframe->_id_str+"/";
   const std::string pose_out_dir = debug_dir+"/poses/";
@@ -516,6 +544,7 @@ void Bundler::saveNewframeResult()
     }
     cv::imwrite(raw_dir+_newframe->_id_str+"_color_raw.png",_newframe->_color);
   }
+  printGPUMemoryUsage("----- After saveNewframeResult");
 }
 
 // Blur detection with FFT

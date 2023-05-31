@@ -76,12 +76,18 @@ def run_one_video(data_dir,model_name,model_dir,result_dir,cfg1,port):
 
 if __name__=='__main__':
   parser = argparse.ArgumentParser()
-  parser.add_argument('--data_dir', type=str, default='/home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss')
+  # parser.add_argument('--data_dir', type=str, default='/home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss')
+  # parser.add_argument('--port', type=int, default=5555)
+  # parser.add_argument('--model_name', type=str, default='contact_nets_new_first_toss')
+  # parser.add_argument('--model_dir', type=str, default='/media/bowen/e25c9489-2f57-42dd-b076-021c59369fec/DATASET/YCB_Video_Dataset/CADmodels/021_bleach_cleanser/textured.obj')
+  # parser.add_argument('--result_dir', type=str, default='/home/kausik/Documents/BundleTrack2.0/results')
+
+  # Test on old dataset
+  parser.add_argument('--data_dir', type=str, default='/home/kausik/Documents/BundleTrack2.0/Data/contact_nets_reduced')
   parser.add_argument('--port', type=int, default=5555)
-  parser.add_argument('--model_name', type=str, default='contact_nets_new_first_toss')
+  parser.add_argument('--model_name', type=str, default='contact_nets_reduced')
   parser.add_argument('--model_dir', type=str, default='/media/bowen/e25c9489-2f57-42dd-b076-021c59369fec/DATASET/YCB_Video_Dataset/CADmodels/021_bleach_cleanser/textured.obj')
   parser.add_argument('--result_dir', type=str, default='/home/kausik/Documents/BundleTrack2.0/results')
-
   args = parser.parse_args()
 
   data_dir = args.data_dir

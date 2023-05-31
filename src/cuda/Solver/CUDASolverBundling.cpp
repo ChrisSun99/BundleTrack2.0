@@ -175,6 +175,7 @@ CUDASolverBundling::~CUDASolverBundling()
 
 	cutilSafeCall(cudaFree(m_solverState.d_xTransforms));
 	cutilSafeCall(cudaFree(m_solverState.d_xTransformInverses));
+	cutilSafeCall(cudaFree(m_solverState.d_denseCorrCounts));
 	cutilSafeCall(cudaFree(m_solverState.d_denseOverlappingImages));
 	cutilSafeCall(cudaFree(m_solverState.d_numDenseOverlappingImages));
 

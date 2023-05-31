@@ -83,4 +83,6 @@ public:
   cv::Scalar detectBlur(std::shared_ptr<Frame> frame);
 };
 
+void printGPUMemoryUsage(const char* label);
+
 #endif

@@ -1,5 +1,5 @@
-data_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss
-mask_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_new_first_toss/masks  # Path to segmentation masks
+data_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_reduced
+mask_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_reduced/masks  # Path to segmentation masks
 result_dir: /home/kausik/Documents/BundleTrack2.0/results
 use_6pack_datalist: True
 

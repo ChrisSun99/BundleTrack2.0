@@ -39,6 +39,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "DataLoader.h"
 
 
+void printGPUMemoryUsage(const char* label) {
+    size_t freeMemory, totalMemory;
+    cudaMemGetInfo(&freeMemory, &totalMemory);
+    size_t usedMemory = totalMemory - freeMemory;
+
+    std::cout << label << " - GPU Memory Usage: " << usedMemory / 1024.0 / 1024.0 << " MB" << std::endl;
+}
+
+
 int main(int argc, char **argv)
 {
   std::shared_ptr<YAML::Node> yml(new YAML::Node);
@@ -65,16 +74,18 @@ int main(int argc, char **argv)
 
   while (data_loader.hasNext())
   {
-    std::shared_ptr<Frame> frame = data_loader.next();
+    printGPUMemoryUsage("----- Before data_loader");
+    std::unique_ptr<Frame> frame = data_loader.next();
+    printGPUMemoryUsage("---- After data_loader");
     if (!frame) break;
     const std::string index_str = frame->_id_str;
     const std::string out_dir = (*yml)["debug_dir"].as<std::string>()+"/"+index_str+"/";
     cv::imwrite(out_dir+index_str+"_color.png",frame->_color);
 
     Eigen::Matrix4f cur_in_model(data_loader._ob_in_cam0.inverse());
-    bundler.processNewFrame(frame);
 
+    std::shared_ptr<Frame> frame_sharedPtr = std::move(frame);
+    bundler.processNewFrame(frame_sharedPtr);
     bundler.saveNewframeResult();
-
   }
 }
