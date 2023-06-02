@@ -343,7 +343,7 @@ DataLoaderYcbineoat::~DataLoaderYcbineoat()
 
 }
 
-std::unique_ptr<Frame> DataLoaderYcbineoat::next()
+std::shared_ptr<Frame> DataLoaderYcbineoat::next()
 {
   printGPUMemoryUsage("----- In data_loader 1");
   assert(_id<_color_files.size());
@@ -384,8 +384,13 @@ std::unique_ptr<Frame> DataLoaderYcbineoat::next()
   roi << 99999,0,99999,0;
   printGPUMemoryUsage("----- In data_loader 6");
 
-  std::unique_ptr<Frame> frame(new Frame(color,depth,depth_raw,depth_sim, roi, pose, _id, index_str.substr(_start_digit,index_str.size()-_start_digit), _K, yml, NULL, _real_model));
+  std::shared_ptr<Frame> frame(new Frame(color,depth,depth_raw,depth_sim, roi, pose, _id, index_str.substr(_start_digit,index_str.size()-_start_digit), _K, yml, NULL, _real_model));
+  // Frame* framePtr = new Frame(color, depth, depth_raw, depth_sim, roi, pose, _id, index_str.substr(_start_digit, index_str.size() - _start_digit), _K, yml, NULL, _real_model);
+  // std::shared_ptr<Frame> frame(framePtr);
   _id++;
+  // cudaFree(framePtr->_depth_gpu);
+  // cudaFree(framePtr->_normal_gpu);
+  // cudaFree(framePtr->_color_gpu);
   printGPUMemoryUsage("----- In data_loader 7");
 
   return frame;

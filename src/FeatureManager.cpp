@@ -167,6 +167,9 @@ void SiftManager::forgetFrame(std::shared_ptr<Frame> frame)
       mpt->_img_pt.erase(frame);
     }
   }
+  cudaFree(frame->_depth_gpu);
+  cudaFree(frame->_color_gpu);
+  cudaFree(frame->_normal_gpu);
 }
 
 

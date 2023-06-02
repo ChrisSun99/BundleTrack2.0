@@ -58,8 +58,12 @@ Frame::Frame(const cv::Mat &color, const cv::Mat &depth, const cv::Mat &depth_ra
   _pose_in_model = pose_in_model;
   Utils::normalizeRotationMatrix(_pose_in_model);
   _K = K;
+  printGPUMemoryUsage("----- In frame constructor 1");
+
   _cloud = boost::make_shared<pcl::PointCloud<pcl::PointXYZRGBNormal>>();
   _cloud_down = boost::make_shared<pcl::PointCloud<pcl::PointXYZRGBNormal>>();
+  printGPUMemoryUsage("----- In frame constructor 2");
+
   _real_model = real_model;
   _pose_inited = false;
   _roi = roi;
@@ -68,16 +72,20 @@ Frame::Frame(const cv::Mat &color, const cv::Mat &depth, const cv::Mat &depth_ra
   cudaMalloc(&_depth_gpu, n_pixels*sizeof(float));
   cudaMalloc(&_normal_gpu, n_pixels*sizeof(float4));
   cudaMalloc(&_color_gpu, n_pixels*sizeof(uchar4));
-
+  printGPUMemoryUsage("----- In frame constructor 3");
 
   cv::cvtColor(_color, _gray, CV_BGR2GRAY);
 
   updateDepthGPU();
+  printGPUMemoryUsage("----- In frame constructor 4");
   processDepth();
+  printGPUMemoryUsage("----- In frame constructor 5");
 
   updateColorGPU();
+  printGPUMemoryUsage("----- In frame constructor 6");
 
   depthToCloudAndNormals();
+  printGPUMemoryUsage("----- In frame constructor 7");
 
   if (!cloud)
   {
@@ -86,6 +94,7 @@ Frame::Frame(const cv::Mat &color, const cv::Mat &depth, const cv::Mat &depth_ra
   {
     _cloud_down = cloud;
   }
+  printGPUMemoryUsage("----- In frame constructor 8");
 }
 
 
@@ -94,6 +103,7 @@ Frame::~Frame()
   cudaFree(_depth_gpu);
   cudaFree(_normal_gpu);
   cudaFree(_color_gpu);
+  // _feat_des_gpu.release();
 }
 
 void Frame::updateDepthCPU()
@@ -102,14 +112,27 @@ void Frame::updateDepthCPU()
   _depth = cv::Mat::zeros(1, n_pixels, CV_32F);
   cudaMemcpy(_depth.data, _depth_gpu, n_pixels*sizeof(float), cudaMemcpyDeviceToHost);
   _depth = _depth.reshape(1,_H);
+  // cudaFree(_depth_gpu);
 }
 
 void Frame::updateDepthGPU()
 {
   const int n_pixels = _H*_W;
   cv::Mat depth_flat = _depth.reshape(1,1);
+  // cudaMalloc(&_depth_gpu, n_pixels*sizeof(float));
   cudaMemcpy(_depth_gpu, depth_flat.data, n_pixels*sizeof(float), cudaMemcpyHostToDevice);
 }
+
+// void Frame::updateColorCPU()
+// {
+//   const int n_pixels = _H*_W;
+//   uchar4* _color_cpu = new uchar4[n_pixels];
+//   cudaMemcpy(_color_cpu, _color_gpu, n_pixels * sizeof(uchar4), cudaMemcpyDeviceToHost);
+//   cv::Mat color_mat(n_pixels, 1, CV_8UC4, _color_cpu);
+//   _color = color_mat;
+//   cudaFree(_color_gpu);
+//   delete[] _color_cpu;
+// }
 
 void Frame::updateColorGPU()
 {
@@ -123,8 +146,17 @@ void Frame::updateColorGPU()
       color_array[h*_W+w] = make_uchar4(bgr[0],bgr[1],bgr[2],0);
     }
   }
+  // cudaMalloc(&_color_gpu, n_pixels*sizeof(uchar4));
   cudaMemcpy(_color_gpu, color_array.data(), sizeof(uchar4)*color_array.size(), cudaMemcpyHostToDevice);
 }
+
+// void Frame::updateNormalCPU()
+// {
+//   const int n_pixels = _H*_W;
+//   std::vector<float4> normals(n_pixels);
+//   cudaMemcpy(&normals[0], _normal_gpu, n_pixels * sizeof(float4), cudaMemcpyDeviceToHost);
+//   cudaFree(_normal_gpu);
+// }
 
 void Frame::updateNormalGPU()
 {
@@ -145,6 +177,7 @@ void Frame::updateNormalGPU()
       }
     }
   }
+  // cudaMalloc(&_normal_gpu, n_pixels*sizeof(float4));
   cudaMemcpy(_normal_gpu, normal_array.data(), sizeof(float4)*normal_array.size(), cudaMemcpyHostToDevice);
 }
 
@@ -183,10 +216,14 @@ void Frame::depthToCloudAndNormals()
 {
   const int n_pixels = _H*_W;
   float4 *xyz_map_gpu;
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 1");
+
   cudaMalloc(&xyz_map_gpu, n_pixels*sizeof(float4));
   float4x4 K_inv_data;
   K_inv_data.setIdentity();
   Eigen::Matrix3f K_inv = _K.inverse();
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 2");
+
   for (int row=0;row<3;row++)
   {
     for (int col=0;col<3;col++)
@@ -194,15 +231,19 @@ void Frame::depthToCloudAndNormals()
       K_inv_data(row,col) = K_inv(row,col);
     }
   }
-  CUDAImageUtil::convertDepthFloatToCameraSpaceFloat4(xyz_map_gpu, _depth_gpu, K_inv_data, _W, _H);
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 3");
 
+  CUDAImageUtil::convertDepthFloatToCameraSpaceFloat4(xyz_map_gpu, _depth_gpu, K_inv_data, _W, _H);
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 4");
   CUDAImageUtil::computeNormals(_normal_gpu, xyz_map_gpu, _W, _H);
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 5");
 
   std::vector<float4> xyz_map(n_pixels);
   cudaMemcpy(xyz_map.data(), xyz_map_gpu, sizeof(float4)*n_pixels, cudaMemcpyDeviceToHost);
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 6");
   std::vector<float4> normals(n_pixels);
   cudaMemcpy(normals.data(), _normal_gpu, sizeof(float4)*n_pixels, cudaMemcpyDeviceToHost);
-
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 7");
   _cloud->height = _H;
   _cloud->width = _W;
   _cloud->is_dense = false;
@@ -228,8 +269,9 @@ void Frame::depthToCloudAndNormals()
       (*_cloud)(w,h).normal_z = normal.z;
     }
   }
-
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 8");
   cudaFree(xyz_map_gpu);
+  printGPUMemoryUsage("----- In depthToCloudAndNormals 9");
 }
 
 

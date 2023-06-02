@@ -40,12 +40,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <typeinfo>
 #include <vector>
 #include <cuda_runtime.h>
-
+#include "string.h"
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
 using namespace Eigen;
-int BLOCK = 60;
+int BLOCK = 10; //60;
 ////////////////////////////////////
 int num_last_frames_corr = 3;
 ////////////////////////////////////
@@ -75,6 +75,12 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
   printGPUMemoryUsage("----- Before processNewFrame");
   std::cout<<"\n\n";
   printf("New frame %s\n",frame->_id_str.c_str());
+
+  // move each new frame to CPU to save GPU memory
+  // frame->updateColorCPU();
+  // frame->updateDepthCPU();
+  // frame->updateNormalCPU();
+
   _newframe = frame;
 
   std::thread worker;
@@ -154,6 +160,15 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     return;
   }
 
+  // fprintf(stderr, "Current frame: %d\n", frame->_id_str.c_str());
+  // if (strcmp(frame->_id_str.c_str(), "0010") == 0)
+  // {
+  //   fprintf(stderr, "!!!!!!!!!!!Forgetting frame 10!!!!!!!!!!\n");
+  //   _fm->forgetFrame(frame);
+  //   _need_reinit = true;
+  //   return;
+  // }
+
 
   if (frame->_status==Frame::FAIL)
   {
@@ -221,9 +236,19 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     }
     Eigen::Matrix4f mean_offset;
 
+    // // put current frame to GPU
+    // frame->updateColorGPU();
+    // frame->updateDepthGPU();
+    // frame->updateNormalGPU();
+
     for (int i = 0; i < num_to_average; i++) {
       // re-assign last_frame as one of the nonblurry frames in the last_good_frames array
       last_frame = last_good_frames[i];
+
+      // // put last frame to GPU
+      // last_frame->updateColorGPU();
+      // last_frame->updateDepthGPU();
+      // last_frame->updateNormalGPU();
 
       _fm->findCorres(frame, last_frame);
 
@@ -239,7 +264,17 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
       Eigen::Matrix4f model_in_cam = frame->_pose_in_model.inverse();
 
       mean_offset += _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
+
+      // // put last frame back to CPU
+      // last_frame->updateColorCPU();
+      // last_frame->updateDepthCPU();
+      // last_frame->updateNormalCPU();
     }
+
+    // // put current frame back to CPU
+    // frame->updateColorCPU();
+    // frame->updateDepthCPU();
+    // frame->updateNormalCPU();
 
     // use the average offset calculated from num_to_average previous nonblurry frames
     frame->_pose_in_model = (mean_offset / num_to_average) * frame->_pose_in_model;
@@ -249,11 +284,11 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
   }
 
   // Update frame's initial pose based on last and next good frames
-  // if (last_good_frames.size()>0) 
-  // {
-  //   Eigen::Matrix4f last_good_frame = last_good_frames.front()->_pose_in_model;
-  //   frame->_pose_in_model = Utils::interpolate(frame->last_good_frame->_pose_in_model, frame->next_good_frame->_pose_in_model, frame->_pose_in_model, 0.5);
-  // }
+  if (last_good_frames.size()>1) 
+  {
+    // Eigen::Matrix4f last_good_frame = last_good_frames.front()->_pose_in_model;
+    frame->last_good_frame->_pose_in_model = Utils::interpolate(frame->last_good_frame->last_good_frame->_pose_in_model, frame->_pose_in_model, frame->last_good_frame->_pose_in_model, 0.5);
+  }
 
   if (frame->_status==Frame::FAIL)
   {
@@ -298,7 +333,6 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
   checkAndAddKeyframe(frame);
   printGPUMemoryUsage("----- After processNewFrame");
-
 }
 
 void Bundler::checkAndAddKeyframe(std::shared_ptr<Frame> frame)
@@ -467,6 +501,12 @@ void Bundler::optimizeGPU()
   for (int i=0;i<_local_frames.size();i++)
   {
     const auto &f = _local_frames[i];
+
+    // // put key frames to GPU
+    // f->updateColorGPU();
+    // f->updateDepthGPU();
+    // f->updateNormalGPU();
+
     depths_gpu.push_back(f->_depth_gpu);
     colors_gpu.push_back(f->_color_gpu);
     normals_gpu.push_back(f->_normal_gpu);
@@ -487,6 +527,11 @@ void Bundler::optimizeGPU()
   {
     const auto &f = _local_frames[i];
     f->_pose_in_model = poses[i];
+
+    // // put key frames to CPU
+    // f->updateColorCPU();
+    // f->updateDepthCPU();
+    // f->updateNormalCPU();
   }
 
   printGPUMemoryUsage("----- After optimizeGPU");
@@ -551,17 +596,45 @@ void Bundler::saveNewframeResult()
 // https://docs.opencv.org/4.x/d8/d01/tutorial_discrete_fourier_transform.html
 cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
 {
-  int cx = frame->_W / 2;
-  int cy = frame->_H / 2;
+  string color_dir = (*yml)["data_dir"].as<std::string>()+"/rgb/"+frame->_id_str.c_str()+".png";
+  string mask_dir = (*yml)["mask_dir"].as<std::string>()+"/"+frame->_id_str.c_str()+".png";
+  cv::Mat rgb = cv::imread(color_dir);
+  cv::Mat mask = cv::imread(mask_dir, cv::IMREAD_GRAYSCALE);
+  if (rgb.empty() || mask.empty())
+  {
+    std::cout << "Failed to read the image or mask!" << std::endl;
+    return -1;
+  }
+  // Find contours in the binary mask
+  // std::vector<std::vector<cv::Point>> contours;
+  // cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+  // Extract the bounding box of the ROI
+  // cv::Rect boundingBox = cv::boundingRect(contours[0]);
+
+  cv::Rect boundingBox = cv::boundingRect(mask);
+  cv::Mat roi = rgb(boundingBox);
+  cv::Size targetSize(150, 150);  // Define the desired fixed size
+  cv::resize(roi, roi, targetSize);  // Resize the ROI to the fixed size
+
+  // cv::Mat roi = (frame->_color)(boundingBox).clone();
+  std::string filePath = "/home/kausik/Documents/BundleTrack2.0/cropped_images/" + frame->_id_str + ".png";
+  cv::imwrite(filePath, roi);
+
+  int roi_width = rgb.cols;
+  int roi_height = rgb.rows;
+
   cv::Mat fourierTransform;
   cv::Mat colorImage;
-  frame->_color.copyTo(colorImage);
+  roi.copyTo(colorImage);
 
   // Convert colorImage to the appropriate type
   cv::cvtColor(colorImage, colorImage, cv::COLOR_BGR2GRAY);
   colorImage.convertTo(colorImage, CV_32FC1);
 
   cv::dft(colorImage, fourierTransform);
+  int cx = std::floor(fourierTransform.cols / 2);
+  int cy = std::floor(fourierTransform.rows / 2);
   cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
   cv::Mat q1(fourierTransform, cv::Rect(cx, 0, cx, cy));      // Top-Right
   cv::Mat q2(fourierTransform, cv::Rect(0, cy, cx, cy));      // Bottom-Left
@@ -610,7 +683,9 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   cv::log(invFFT,logFFT);
   logFFT *= 20;
 
-  cv::Scalar result = cv::mean(logFFT);
+  // create a mask to exclude -inf values
+  cv::Mat inf_mask = (logFFT != -std::numeric_limits<float>::infinity());
+  cv::Scalar result = cv::mean(logFFT, inf_mask);
   std::cout << "Result : "<< result.val[0] << std::endl;
   return result;
 }

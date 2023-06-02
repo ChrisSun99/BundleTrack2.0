@@ -229,13 +229,17 @@ void drawProjectPoints(PointCloudRGBNormal::Ptr cloud, const Eigen::Matrix3f &K,
 // https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/index.htm
 Eigen::Matrix3f slerp(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, float t)
 {
+  fprintf(stderr, "REACHED slerp1\n");
   Eigen::Quaternionf qa(pose1.topLeftCorner<3, 3>());
+  fprintf(stderr, "REACHED slerp2\n");
   Eigen::Quaternionf qb(pose2.topLeftCorner<3, 3>());
+  fprintf(stderr, "REACHED slerp3\n");
 	Eigen::Quaternionf qm;
   Eigen::Matrix3f mat;
 	// Calculate angle between them.
 	double cosHalfTheta = qa.w() * qb.w() + qa.x() * qb.x() + qa.y() * qb.y() + qa.z() * qb.z();
 	// if qa=qb or qa=-qb then theta = 0 and we can return qa
+  fprintf(stderr, "REACHED slerp4\n");
 	if (std::abs(cosHalfTheta) >= 1.0){
 		qm.w() = qa.w();
     qm.x() = qa.x();
@@ -244,6 +248,7 @@ Eigen::Matrix3f slerp(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, float t)
     mat = qm.toRotationMatrix();
 		return mat;
 	}
+  fprintf(stderr, "REACHED slerp4");
 	// Calculate temporary values.
 	double halfTheta = std::acos(cosHalfTheta);
 	double sinHalfTheta = std::sqrt(1.0 - cosHalfTheta*cosHalfTheta);
@@ -273,6 +278,7 @@ Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eige
 {
   Eigen::Matrix4f H = Eigen::Matrix4f::Identity();
   Eigen::Matrix3f rot = slerp(pose1, pose2, t);
+  fprintf(stderr, "REACHED HERE2");
   H.block<3, 3>(0, 0) = rot;
   Eigen::Vector3f p1 = pose1.block<3, 1>(0, 3);
   Eigen::Vector3f p2 = pose2.block<3, 1>(0, 3);

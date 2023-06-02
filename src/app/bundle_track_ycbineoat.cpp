@@ -50,6 +50,7 @@ void printGPUMemoryUsage(const char* label) {
 
 int main(int argc, char **argv)
 {
+  printGPUMemoryUsage("---- Before everything");
   std::shared_ptr<YAML::Node> yml(new YAML::Node);
   if (argc<2)
   {
@@ -75,7 +76,7 @@ int main(int argc, char **argv)
   while (data_loader.hasNext())
   {
     printGPUMemoryUsage("----- Before data_loader");
-    std::unique_ptr<Frame> frame = data_loader.next();
+    std::shared_ptr<Frame> frame = data_loader.next();
     printGPUMemoryUsage("---- After data_loader");
     if (!frame) break;
     const std::string index_str = frame->_id_str;
@@ -83,9 +84,23 @@ int main(int argc, char **argv)
     cv::imwrite(out_dir+index_str+"_color.png",frame->_color);
 
     Eigen::Matrix4f cur_in_model(data_loader._ob_in_cam0.inverse());
-
-    std::shared_ptr<Frame> frame_sharedPtr = std::move(frame);
-    bundler.processNewFrame(frame_sharedPtr);
+    
+    // std::shared_ptr<Frame> frame_sharedPtr = std::move(frame);
+    // std::shared_ptr<Frame> frame_sharedPtr(frame.release(), [](Frame* ptr) {
+    //     cudaFree(ptr->_depth_gpu);
+    //     cudaFree(ptr->_normal_gpu);
+    //     cudaFree(ptr->_color_gpu);
+    //     delete ptr;
+    // });
+    bundler.processNewFrame(frame);
     bundler.saveNewframeResult();
+    // cudaFree(frame->_depth_gpu);
+    // cudaFree(frame->_normal_gpu);
+    // cudaFree(frame->_color_gpu);
+    // frame->_feat_des_gpu.release();
+    // Reset shared_ptr to release ownership and deallocate the frame
+    // frame.reset();
+    
+    printGPUMemoryUsage("---- After everything");
   }
 }

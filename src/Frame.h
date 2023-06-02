@@ -85,7 +85,9 @@ public:
   ~Frame();
   void updateDepthCPU();
   void updateDepthGPU();
+  // void updateColorCPU();
   void updateColorGPU();
+  // void updateNormalCPU();
   void updateNormalGPU();
   void processDepth();
   void depthToCloudAndNormals();

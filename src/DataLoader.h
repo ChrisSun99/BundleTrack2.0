@@ -86,7 +86,7 @@ public:
 public:
   DataLoaderYcbineoat(std::shared_ptr<YAML::Node> yml1);
   ~DataLoaderYcbineoat();
-  std::unique_ptr<Frame> next();
+  std::shared_ptr<Frame> next();
 
 };
 
