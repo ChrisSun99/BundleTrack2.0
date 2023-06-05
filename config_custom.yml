@@ -1,5 +1,5 @@
-data_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_reduced
-mask_dir: /home/kausik/Documents/BundleTrack2.0/Data/contact_nets_reduced/masks  # Path to segmentation masks
+data_dir: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset
+mask_dir: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/masks  # Path to segmentation masks
 result_dir: /home/kausik/Documents/BundleTrack2.0/results
 use_6pack_datalist: True
 
@@ -33,7 +33,7 @@ bundle:
   robust_delta: 0.005
   min_fm_edges_newframe: 5 #10
   image_downscale: 4
-  blur_thres: 239.0
+  blur_thres: 238.0
 
 keyframe:
   min_interval: 1

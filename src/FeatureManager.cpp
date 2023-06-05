@@ -233,6 +233,7 @@ void SiftManager::findCorres(std::shared_ptr<Frame> frameA, std::shared_ptr<Fram
 
   }
 
+  fprintf(stderr, "_matches[{frameA,frameB}].size() %d\n", _matches[{frameA,frameB}].size());
   if (_matches[{frameA,frameB}].size()<5)
   {
     _matches[{frameA,frameB}].clear();
