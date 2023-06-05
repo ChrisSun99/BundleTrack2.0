@@ -216,6 +216,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
   if (_frames.size()>0)
   {
+    //////////////////////////////////  
     // if the last frame is blurry, use num_last_frames_corr of frames to find an average pose
     // by findCorres num_last_frames_corr times, otherwise, findCorres only once
     int num_to_average = 1;
@@ -258,8 +259,15 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
         }
         fprintf(stderr, "\n");
     }
-
   }
+
+  // Update frame's initial pose based on last and next good frames
+  // if (last_good_frames.size()>1) 
+  // {
+  //   // Eigen::Matrix4f last_good_frame = last_good_frames.front()->_pose_in_model;
+  //   frame->last_good_frame->_pose_in_model = Utils::interpolate(frame->last_good_frame->last_good_frame->_pose_in_model, frame->_pose_in_model, frame->last_good_frame->_pose_in_model, 0.5);
+  // }
+  //////////////////////////////////  
 
   if (frame->_status==Frame::FAIL)
   {
