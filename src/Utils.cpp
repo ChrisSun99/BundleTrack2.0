@@ -211,6 +211,23 @@ void solveRigidTransformBetweenPoints(const Eigen::MatrixXf &points1, const Eige
     return;
   }
 
+  // assert(points1.cols() == 3 && points1.rows() >= 3 && points2.cols() == 3 && points2.rows() >= 3);
+  // pose.setIdentity();
+
+  // Eigen::Vector3f mean1 = points1.colwise().mean();
+  // Eigen::Vector3f mean2 = points2.colwise().mean();
+
+  // Eigen::MatrixXf P = points1.rowwise() - mean1.transpose();
+  // Eigen::MatrixXf Q = points2.rowwise() - mean2.transpose();
+  // Eigen::MatrixXf S = P.transpose() * Q;
+
+  // Eigen::JacobiSVD<Eigen::MatrixXf> svd(S, Eigen::ComputeThinU | Eigen::ComputeThinV);
+  // Eigen::Matrix3f R = svd.matrixV() * svd.matrixU().transpose();
+
+  // Eigen::Quaternionf quat(R);  // Convert the rotation matrix to a quaternion
+
+  // pose.block(0, 0, 3, 3) = quat.toRotationMatrix();
+  // pose.block(0, 3, 3, 1) = mean2 - quat.toRotationMatrix() * mean1;
 }
 
 void drawProjectPoints(PointCloudRGBNormal::Ptr cloud, const Eigen::Matrix3f &K, cv::Mat &out)

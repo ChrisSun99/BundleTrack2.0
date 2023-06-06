@@ -621,6 +621,8 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   tmp.copyTo(q2);
 
   // Block the low frequencies
+  // cv::Mat logFFT;
+  // cv::log(fourierTransform, logFFT);
   filePath = "/home/kausik/Documents/BundleTrack2.0/cropped_images/" + frame->_id_str + "_fourier_domain_before.png";
   cv::imwrite(filePath, fourierTransform);
 
@@ -632,6 +634,7 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   fourierTransform.setTo(0, high_pass_filter);
   // fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
 
+  // cv::log(fourierTransform, logFFT);
   filePath = "/home/kausik/Documents/BundleTrack2.0/cropped_images/" + frame->_id_str + "_fourier_domain_after.png";
   cv::imwrite(filePath, fourierTransform);
 
