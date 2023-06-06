@@ -45,7 +45,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 typedef std::pair<int,int> IndexPair;
 using namespace std;
 using namespace Eigen;
-int BLOCK = 10; //60;
 ////////////////////////////////////
 int num_last_frames_corr = 3;
 ////////////////////////////////////
@@ -148,7 +147,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     frame->segmentationByMaskFile();
   }
 
-
+  printf("Frame %s roi WxH=%fx%f\n", frame->_id_str.c_str(), frame->_roi(1)-frame->_roi(0),frame->_roi(3)-frame->_roi(2));
   if (frame->_roi(1)-frame->_roi(0)<10 || frame->_roi(3)-frame->_roi(2)<10)
   {
     frame->_status = Frame::FAIL;
@@ -220,10 +219,10 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     // if the last frame is blurry, use num_last_frames_corr of frames to find an average pose
     // by findCorres num_last_frames_corr times, otherwise, findCorres only once
     int num_to_average = 1;
-    if (last_frame_blurry) {
-      fprintf(stderr, "last frame is blurry\n");
-      num_to_average = num_last_frames_corr;
-    }
+    // if (last_frame_blurry) {
+    //   fprintf(stderr, "last frame is blurry\n");
+    //   num_to_average = num_last_frames_corr;
+    // }
 
     Eigen::Matrix4f offset;
     for (int i = 0; i < num_to_average; i++) {
@@ -244,10 +243,10 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
       PointCloudRGBNormal::Ptr tmp(new PointCloudRGBNormal);
       Eigen::Matrix4f model_in_cam = frame->_pose_in_model.inverse();
 
-      offset += _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
+      offset = _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
     }
 
-    offset /= num_to_average;
+    // offset /= num_to_average;
     frame->_pose_in_model = offset * frame->_pose_in_model;
     frame->_pose_inited = true;
     fprintf(stderr, "final offset:\n");
@@ -548,14 +547,17 @@ void Bundler::saveNewframeResult()
 cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
 {
   string color_dir = (*yml)["data_dir"].as<std::string>()+"/rgb/"+frame->_id_str.c_str()+".png";
-  string mask_dir = (*yml)["mask_dir"].as<std::string>()+"/"+frame->_id_str.c_str()+".png";
   cv::Mat rgb = cv::imread(color_dir);
+
+  string mask_dir = (*yml)["mask_dir"].as<std::string>()+"/"+frame->_id_str.c_str()+".png";
   cv::Mat mask = cv::imread(mask_dir, cv::IMREAD_GRAYSCALE);
+
   if (rgb.empty() || mask.empty())
   {
     std::cout << "Failed to read the image or mask!" << std::endl;
     return -1;
   }
+
   // Find contours in the binary mask
   // std::vector<std::vector<cv::Point>> contours;
   // cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
@@ -564,13 +566,18 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   // cv::Rect boundingBox = cv::boundingRect(contours[0]);
 
   cv::Rect boundingBox = cv::boundingRect(mask);
-  cv::Mat roi = rgb(boundingBox);
-  cv::Size targetSize(150, 150);  // Define the desired fixed size
-  cv::resize(roi, roi, targetSize);  // Resize the ROI to the fixed size
+  cv::Mat roi = rgb(boundingBox).clone();
+  
+  // cv::Size targetSize(150, 150);  // Define the desired fixed size
+  // cv::resize(roi, roi, targetSize);  // Resize the ROI to the fixed size
 
   // cv::Mat roi = (frame->_color)(boundingBox).clone();
   std::string filePath = "/home/kausik/Documents/BundleTrack2.0/cropped_images/" + frame->_id_str + ".png";
   cv::imwrite(filePath, roi);
+  cv::Size imageSize = roi.size();
+  printf("Mask %s roi WxH=%dx%d\n", frame->_id_str.c_str(), imageSize.width, imageSize.height);
+  // int BLOCK = std::min(imageSize.width, imageSize.height) / 8;
+  int radius = std::min(imageSize.width, imageSize.height) / 6;
 
   int roi_width = rgb.cols;
   int roi_height = rgb.rows;
@@ -582,8 +589,22 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   // Convert colorImage to the appropriate type
   cv::cvtColor(colorImage, colorImage, cv::COLOR_BGR2GRAY);
   colorImage.convertTo(colorImage, CV_32FC1);
+  
+  double minValue, maxValue;
+  cv::minMaxLoc(colorImage, &minValue, &maxValue);
+  colorImage = colorImage / maxValue;
 
-  cv::dft(colorImage, fourierTransform);
+  // Center low frequencies in the middle by shuffling the quadrants
+  cv::dft(colorImage, fourierTransform, cv::DFT_COMPLEX_OUTPUT);
+  cv::Mat planes[2];
+  cv::split(fourierTransform, planes);
+  // Calculate the magnitude spectrum
+  cv::Mat magnitude;
+  cv::magnitude(planes[0], planes[1], magnitude);
+  fourierTransform = magnitude;
+
+  fourierTransform = cv::abs(fourierTransform);
+
   int cx = std::floor(fourierTransform.cols / 2);
   int cy = std::floor(fourierTransform.rows / 2);
   cv::Mat q0(fourierTransform, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
@@ -599,44 +620,63 @@ cv::Scalar Bundler::detectBlur(std::shared_ptr<Frame> frame)
   q2.copyTo(q1);
   tmp.copyTo(q2);
 
-  fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
+  // Block the low frequencies
+  filePath = "/home/kausik/Documents/BundleTrack2.0/cropped_images/" + frame->_id_str + "_fourier_domain_before.png";
+  cv::imwrite(filePath, fourierTransform);
 
-  //shuffle the quadrants to their original position
-  cv::Mat orgFFT;
-  fourierTransform.copyTo(orgFFT);
-  cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
-  cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
-  cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
-  cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
+    // Create a circular high_pass_filter using the center and radius
+  cv::Mat high_pass_filter = cv::Mat::zeros(fourierTransform.size(), CV_8UC1);
+  cv::circle(high_pass_filter, cv::Point(cx, cy), radius, cv::Scalar(255), -1);
 
-  p0.copyTo(tmp);
-  p3.copyTo(p0);
-  tmp.copyTo(p3);
+  // Apply the circular high_pass_filter to the Fourier transform
+  fourierTransform.setTo(0, high_pass_filter);
+  // fourierTransform(cv::Rect(cx-BLOCK,cy-BLOCK,2*BLOCK,2*BLOCK)).setTo(0);
 
-  p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
-  p2.copyTo(p1);
-  tmp.copyTo(p2);
+  filePath = "/home/kausik/Documents/BundleTrack2.0/cropped_images/" + frame->_id_str + "_fourier_domain_after.png";
+  cv::imwrite(filePath, fourierTransform);
 
-  cv::Mat invFFT;
-  cv::Mat logFFT;
-  double minVal,maxVal;
+  // // Shuffle the quadrants to their original position
+  // cv::Mat orgFFT;
+  // fourierTransform.copyTo(orgFFT);
+  // cv::Mat p0(orgFFT, cv::Rect(0, 0, cx, cy));       // Top-Left - Create a ROI per quadrant
+  // cv::Mat p1(orgFFT, cv::Rect(cx, 0, cx, cy));      // Top-Right
+  // cv::Mat p2(orgFFT, cv::Rect(0, cy, cx, cy));      // Bottom-Left
+  // cv::Mat p3(orgFFT, cv::Rect(cx, cy, cx, cy));     // Bottom-Right
 
-  cv::dft(orgFFT, invFFT);
-  invFFT = cv::abs(invFFT);
-  cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
+  // p0.copyTo(tmp);
+  // p3.copyTo(p0);
+  // tmp.copyTo(p3);
 
-  //check for impossible values
-  if(maxVal<=0.0){
+  // p1.copyTo(tmp);                                     // swap quadrant (Top-Right with Bottom-Left)
+  // p2.copyTo(p1);
+  // tmp.copyTo(p2);
+
+  // cv::Mat invFFT;
+  // cv::Mat logFFT;
+  // double minVal, maxVal;
+
+  // cv::dft(orgFFT, invFFT);
+  // invFFT = cv::abs(invFFT);
+  // cv::minMaxLoc(invFFT,&minVal,&maxVal,NULL,NULL);
+  // cv::log(orgFFT,logFFT);
+  // orgFFT = cv::abs(orgFFT);
+  
+  cv::minMaxLoc(fourierTransform, &minValue, &maxValue, NULL, NULL);
+  // Check for impossible values
+  if(maxValue <= 0.0){
       cerr << "No information, complete black image!\n";
       return 1;
   }
 
-  cv::log(invFFT,logFFT);
-  logFFT *= 20;
+  // cv::log(invFFT,logFFT);
+  // cv::log(invFFT,logFFT);
+  // logFFT *= 20;
 
-  // create a mask to exclude -inf values
-  cv::Mat inf_mask = (logFFT != -std::numeric_limits<float>::infinity());
-  cv::Scalar result = cv::mean(logFFT, inf_mask);
+  // Create a mask to exclude -inf values
+  // cv::Mat inf_mask = (logFFT != -std::numeric_limits<float>::infinity());
+  // cv::Scalar result = cv::mean(logFFT, inf_mask);
+  cv::Mat inf_mask = (fourierTransform != -std::numeric_limits<float>::infinity());
+  cv::Scalar result = cv::mean(fourierTransform, inf_mask);
   std::cout << "Result : "<< result.val[0] << std::endl;
   return result;
 }
