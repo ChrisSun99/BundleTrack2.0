@@ -543,31 +543,6 @@ Eigen::Matrix4f SiftManager::procrustesByCorrespondence(std::shared_ptr<Frame> f
     dst.row(i) << pcl_pt2.x, pcl_pt2.y, pcl_pt2.z;
   }
 
-  // Eigen::Matrix4f transformedPose(Eigen::Matrix4f::Identity());
-  // Utils::solveRigidTransformBetweenPoints(src, dst, transformedPose);
-
-  // if (transformedPose == Eigen::Matrix4f::Identity())
-  //   return pose;
-
-  // Eigen::Matrix3f rotationMatrix = transformedPose.block(0, 0, 3, 3);
-  // Eigen::Quaternionf quat(rotationMatrix);
-
-  // pose.block(0, 0, 3, 3) = quat.toRotationMatrix();
-  // pose.block(0, 3, 3, 1) = transformedPose.block(0, 3, 3, 1);
-
-  // Eigen::MatrixXf src_est = src;
-  // for (int i = 0; i < src_est.rows(); i++)
-  // {
-  //   src_est.row(i) = rotationMatrix * src_est.row(i).transpose() + transformedPose.block(0, 3, 3, 1);
-  // }
-  // float err = (src_est - dst).norm() / src_est.rows();
-  // if (frameB->_id - frameA->_id == 1 && err > 1e-3)
-  // {
-  //   printf("ERROR too big\n");
-  //   std::abort();
-  // }
-  // return pose;
-
   Utils::solveRigidTransformBetweenPoints(src, dst, pose);
   if (pose==Eigen::Matrix4f::Identity()) return;
   Eigen::MatrixXf src_est = src;

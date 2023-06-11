@@ -41,6 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <vector>
 #include <cuda_runtime.h>
 #include "string.h"
+#include "GradientDescent.h"
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
@@ -430,12 +431,19 @@ void Bundler::optimizeGPU()
   {
     for (int j=i+1;j<_local_frames.size();j++)
     {
+      std::vector<std::vector<float>> ptsA;
+      std::vector<std::vector<float>> ptsB;
+      std::vector<std::vector<float>> surface_normalsA;
+      std::vector<std::vector<float>> surface_normalsB;
+      int count_valid = 0;
+
       const auto &frameA = _local_frames[j];
       const auto &frameB = _local_frames[i];
       _fm->findCorres(frameA, frameB);
       _fm->vizCorresBetween(frameA,frameB,"BA");
 
       const auto &matches = _fm->_matches[{frameA,frameB}];
+      fprintf(stderr, "Matches is %d\n", matches.size());
       for (int k=0;k<matches.size();k++)
       {
         const auto &match = matches[k];
@@ -449,10 +457,163 @@ void Bundler::optimizeGPU()
         {
           n_edges_newframe++;
         }
+        std::vector<float> ptA{match._ptA_cam.x,match._ptA_cam.y,match._ptA_cam.z};
+        std::vector<float> ptB{match._ptB_cam.x,match._ptB_cam.y,match._ptB_cam.z};
+        std::vector<float> surface_normalA{match._ptA_cam.normal_x,match._ptA_cam.normal_y,match._ptA_cam.normal_z};
+        std::vector<float> surface_normalB{match._ptB_cam.normal_x,match._ptB_cam.normal_y,match._ptB_cam.normal_z};
+        bool isValid = true;
+
+        for (const auto& value : ptA) 
+        {
+          if (std::isnan(value)) 
+          {
+            isValid = false;
+            break;
+          }
+        }
+        if (isValid) 
+        {
+          for (const auto& value : ptB) 
+          {
+            if (std::isnan(value)) 
+            {
+              isValid = false;
+              break;
+            }
+          }
+        }
+        if (isValid) 
+        {
+          for (const auto& value : surface_normalA) 
+          {
+            if (std::isnan(value)) 
+            {
+              isValid = false;
+              break;
+            }
+          }
+        }
+        if (isValid) 
+        {
+          for (const auto& value : surface_normalB) 
+          {
+            if (std::isnan(value)) 
+            {
+              isValid = false;
+              break;
+            }
+          }
+        }
+        if (ptA[0] < 1e-5 && ptA[1] < 1e-5 && ptA[2] < 1e-5) 
+        {
+          isValid = false;
+        }
+        if (ptB[0] < 1e-5 && ptB[1] < 1e-5 && ptB[2] < 1e-5) 
+        {
+          isValid = false;
+        }
+        if (surface_normalA[0] < 1e-5 && surface_normalA[1] < 1e-5 && surface_normalA[2] < 1e-5) 
+        {
+          isValid = false;
+        }
+        if (surface_normalB[0] < 1e-5 && surface_normalB[1] < 1e-5 && surface_normalB[2] < 1e-5) 
+        {
+          isValid = false;
+        }
+        
+        if (isValid) {
+
+            count_valid++;
+
+            for (const auto& value : ptA) 
+            {
+              if (std::isnan(value)) 
+              {
+                std::cout << "NaN" << std::endl;
+              }
+            }
+            if (ptA[0] < 1e-5 && ptA[1] < 1e-5 && ptA[2] < 1e-5) 
+            {
+              std::cout << "ZERO" << std::endl;
+            }
+
+            for (const auto& value : ptB) 
+            {
+              if (std::isnan(value)) 
+              {
+                std::cout << "NaN" << std::endl;
+              }
+            }
+            if (ptB[0] < 1e-5 && ptB[1] < 1e-5 && ptB[2] < 1e-5) 
+            {
+              std::cout << "ZERO" << std::endl;
+            }
+
+            ptsA.push_back(ptA);
+            ptsB.push_back(ptB);
+            surface_normalsA.push_back(surface_normalA);
+            surface_normalsB.push_back(surface_normalB);
+        }
       }
       n_match_per_pair.push_back(matches.size());
+
+      std::cout << "count_valid " << count_valid << std::endl;
+
+      ////////////////////////////////////
+      int lambda = 1; 
+      Eigen::MatrixXf _ptsA = Eigen::Map<Eigen::MatrixXf>(ptsA[0].data(), ptsA.size(), ptsA[0].size());
+      Eigen::MatrixXf _ptsB = Eigen::Map<Eigen::MatrixXf>(ptsB[0].data(), ptsB.size(), ptsB[0].size());;
+      Eigen::MatrixXf _surface_normalsA = Eigen::Map<Eigen::MatrixXf>(surface_normalsA[0].data(), surface_normalsA.size(), surface_normalsA[0].size());
+      Eigen::MatrixXf _surface_normalsB = Eigen::Map<Eigen::MatrixXf>(surface_normalsB[0].data(), surface_normalsB.size(), surface_normalsB[0].size());
+      Eigen::Matrix3f tmp = _ptsB.transpose()*_ptsB + _surface_normalsB.transpose()*_surface_normalsB;
+      Eigen::Matrix3f wtf = _ptsB.transpose()*_ptsB;
+      
+      // std::cout << "A " << _ptsA.array().isNaN().any() << " B " << _ptsB.array().isNaN().any() << " M " << _surface_normalsA.array().isNaN().any() << " N " << _surface_normalsB.array().isNaN().any() << std::endl;
+
+      Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
+      fprintf(stderr, "rotation matrix");
+      for (int i = 0; i < rotation.rows(); ++i)
+      {
+        for (int j = 0; j < rotation.cols(); ++j)
+        {
+          std::cout << rotation(i, j) << " ";
+        }
+        std::cout << std::endl;
+      }
     }
   }
+
+  // fprintf(stderr, "Printing WTFWTF\n");
+  // for (int i = 0; i < wtf.rows(); ++i)
+  // {
+  //   for (int j = 0; j < wtf.cols(); ++j)
+  //   {
+  //     std::cout << wtf(i, j) << " ";
+  //   }
+  //   std::cout << std::endl;
+  // }
+  // Eigen::Matrix3f _tmp = _ptsB.transpose()*_ptsA + lambda * _surface_normalsB.transpose()*_surface_normalsA;
+  // fprintf(stderr, "printing _surface_normalsB: \n");
+
+  // for (int i = 0; i < _surface_normalsB.rows(); ++i)
+  //   {
+  //       for (int j = 0; j < _surface_normalsB.cols(); ++j)
+  //       {
+  //           std::cout << _surface_normalsB(i, j) << " ";
+  //       }
+  //       std::cout << std::endl;
+  //   }
+  // Eigen::Matrix3f rotation = tmp.inverse()*_tmp;
+  // fprintf(stderr, "printing rotation: \n");
+  // for (int i = 0; i < rotation.rows(); ++i)
+  //   {
+  //       for (int j = 0; j < rotation.cols(); ++j)
+  //       {
+  //           std::cout << rotation(i, j) << " ";
+  //       }
+  //       std::cout << std::endl;
+  //   }
+  ////////////////////////////////////
 
   const int H = _newframe->_H;
   const int W = _newframe->_W;
