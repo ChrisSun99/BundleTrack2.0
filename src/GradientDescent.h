@@ -1,5 +1,5 @@
-#ifndef GRADIENTDESCENT_HH__
-#define GRADIENTDESCENT_HH__
+#ifndef GRADIENTDESCENT_H_
+#define GRADIENTDESCENT_H_
 
 #include "FeatureManager.h"
 

@@ -308,60 +308,60 @@ Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eige
   return H;
 }
 
-Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation)
-{
-    Eigen::Vector3f euler_angles;
+// Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation)
+// {
+//     Eigen::Vector3f euler_angles;
 
-    // Extract the rotation matrix elements
-    float r11 = rotation(0, 0);
-    float r12 = rotation(0, 1);
-    float r13 = rotation(0, 2);
-    float r21 = rotation(1, 0);
-    float r22 = rotation(1, 1);
-    float r23 = rotation(1, 2);
-    float r31 = rotation(2, 0);
-    float r32 = rotation(2, 1);
-    float r33 = rotation(2, 2);
+//     // Extract the rotation matrix elements
+//     float r11 = rotation(0, 0);
+//     float r12 = rotation(0, 1);
+//     float r13 = rotation(0, 2);
+//     float r21 = rotation(1, 0);
+//     float r22 = rotation(1, 1);
+//     float r23 = rotation(1, 2);
+//     float r31 = rotation(2, 0);
+//     float r32 = rotation(2, 1);
+//     float r33 = rotation(2, 2);
 
-    // Calculate Euler angles
-    euler_angles(0) = atan2(r32, r33); // Roll (around x-axis)
-    euler_angles(1) = asin(-r31);      // Pitch (around y-axis)
-    euler_angles(2) = atan2(r21, r11); // Yaw (around z-axis)
+//     // Calculate Euler angles
+//     euler_angles(0) = atan2(r32, r33); // Roll (around x-axis)
+//     euler_angles(1) = asin(-r31);      // Pitch (around y-axis)
+//     euler_angles(2) = atan2(r21, r11); // Yaw (around z-axis)
 
-    return euler_angles;
-}
+//     return euler_angles;
+// }
 
-Eigen::Matrix3f eulerToRotationMatrix(const Eigen::Vector3f& euler_angles)
-{
-    // Create angle-axis representation from Euler angles
-    Eigen::AngleAxisf rollAngle(euler_angles(0), Eigen::Vector3f::UnitX());
-    Eigen::AngleAxisf pitchAngle(euler_angles(1), Eigen::Vector3f::UnitY());
-    Eigen::AngleAxisf yawAngle(euler_angles(2), Eigen::Vector3f::UnitZ());
+// Eigen::Matrix3f eulerToRotationMatrix(const Eigen::Vector3f& euler_angles)
+// {
+//     // Create angle-axis representation from Euler angles
+//     Eigen::AngleAxisf rollAngle(euler_angles(0), Eigen::Vector3f::UnitX());
+//     Eigen::AngleAxisf pitchAngle(euler_angles(1), Eigen::Vector3f::UnitY());
+//     Eigen::AngleAxisf yawAngle(euler_angles(2), Eigen::Vector3f::UnitZ());
 
-    // Combine the angle-axis rotations
-    Eigen::Quaternionf quaternion = yawAngle * pitchAngle * rollAngle;
+//     // Combine the angle-axis rotations
+//     Eigen::Quaternionf quaternion = yawAngle * pitchAngle * rollAngle;
 
-    // Convert quaternion to rotation matrix
-    Eigen::Matrix3f rotationMatrix = quaternion.toRotationMatrix();
+//     // Convert quaternion to rotation matrix
+//     Eigen::Matrix3f rotationMatrix = quaternion.toRotationMatrix();
 
-    return rotationMatrix;
-}
+//     return rotationMatrix;
+// }
 
-Eigen::Matrix3f estimateRotation(const Eigen::Matrix3Xf& normals1, const Eigen::Matrix3Xf& normals2)
-{
-    // Compute covariance matrices
-    Eigen::Matrix3f covariance1 = normals1 * normals2.transpose();
-    Eigen::Matrix3f covariance2 = normals2 * normals1.transpose();
+// Eigen::Matrix3f estimateRotation(const Eigen::Matrix3Xf& normals1, const Eigen::Matrix3Xf& normals2)
+// {
+//     // Compute covariance matrices
+//     Eigen::Matrix3f covariance1 = normals1 * normals2.transpose();
+//     Eigen::Matrix3f covariance2 = normals2 * normals1.transpose();
 
-    // Compute SVD decomposition
-    Eigen::JacobiSVD<Eigen::Matrix3f> svd1(covariance1, Eigen::ComputeFullU | Eigen::ComputeFullV);
-    Eigen::JacobiSVD<Eigen::Matrix3f> svd2(covariance2, Eigen::ComputeFullU | Eigen::ComputeFullV);
+//     // Compute SVD decomposition
+//     Eigen::JacobiSVD<Eigen::Matrix3f> svd1(covariance1, Eigen::ComputeFullU | Eigen::ComputeFullV);
+//     Eigen::JacobiSVD<Eigen::Matrix3f> svd2(covariance2, Eigen::ComputeFullU | Eigen::ComputeFullV);
 
-    // Extract rotation components
-    Eigen::Matrix3f rotation = svd1.matrixV() * svd2.matrixV().transpose();
+//     // Extract rotation components
+//     Eigen::Matrix3f rotation = svd1.matrixV() * svd2.matrixV().transpose();
 
-    return rotation;
-}
+//     return rotation;
+// }
 
 // int main(int argc, char **argv)
 // {
@@ -381,7 +381,6 @@ Eigen::Matrix3f estimateRotation(const Eigen::Matrix3Xf& normals1, const Eigen::
 // }
 
 } // namespace Utils
-
 
 
 

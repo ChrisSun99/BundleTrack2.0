@@ -35,7 +35,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef BUNDLER_HH__
 #define BUNDLER_HH__
 
-
 #include "Utils.h"
 #include "Frame.h"
 #include "FeatureManager.h"

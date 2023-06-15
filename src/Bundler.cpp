@@ -42,7 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cuda_runtime.h>
 #include "string.h"
 #include "GradientDescent.h"
-#include "RotationEKF.h"
+// #include "RotationEKF.h"
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
@@ -559,7 +559,8 @@ void Bundler::optimizeGPU()
       // std::cout << "A " << _ptsA.array().isNaN().any() << " B " << _ptsB.array().isNaN().any() << " M " << _surface_normalsA.array().isNaN().any() << " N " << _surface_normalsB.array().isNaN().any() << std::endl;
       // Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
 
-      Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
+      Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
+      // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
       fprintf(stderr, "rotation matrix\n");
       for (int i = 0; i < rotation.rows(); ++i)
       {
@@ -570,15 +571,15 @@ void Bundler::optimizeGPU()
         std::cout << std::endl;
       }
 
-      fprintf(stderr, "Original rotation matrix\n");
-      for (int i = 0; i < frameA.rows(); ++i)
-      {
-        for (int j = 0; j < frameA.cols(); ++j)
-        {
-          std::cout << frameA(i, j) << " ";
-        }
-        std::cout << std::endl;
-      }
+    //   fprintf(stderr, "Original rotation matrix\n");
+    //   for (int i = 0; i < frameA.rows(); ++i)
+    //   {
+    //     for (int j = 0; j < frameA.cols(); ++j)
+    //     {
+    //       std::cout << frameA(i, j) << " ";
+    //     }
+    //     std::cout << std::endl;
+    //   }
     }
   }
 

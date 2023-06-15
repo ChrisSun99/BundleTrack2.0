@@ -179,9 +179,9 @@ void solveRigidTransformBetweenPoints(const Eigen::MatrixXf &points1, const Eige
 void drawProjectPoints(PointCloudRGBNormal::Ptr cloud, const Eigen::Matrix3f &K, cv::Mat &out);
 Eigen::Matrix3f slerp(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2);
 Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eigen::Matrix4f &pose3, float t);
-Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation);
-Eigen::Matrix3f eulerToRotationMatrix(const Eigen::Vector3f& euler_angles);
-Eigen::Matrix3d estimateRotation(const Eigen::Matrix3Xd& normals1, const Eigen::Matrix3Xd& normals2);
+// Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation);
+// Eigen::Matrix3f eulerToRotationMatrix(const Eigen::Vector3f& euler_angles);
+// Eigen::Matrix3d estimateRotation(const Eigen::Matrix3Xd& normals1, const Eigen::Matrix3Xd& normals2);
 template<int rows, int cols>
 void parseMatrixTxt(std::string filename, Eigen::Matrix<float,rows,cols> &out)
 {
