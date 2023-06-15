@@ -42,6 +42,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cuda_runtime.h>
 #include "string.h"
 #include "GradientDescent.h"
+#include "RotationEKF.h"
 
 typedef std::pair<int,int> IndexPair;
 using namespace std;
@@ -426,7 +427,6 @@ void Bundler::optimizeGPU()
   std::vector<EntryJ> global_corres;
   std::vector<int> n_match_per_pair;
   int n_edges_newframe = 0;
-
   for (int i=0;i<_local_frames.size();i++)
   {
     for (int j=i+1;j<_local_frames.size();j++)
@@ -444,6 +444,13 @@ void Bundler::optimizeGPU()
 
       const auto &matches = _fm->_matches[{frameA,frameB}];
       fprintf(stderr, "Matches is %d\n", matches.size());
+      // Eigen::Vector3f estimate_x;
+      // Find corres between frameB and frame0
+      // const auto &matches_with_frame0;
+      // if (i==0)
+      // {
+      //   matches_with_frame0 = _fm->_matches[{frameA, frameB}];
+      // }
       for (int k=0;k<matches.size();k++)
       {
         const auto &match = matches[k];
@@ -550,14 +557,25 @@ void Bundler::optimizeGPU()
       Eigen::Matrix3f wtf = _ptsB.transpose()*_ptsB;
       
       // std::cout << "A " << _ptsA.array().isNaN().any() << " B " << _ptsB.array().isNaN().any() << " M " << _surface_normalsA.array().isNaN().any() << " N " << _surface_normalsB.array().isNaN().any() << std::endl;
+      // Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
 
-      Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
-      fprintf(stderr, "rotation matrix");
+      Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
+      fprintf(stderr, "rotation matrix\n");
       for (int i = 0; i < rotation.rows(); ++i)
       {
         for (int j = 0; j < rotation.cols(); ++j)
         {
           std::cout << rotation(i, j) << " ";
+        }
+        std::cout << std::endl;
+      }
+
+      fprintf(stderr, "Original rotation matrix\n");
+      for (int i = 0; i < frameA.rows(); ++i)
+      {
+        for (int j = 0; j < frameA.cols(); ++j)
+        {
+          std::cout << frameA(i, j) << " ";
         }
         std::cout << std::endl;
       }
