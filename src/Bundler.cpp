@@ -461,107 +461,88 @@ void Bundler::optimizeGPU()
         std::vector<float> ptB{match._ptB_cam.x,match._ptB_cam.y,match._ptB_cam.z};
         std::vector<float> surface_normalA{match._ptA_cam.normal_x,match._ptA_cam.normal_y,match._ptA_cam.normal_z};
         std::vector<float> surface_normalB{match._ptB_cam.normal_x,match._ptB_cam.normal_y,match._ptB_cam.normal_z};
-        bool isValid = true;
 
-        for (const auto& value : ptA) 
-        {
-          if (std::isnan(value)) 
-          {
-            isValid = false;
-            break;
-          }
-        }
-        if (isValid) 
-        {
-          for (const auto& value : ptB) 
-          {
-            if (std::isnan(value)) 
-            {
-              isValid = false;
-              break;
-            }
-          }
-        }
-        if (isValid) 
-        {
-          for (const auto& value : surface_normalA) 
-          {
-            if (std::isnan(value)) 
-            {
-              isValid = false;
-              break;
-            }
-          }
-        }
-        if (isValid) 
-        {
-          for (const auto& value : surface_normalB) 
-          {
-            if (std::isnan(value)) 
-            {
-              isValid = false;
-              break;
-            }
-          }
-        }
-        if (ptA[0] < 1e-5 && ptA[1] < 1e-5 && ptA[2] < 1e-5) 
-        {
-          isValid = false;
-        }
-        if (ptB[0] < 1e-5 && ptB[1] < 1e-5 && ptB[2] < 1e-5) 
-        {
-          isValid = false;
-        }
-        if (surface_normalA[0] < 1e-5 && surface_normalA[1] < 1e-5 && surface_normalA[2] < 1e-5) 
-        {
-          isValid = false;
-        }
-        if (surface_normalB[0] < 1e-5 && surface_normalB[1] < 1e-5 && surface_normalB[2] < 1e-5) 
-        {
-          isValid = false;
-        }
+        ptsA.push_back(ptA);
+        ptsB.push_back(ptB);
+        surface_normalsA.push_back(surface_normalA);
+        surface_normalsB.push_back(surface_normalB);
+
+      //   bool isValid = true;
+
+      //   for (const auto& value : ptA) 
+      //   {
+      //     if (std::isnan(value)) 
+      //     {
+      //       isValid = false;
+      //       break;
+      //     }
+      //   }
+      //   if (isValid) 
+      //   {
+      //     for (const auto& value : ptB) 
+      //     {
+      //       if (std::isnan(value)) 
+      //       {
+      //         isValid = false;
+      //         break;
+      //       }
+      //     }
+      //   }
+      //   if (isValid) 
+      //   {
+      //     for (const auto& value : surface_normalA) 
+      //     {
+      //       if (std::isnan(value)) 
+      //       {
+      //         isValid = false;
+      //         break;
+      //       }
+      //     }
+      //   }
+      //   if (isValid) 
+      //   {
+      //     for (const auto& value : surface_normalB) 
+      //     {
+      //       if (std::isnan(value)) 
+      //       {
+      //         isValid = false;
+      //         break;
+      //       }
+      //     }
+      //   }
+      //   if (ptA[0] < 0 || ptA[1] < 0 || ptA[2] < 0 || ptA[0] > 1 || ptA[1] > 1 || ptA[2] > 1) 
+      //   {
+      //     isValid = false;
+      //   }
+      //   if (ptB[0] < 0 || ptB[1] < 0 || ptB[2] < 0 || ptB[0] > 1 || ptB[1] > 1 || ptB[2] > 1) 
+      //   {
+      //     isValid = false;
+      //   }
+      //   if (surface_normalA[0] < -1 || surface_normalA[1] < -1 || surface_normalA[2] < -1 || surface_normalA[0] > 1 || surface_normalA[1] > 1 || surface_normalA[2] > 1) 
+      //   {
+      //     isValid = false;
+      //   }
+      //   if (surface_normalB[0] < -1 || surface_normalB[1] < -1 || surface_normalB[2] < -1 || surface_normalB[0] > 1 || surface_normalB[1] > 1 || surface_normalB[2] > 1) 
+      //   {
+      //     isValid = false;
+      //   }
         
-        if (isValid) {
-
-            count_valid++;
-
-            for (const auto& value : ptA) 
-            {
-              if (std::isnan(value)) 
-              {
-                std::cout << "NaN" << std::endl;
-              }
-            }
-            if (ptA[0] < 1e-5 && ptA[1] < 1e-5 && ptA[2] < 1e-5) 
-            {
-              std::cout << "ZERO" << std::endl;
-            }
-
-            for (const auto& value : ptB) 
-            {
-              if (std::isnan(value)) 
-              {
-                std::cout << "NaN" << std::endl;
-              }
-            }
-            if (ptB[0] < 1e-5 && ptB[1] < 1e-5 && ptB[2] < 1e-5) 
-            {
-              std::cout << "ZERO" << std::endl;
-            }
-
-            ptsA.push_back(ptA);
-            ptsB.push_back(ptB);
-            surface_normalsA.push_back(surface_normalA);
-            surface_normalsB.push_back(surface_normalB);
-        }
+      //   if (isValid) {
+      //     count_valid++;
+      //     ptsA.push_back(ptA);
+      //     ptsB.push_back(ptB);
+      //     surface_normalsA.push_back(surface_normalA);
+      //     surface_normalsB.push_back(surface_normalB);
+      //   }
       }
       n_match_per_pair.push_back(matches.size());
 
-      std::cout << "count_valid " << count_valid << std::endl;
+      // std::cout << "count_valid " << count_valid << std::endl;
 
       ////////////////////////////////////
       int lambda = 1; 
       Eigen::MatrixXf _ptsA = Eigen::Map<Eigen::MatrixXf>(ptsA[0].data(), ptsA.size(), ptsA[0].size());
+      // std::cout << "_ptsA " << _ptsA << std::endl;
       Eigen::MatrixXf _ptsB = Eigen::Map<Eigen::MatrixXf>(ptsB[0].data(), ptsB.size(), ptsB[0].size());;
       Eigen::MatrixXf _surface_normalsA = Eigen::Map<Eigen::MatrixXf>(surface_normalsA[0].data(), surface_normalsA.size(), surface_normalsA[0].size());
       Eigen::MatrixXf _surface_normalsB = Eigen::Map<Eigen::MatrixXf>(surface_normalsB[0].data(), surface_normalsB.size(), surface_normalsB[0].size());
