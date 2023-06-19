@@ -443,7 +443,7 @@ void Bundler::optimizeGPU()
       _fm->vizCorresBetween(frameA,frameB,"BA");
 
       const auto &matches = _fm->_matches[{frameA,frameB}];
-      fprintf(stderr, "Matches is %d\n", matches.size());
+      // fprintf(stderr, "Matches is %d\n", matches.size());
       // Eigen::Vector3f estimate_x;
       // Find corres between frameB and frame0
       // const auto &matches_with_frame0;
@@ -473,92 +473,16 @@ void Bundler::optimizeGPU()
         ptsB.push_back(ptB);
         surface_normalsA.push_back(surface_normalA);
         surface_normalsB.push_back(surface_normalB);
-
-      //   bool isValid = true;
-
-      //   for (const auto& value : ptA) 
-      //   {
-      //     if (std::isnan(value)) 
-      //     {
-      //       isValid = false;
-      //       break;
-      //     }
-      //   }
-      //   if (isValid) 
-      //   {
-      //     for (const auto& value : ptB) 
-      //     {
-      //       if (std::isnan(value)) 
-      //       {
-      //         isValid = false;
-      //         break;
-      //       }
-      //     }
-      //   }
-      //   if (isValid) 
-      //   {
-      //     for (const auto& value : surface_normalA) 
-      //     {
-      //       if (std::isnan(value)) 
-      //       {
-      //         isValid = false;
-      //         break;
-      //       }
-      //     }
-      //   }
-      //   if (isValid) 
-      //   {
-      //     for (const auto& value : surface_normalB) 
-      //     {
-      //       if (std::isnan(value)) 
-      //       {
-      //         isValid = false;
-      //         break;
-      //       }
-      //     }
-      //   }
-      //   if (ptA[0] < 0 || ptA[1] < 0 || ptA[2] < 0 || ptA[0] > 1 || ptA[1] > 1 || ptA[2] > 1) 
-      //   {
-      //     isValid = false;
-      //   }
-      //   if (ptB[0] < 0 || ptB[1] < 0 || ptB[2] < 0 || ptB[0] > 1 || ptB[1] > 1 || ptB[2] > 1) 
-      //   {
-      //     isValid = false;
-      //   }
-      //   if (surface_normalA[0] < -1 || surface_normalA[1] < -1 || surface_normalA[2] < -1 || surface_normalA[0] > 1 || surface_normalA[1] > 1 || surface_normalA[2] > 1) 
-      //   {
-      //     isValid = false;
-      //   }
-      //   if (surface_normalB[0] < -1 || surface_normalB[1] < -1 || surface_normalB[2] < -1 || surface_normalB[0] > 1 || surface_normalB[1] > 1 || surface_normalB[2] > 1) 
-      //   {
-      //     isValid = false;
-      //   }
-        
-      //   if (isValid) {
-      //     count_valid++;
-      //     ptsA.push_back(ptA);
-      //     ptsB.push_back(ptB);
-      //     surface_normalsA.push_back(surface_normalA);
-      //     surface_normalsB.push_back(surface_normalB);
-      //   }
       }
       n_match_per_pair.push_back(matches.size());
 
-      // std::cout << "count_valid " << count_valid << std::endl;
-
       ////////////////////////////////////
-      int lambda = 1; 
-      Eigen::MatrixXf _ptsA = Eigen::Map<Eigen::MatrixXf>(ptsA[0].data(), ptsA.size(), ptsA[0].size());
-      // std::cout << "_ptsA " << _ptsA << std::endl;
-      Eigen::MatrixXf _ptsB = Eigen::Map<Eigen::MatrixXf>(ptsB[0].data(), ptsB.size(), ptsB[0].size());;
-      Eigen::MatrixXf _surface_normalsA = Eigen::Map<Eigen::MatrixXf>(surface_normalsA[0].data(), surface_normalsA.size(), surface_normalsA[0].size());
-      Eigen::MatrixXf _surface_normalsB = Eigen::Map<Eigen::MatrixXf>(surface_normalsB[0].data(), surface_normalsB.size(), surface_normalsB[0].size());
-      Eigen::Matrix3f tmp = _ptsB.transpose()*_ptsB + _surface_normalsB.transpose()*_surface_normalsB;
-      Eigen::Matrix3f wtf = _ptsB.transpose()*_ptsB;
+      Eigen::MatrixXf _ptsA = Utils::convertToEigenMatrix(ptsA);
+      Eigen::MatrixXf _ptsB = Utils::convertToEigenMatrix(ptsB);
+      Eigen::MatrixXf _surface_normalsA = Utils::convertToEigenMatrix(surface_normalsA);
+      Eigen::MatrixXf _surface_normalsB = Utils::convertToEigenMatrix(surface_normalsB);
+      // Eigen::Matrix3f tmp = _ptsB.transpose()*_ptsB + _surface_normalsB.transpose()*_surface_normalsB;
       
-      // std::cout << "A " << _ptsA.array().isNaN().any() << " B " << _ptsB.array().isNaN().any() << " M " << _surface_normalsA.array().isNaN().any() << " N " << _surface_normalsB.array().isNaN().any() << std::endl;
-      // Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
-
       Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
       // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
       fprintf(stderr, "rotation matrix\n");
@@ -570,49 +494,9 @@ void Bundler::optimizeGPU()
         }
         std::cout << std::endl;
       }
-
-    //   fprintf(stderr, "Original rotation matrix\n");
-    //   for (int i = 0; i < frameA.rows(); ++i)
-    //   {
-    //     for (int j = 0; j < frameA.cols(); ++j)
-    //     {
-    //       std::cout << frameA(i, j) << " ";
-    //     }
-    //     std::cout << std::endl;
-    //   }
+      frameA->_pose_in_model.block<3, 3>(0, 0) = rotation;
     }
   }
-
-  // fprintf(stderr, "Printing WTFWTF\n");
-  // for (int i = 0; i < wtf.rows(); ++i)
-  // {
-  //   for (int j = 0; j < wtf.cols(); ++j)
-  //   {
-  //     std::cout << wtf(i, j) << " ";
-  //   }
-  //   std::cout << std::endl;
-  // }
-  // Eigen::Matrix3f _tmp = _ptsB.transpose()*_ptsA + lambda * _surface_normalsB.transpose()*_surface_normalsA;
-  // fprintf(stderr, "printing _surface_normalsB: \n");
-
-  // for (int i = 0; i < _surface_normalsB.rows(); ++i)
-  //   {
-  //       for (int j = 0; j < _surface_normalsB.cols(); ++j)
-  //       {
-  //           std::cout << _surface_normalsB(i, j) << " ";
-  //       }
-  //       std::cout << std::endl;
-  //   }
-  // Eigen::Matrix3f rotation = tmp.inverse()*_tmp;
-  // fprintf(stderr, "printing rotation: \n");
-  // for (int i = 0; i < rotation.rows(); ++i)
-  //   {
-  //       for (int j = 0; j < rotation.cols(); ++j)
-  //       {
-  //           std::cout << rotation(i, j) << " ";
-  //       }
-  //       std::cout << std::endl;
-  //   }
   ////////////////////////////////////
 
   const int H = _newframe->_H;

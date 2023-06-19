@@ -345,7 +345,6 @@ DataLoaderYcbineoat::~DataLoaderYcbineoat()
 
 std::shared_ptr<Frame> DataLoaderYcbineoat::next()
 {
-  printGPUMemoryUsage("----- In data_loader 1");
   assert(_id<_color_files.size());
   const std::string data_dir = (*yml)["data_dir"].as<std::string>();
 
@@ -364,29 +363,23 @@ std::shared_ptr<Frame> DataLoaderYcbineoat::next()
   std::string depth_dir = data_dir+"/depth/"+index_str+".png";
   Utils::readDepthImage(depth_raw, depth_dir);
 
-  printGPUMemoryUsage("----- In data_loader 2");
   cv::Mat depth_sim;
   depth_sim = depth_raw.clone();
-  printGPUMemoryUsage("----- In data_loader 3");
 
   cv::Mat depth;
   depth = depth_raw.clone();
-  printGPUMemoryUsage("----- In data_loader 4");
 
   Eigen::Matrix4f pose(Eigen::Matrix4f::Identity());
   if (_id==0)
   {
     pose = _ob_in_cam0.inverse();
   }
-  printGPUMemoryUsage("----- In data_loader 5");
 
   Eigen::Vector4f roi;
   roi << 99999,0,99999,0;
-  printGPUMemoryUsage("----- In data_loader 6");
 
   std::shared_ptr<Frame> frame(new Frame(color,depth,depth_raw,depth_sim, roi, pose, _id, index_str.substr(_start_digit,index_str.size()-_start_digit), _K, yml, NULL, _real_model));
   _id++;
-  printGPUMemoryUsage("----- In data_loader 7");
 
   return frame;
 }

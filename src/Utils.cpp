@@ -308,6 +308,21 @@ Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eige
   return H;
 }
 
+Eigen::MatrixXf convertToEigenMatrix(const std::vector<std::vector<float>>& input)
+{
+  size_t rows = input.size();
+  size_t cols = input[0].size();
+  Eigen::MatrixXf output(rows, cols);
+  for (size_t i = 0; i < rows; ++i)
+  {
+    for (size_t j = 0; j < cols; ++j)
+    {
+      output(i, j) = input[i][j];
+    }
+  }
+  return output;
+}
+
 // Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation)
 // {
 //     Eigen::Vector3f euler_angles;

@@ -1,8 +1,8 @@
-#include <random>
 #include <iostream>
 #include <stdint.h>
 #include <typeinfo>
 #include <vector>
+#include <cmath>
 #include "GradientDescent.h"
 
 
@@ -30,15 +30,15 @@ Eigen::Matrix3f computeGradient(const Eigen::MatrixXf& A,
                                 const Eigen::MatrixXf& M,
                                 const Eigen::Matrix3f& R) {
   Eigen::MatrixXf term1 = A - R * B;
-  // std::cout << "A min " << A.minCoeff() << " max " << A.maxCoeff() << " mean " << A.mean() << std::endl;
-  // std::cout << "B min " << B.minCoeff() << " max " << B.maxCoeff() << " mean " << B.mean() << std::endl;
-  // std::cout << "R min " << R.minCoeff() << " max " << R.maxCoeff() << " mean " << R.mean() << std::endl;
-  // std::cout << "R * B min " << (R * B).minCoeff() << " max " << (R * B).maxCoeff() << " mean " << (R * B).mean() << std::endl;
-  // std::cout << "term1 in computeGradient min " << term1.minCoeff() << " max " << term1.maxCoeff() << std::endl;
+  std::cout << "A min " << A.minCoeff() << " max " << A.maxCoeff() << " mean " << A.mean() << std::endl;
+  std::cout << "B min " << B.minCoeff() << " max " << B.maxCoeff() << " mean " << B.mean() << std::endl;
+  std::cout << "R min " << R.minCoeff() << " max " << R.maxCoeff() << " mean " << R.mean() << std::endl;
+  std::cout << "R * B min " << (R * B).minCoeff() << " max " << (R * B).maxCoeff() << " mean " << (R * B).mean() << std::endl;
+  std::cout << "term1 in computeGradient min " << term1.minCoeff() << " max " << term1.maxCoeff() << std::endl;
   Eigen::MatrixXf term2 = N - R * M;
-  // std::cout << "term2 in computeGradient min " << term2.minCoeff() << " max " << term2.maxCoeff() << std::endl;
+  std::cout << "term2 in computeGradient min " << term2.minCoeff() << " max " << term2.maxCoeff() << std::endl;
   Eigen::Matrix3f gradient = -2 * B * term1.transpose() - 2 * lambda * M * term2.transpose();
-  // std::cout << "gradient in computeGradient min " << gradient.minCoeff() << " max " << gradient.maxCoeff() << std::endl;
+  std::cout << "gradient in computeGradient min " << gradient.minCoeff() << " max " << gradient.maxCoeff() << std::endl;
 
   return gradient;
 }
@@ -62,7 +62,7 @@ Eigen::Matrix3f optimizeGradientDescent(const Eigen::MatrixXf& A,
       bool hasNaN = A.row(j).hasNaN() || B.row(j).hasNaN() || N.row(j).hasNaN() || M.row(j).hasNaN();
       bool allZero = A.row(j).isZero() || B.row(j).isZero() || N.row(j).isZero() || M.row(j).isZero();
       bool invalid1 = (A.row(j).array() < 0.0f).any() || (A.row(j).array() > 1.0f).any() || (B.row(j).array() < 0.0f).any() || (B.row(j).array() > 1.0f).any();
-      bool invalid2 = (N.row(j).array() < -1.0f).any() || (N.row(j).array() > 1.0f).any() || (M.row(j).array() < -1.0f).any() || (M.row(j).array() > 1.0f).any();
+      bool invalid2 = (N.row(j).array() < -M_PI).any() || (N.row(j).array() > M_PI).any() || (M.row(j).array() < -M_PI).any() || (M.row(j).array() > M_PI).any();
       // std::cout << "hasNaN " << hasNaN << " allZero " << allZero << " invalid1 " << invalid1 << " invalid2 " << invalid2 << std::endl; 
 
       if (!hasNaN && !allZero && !invalid1 && !invalid2) {
@@ -98,11 +98,11 @@ Eigen::Matrix3f optimizeGradientDescent(const Eigen::MatrixXf& A,
 
     // Compute gradient
     Eigen::Matrix3f gradient = computeGradient(filteredA, filteredB, filteredN, filteredM, R);
-    // std::cout << "gradient min " << gradient.minCoeff() << " max " << gradient.maxCoeff() << std::endl;
+    std::cout << "gradient min " << gradient.minCoeff() << " max " << gradient.maxCoeff() << std::endl;
 
     // Update R with momentum
     Eigen::Matrix3f delta = learning_rate * gradient + momentum * prevGradient;
-    // std::cout << "delta min " << delta.minCoeff() << " max " << delta.maxCoeff() << std::endl;
+    std::cout << "delta min " << delta.minCoeff() << " max " << delta.maxCoeff() << std::endl;
     R -= delta;
     prevGradient = delta;
 
@@ -120,6 +120,7 @@ Eigen::Matrix3f optimizeGradientDescent(const Eigen::MatrixXf& A,
 
   // Normalize the matrix by dividing each element by the scaling factor
   float det = R.determinant();
+  fprintf(stderr, "Printing the determinant: %f!!!!!\n", det);
   float scalingFactor = std::pow(det, 1.0f / 3.0f);
   R /= scalingFactor;
 

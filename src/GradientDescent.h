@@ -4,7 +4,7 @@
 #include "FeatureManager.h"
 
 const double lambda = 0;  // Regularization parameter
-const double learning_rate = 1e-6;  // Learning rate
+const double learning_rate = 0.01;  // Learning rate
 const double momentum = 0.9;  // Momentum
 const double epsilon = 1e-6;  // Stop criterion threshold
 const int num_iterations = 10;

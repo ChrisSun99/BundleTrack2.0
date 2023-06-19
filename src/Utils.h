@@ -182,6 +182,7 @@ Eigen::Matrix4f interpolate(Eigen::Matrix4f &pose1, Eigen::Matrix4f &pose2, Eige
 // Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation);
 // Eigen::Matrix3f eulerToRotationMatrix(const Eigen::Vector3f& euler_angles);
 // Eigen::Matrix3d estimateRotation(const Eigen::Matrix3Xd& normals1, const Eigen::Matrix3Xd& normals2);
+Eigen::MatrixXf convertToEigenMatrix(const std::vector<std::vector<float>>& input);
 template<int rows, int cols>
 void parseMatrixTxt(std::string filename, Eigen::Matrix<float,rows,cols> &out)
 {
