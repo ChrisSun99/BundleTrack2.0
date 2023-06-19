@@ -323,28 +323,47 @@ Eigen::MatrixXf convertToEigenMatrix(const std::vector<std::vector<float>>& inpu
   return output;
 }
 
-// Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation)
-// {
-//     Eigen::Vector3f euler_angles;
+float calculateRotationError(const Eigen::Matrix3f& R1, const Eigen::Matrix3f& R2) {
+  // Calculate the rotation matrix difference
+  Eigen::Matrix3f deltaR = R2 * R1.transpose();
 
-//     // Extract the rotation matrix elements
-//     float r11 = rotation(0, 0);
-//     float r12 = rotation(0, 1);
-//     float r13 = rotation(0, 2);
-//     float r21 = rotation(1, 0);
-//     float r22 = rotation(1, 1);
-//     float r23 = rotation(1, 2);
-//     float r31 = rotation(2, 0);
-//     float r32 = rotation(2, 1);
-//     float r33 = rotation(2, 2);
+  // Calculate the trace of the rotation matrix difference
+  float trace = deltaR.trace();
 
-//     // Calculate Euler angles
-//     euler_angles(0) = atan2(r32, r33); // Roll (around x-axis)
-//     euler_angles(1) = asin(-r31);      // Pitch (around y-axis)
-//     euler_angles(2) = atan2(r21, r11); // Yaw (around z-axis)
+  // Ensure trace is within valid range [-1, 3]
+  trace = std::min(std::max(trace, -1.0f), 3.0f);
 
-//     return euler_angles;
-// }
+  // Calculate the rotation error in radians
+  float error = std::acos((trace - 1.0f) / 2.0f);
+
+  // Convert error from radians to degrees
+  error = error * 180.0f / M_PI;
+
+  return error;
+}
+
+Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation)
+{
+    Eigen::Vector3f euler_angles;
+
+    // Extract the rotation matrix elements
+    float r11 = rotation(0, 0);
+    float r12 = rotation(0, 1);
+    float r13 = rotation(0, 2);
+    float r21 = rotation(1, 0);
+    float r22 = rotation(1, 1);
+    float r23 = rotation(1, 2);
+    float r31 = rotation(2, 0);
+    float r32 = rotation(2, 1);
+    float r33 = rotation(2, 2);
+
+    // Calculate Euler angles
+    euler_angles(0) = atan2(r32, r33); // Roll (around x-axis)
+    euler_angles(1) = asin(-r31);      // Pitch (around y-axis)
+    euler_angles(2) = atan2(r21, r11); // Yaw (around z-axis)
+
+    return euler_angles;
+}
 
 // Eigen::Matrix3f eulerToRotationMatrix(const Eigen::Vector3f& euler_angles)
 // {

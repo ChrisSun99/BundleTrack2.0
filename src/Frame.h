@@ -70,8 +70,8 @@ public:
   bool _pose_inited;
   std::map<std::pair<float,float>, std::shared_ptr<MapPoint>> _map_points;
 
-  std::shared_ptr<Frame> last_good_frame;
-  std::shared_ptr<Frame> next_good_frame;
+  // std::shared_ptr<Frame> last_good_frame;
+  // std::shared_ptr<Frame> next_good_frame;
 
   float *_depth_gpu;
   uchar4 *_color_gpu;

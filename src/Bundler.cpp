@@ -93,55 +93,12 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
   }
 
   std::shared_ptr<Frame> last_frame;
-  //////////////////////////////////
-  std::vector<std::shared_ptr<Frame>> last_good_frames;
-  std::shared_ptr<Frame> next_good_frame;
-  bool last_frame_blurry = false;
-  //////////////////////////////////
-
   if (_frames.size()>0)
   {
     last_frame = _frames.back();
-
-    //////////////////////////////////
-    // check if the last frame is blurry
-    int iter = 1;
-    int count_found = 0;
-
-    std::shared_ptr<Frame> last_good_frame = last_frame;
-    last_good_frames.push_back(last_good_frame);
-    if (last_good_frame->_status != Frame::FAIL) {
-      last_good_frames.push_back(last_good_frame);
-      count_found++;
-    } else {
-      last_frame_blurry = true;
-    }
-
-    // if needed, keep finding num_last_frames_corr nonblurry frames in _frames
-    if (last_frame_blurry) {
-      while (count_found < min(_frames.size(), num_last_frames_corr) && iter < _frames.size()) {
-        last_good_frame = *(_frames.rbegin() + iter);
-
-        // if this frame is not blurry, add it to the last_good_frames array
-        if (last_good_frame->_status != Frame::FAIL) {
-          last_good_frames.push_back(last_good_frame);
-          count_found++;
-        }
-        iter++;
-      }
-    }
-
-    // assign frame->last_good_frame as the nearest last_good_frame
-    frame->last_good_frame = last_good_frames.front();
-    frame->_id = frame->last_good_frame->_id + iter;
-    std::cout << "Last good frame is " << frame->last_good_frame->_id_str.c_str() << std::endl;
-    std::cout << "Current frame is " << frame->_id_str.c_str() << std::endl;
-    std::cout << "Frame vector: " << std::endl;
-    for (auto& frame: last_good_frames)
-    {
-      std::cout << frame->_id_str.c_str() << " " << std::endl;
-    }
-    frame->_pose_in_model = frame->last_good_frame->_pose_in_model;
+    assert(last_frame->_status!=Frame::FAIL);
+    frame->_id = last_frame->_id+1;
+    frame->_pose_in_model = last_frame->_pose_in_model;
     frame->segmentationByMaskFile();
   }
   else
@@ -149,7 +106,6 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     frame->segmentationByMaskFile();
   }
 
-  printf("Frame %s roi WxH=%fx%f\n", frame->_id_str.c_str(), frame->_roi(1)-frame->_roi(0),frame->_roi(3)-frame->_roi(2));
   if (frame->_roi(1)-frame->_roi(0)<10 || frame->_roi(3)-frame->_roi(2)<10)
   {
     frame->_status = Frame::FAIL;
@@ -163,41 +119,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     _fm->forgetFrame(frame);
     _need_reinit = true;
     return;
-  } else {
-    //////////////////////////////////
-    if (_frames.size()>0) {
-      // if previous frames has no next_good_frame, either blurry or not, assign them with the current frame
-      // they must be consecutive, so stop when we find one that already has next_good_frame
-      int iter = 2;
-      while (!last_frame->next_good_frame && iter < _frames.size()) {
-        last_frame->next_good_frame = frame;
-        std::cout <<  "Frame " << last_frame->_id_str.c_str() << "'s next good frame is " << last_frame->next_good_frame->_id_str.c_str() << std::endl;
-        last_frame = *(_frames.rbegin() + iter);
-        iter++;
-      }
-    }
-    //////////////////////////////////
   }
-
-  //////////////////////////////////  
-  cv::Scalar blurScore;
-  fprintf(stderr, "Running blur detection\n");
-  blurScore = detectBlur(frame);
-  double BLUR_THRES = (*yml)["bundle"]["blur_thres"].as<double>();
-  if (blurScore.val[0] < BLUR_THRES)
-  {
-    frame->_status = Frame::FAIL;
-    printf("Frame %s is blurry, marked FAIL\n", frame->_id_str.c_str());
-    return;
-  }
-
-  if (frame->_status==Frame::FAIL)
-  {
-    _fm->forgetFrame(frame);
-    _need_reinit = true;
-    return;
-  }
-  //////////////////////////////////
 
   try
   {
@@ -217,58 +139,89 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
 
   if (_frames.size()>0)
   {
-    //////////////////////////////////  
-    // if the last frame is blurry, use num_last_frames_corr of frames to find an average pose
-    // by findCorres num_last_frames_corr times, otherwise, findCorres only once
-    int num_to_average = 1;
-    // if (last_frame_blurry) {
-    //   fprintf(stderr, "last frame is blurry\n");
-    //   num_to_average = num_last_frames_corr;
-    // }
+    _fm->findCorres(frame, last_frame);
 
-    Eigen::Matrix4f offset;
-    for (int i = 0; i < num_to_average; i++) {
-      std::cout << "i " << i << " length of last_good_frames: " << last_good_frames.size() << " num_to_average " << num_to_average << std::endl;
-
-      // re-assign last_frame as one of the nonblurry frames in the last_good_frames array
-      last_frame = last_good_frames[i];
-      _fm->findCorres(frame, last_frame);
-
-      if (frame->_status==Frame::FAIL)
-      {
-        _need_reinit = true;
-        _fm->forgetFrame(frame);
-        return;
-      }
-
-      PointCloudRGBNormal::Ptr cloud = _data_loader->_real_model;
-      PointCloudRGBNormal::Ptr tmp(new PointCloudRGBNormal);
-      Eigen::Matrix4f model_in_cam = frame->_pose_in_model.inverse();
-
-      offset = _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
+    if (frame->_status==Frame::FAIL)
+    {
+      _need_reinit = true;
+      _fm->forgetFrame(frame);
+      return;
     }
 
-    // offset /= num_to_average;
+    PointCloudRGBNormal::Ptr cloud = _data_loader->_real_model;
+    PointCloudRGBNormal::Ptr tmp(new PointCloudRGBNormal);
+    Eigen::Matrix4f model_in_cam = frame->_pose_in_model.inverse();
+
+    Eigen::Matrix4f offset = _fm->procrustesByCorrespondence(frame, last_frame, _fm->_matches[{frame,last_frame}]);
     frame->_pose_in_model = offset * frame->_pose_in_model;
     frame->_pose_inited = true;
-    fprintf(stderr, "final offset:\n");
-    for (int i = 0; i < 4; ++i)
-    {
-        for (int j = 0; j < 4; ++j)
-        {
-            fprintf(stderr, "%.2f ", offset(i, j));
-        }
-        fprintf(stderr, "\n");
-    }
-  }
 
-  // Update frame's initial pose based on last and next good frames
-  // if (last_good_frames.size()>1) 
-  // {
-  //   // Eigen::Matrix4f last_good_frame = last_good_frames.front()->_pose_in_model;
-  //   frame->last_good_frame->_pose_in_model = Utils::interpolate(frame->last_good_frame->last_good_frame->_pose_in_model, frame->_pose_in_model, frame->last_good_frame->_pose_in_model, 0.5);
-  // }
-  //////////////////////////////////  
+    ////////////////////////////////////
+    const auto &matches = _fm->_matches[{frame,last_frame}];
+    std::vector<std::vector<float>> ptsA;
+    std::vector<std::vector<float>> ptsB;
+    std::vector<std::vector<float>> surface_normalsA;
+    std::vector<std::vector<float>> surface_normalsB;
+    assert(frame->_id > last_frame->_id);
+    // Eigen::Matrix4f pose(Eigen::Matrix4f::Identity());
+    std::cout << "Ininlier num: " << _fm->countInlierCorres(frame,last_frame) << std::endl;
+    if (_fm->countInlierCorres(frame,last_frame)>=5) {
+      for (int k=0;k<matches.size();k++)
+      {
+        const auto &match = matches[k];
+        if (!match._isinlier) continue;
+        std::vector<float> ptA{match._ptA_cam.x,match._ptA_cam.y,match._ptA_cam.z};
+        std::vector<float> ptB{match._ptB_cam.x,match._ptB_cam.y,match._ptB_cam.z};
+        std::vector<float> surface_normalA{match._ptA_cam.normal_x,match._ptA_cam.normal_y,match._ptA_cam.normal_z};
+        std::vector<float> surface_normalB{match._ptB_cam.normal_x,match._ptB_cam.normal_y,match._ptB_cam.normal_z};
+
+        ptsA.push_back(ptA);
+        ptsB.push_back(ptB);
+        surface_normalsA.push_back(surface_normalA);
+        surface_normalsB.push_back(surface_normalB);
+      }
+    }
+    
+    // find rotation matrix between two consecutive frames
+    Eigen::MatrixXf _ptsA = Utils::convertToEigenMatrix(ptsA);
+    Eigen::MatrixXf _ptsB = Utils::convertToEigenMatrix(ptsB);
+    Eigen::MatrixXf _surface_normalsA = Utils::convertToEigenMatrix(surface_normalsA);
+    Eigen::MatrixXf _surface_normalsB = Utils::convertToEigenMatrix(surface_normalsB);
+    
+    Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsB, _ptsA, _surface_normalsB, _surface_normalsA);
+    // Eigen::Matrix3f rotation = optimizeQuadratic(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
+    // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
+
+    Eigen::Matrix3f prev_rot_with_cam = last_frame->_pose_in_model.block<3,3>(0,0);
+    Eigen::Matrix3f ori_rot = frame->_pose_in_model.block<3, 3>(0, 0);
+    std::cout << "ori_rot" << std::endl;
+    for (int i = 0; i < ori_rot.rows(); ++i)
+    {
+      for (int j = 0; j < ori_rot.cols(); ++j)
+      {
+        std::cout << ori_rot(i, j) << " ";
+      }
+      std::cout << std::endl;
+    }
+    Eigen::Vector3f ori_euler = Utils::rotationMatrixToEulerAngles(ori_rot);
+    Eigen::Vector3f rotation_euler = Utils::rotationMatrixToEulerAngles(rotation*prev_rot_with_cam);
+    std::cout << "ori_euler: " << ori_euler[0] << " " << ori_euler[1] << " " << ori_euler[2] << std::endl;
+    std::cout << "rotation_euler: " << rotation_euler[0] << " " << rotation_euler[1] << " " << rotation_euler[2] << std::endl;
+    std::cout << "our rotation matrix" << std::endl;
+    for (int i = 0; i < (rotation * prev_rot_with_cam).rows(); ++i)
+    {
+      for (int j = 0; j < (rotation * prev_rot_with_cam).cols(); ++j)
+      {
+        std::cout << (rotation * prev_rot_with_cam)(i, j) << " ";
+      }
+      std::cout << std::endl;
+    }
+
+    frame->_pose_in_model.block<3, 3>(0, 0) = rotation * prev_rot_with_cam;
+    float rot_diff = Utils::calculateRotationError(ori_rot, frame->_pose_in_model.block<3, 3>(0, 0));
+    fprintf(stderr, "Printing rot diff %f!!!!!!!\n", rot_diff);
+    ////////////////////////////////////
+  }
 
   if (frame->_status==Frame::FAIL)
   {
@@ -431,12 +384,6 @@ void Bundler::optimizeGPU()
   {
     for (int j=i+1;j<_local_frames.size();j++)
     {
-      std::vector<std::vector<float>> ptsA;
-      std::vector<std::vector<float>> ptsB;
-      std::vector<std::vector<float>> surface_normalsA;
-      std::vector<std::vector<float>> surface_normalsB;
-      int count_valid = 0;
-
       const auto &frameA = _local_frames[j];
       const auto &frameB = _local_frames[i];
       _fm->findCorres(frameA, frameB);
@@ -464,40 +411,10 @@ void Bundler::optimizeGPU()
         {
           n_edges_newframe++;
         }
-        std::vector<float> ptA{match._ptA_cam.x,match._ptA_cam.y,match._ptA_cam.z};
-        std::vector<float> ptB{match._ptB_cam.x,match._ptB_cam.y,match._ptB_cam.z};
-        std::vector<float> surface_normalA{match._ptA_cam.normal_x,match._ptA_cam.normal_y,match._ptA_cam.normal_z};
-        std::vector<float> surface_normalB{match._ptB_cam.normal_x,match._ptB_cam.normal_y,match._ptB_cam.normal_z};
-
-        ptsA.push_back(ptA);
-        ptsB.push_back(ptB);
-        surface_normalsA.push_back(surface_normalA);
-        surface_normalsB.push_back(surface_normalB);
       }
       n_match_per_pair.push_back(matches.size());
-
-      ////////////////////////////////////
-      Eigen::MatrixXf _ptsA = Utils::convertToEigenMatrix(ptsA);
-      Eigen::MatrixXf _ptsB = Utils::convertToEigenMatrix(ptsB);
-      Eigen::MatrixXf _surface_normalsA = Utils::convertToEigenMatrix(surface_normalsA);
-      Eigen::MatrixXf _surface_normalsB = Utils::convertToEigenMatrix(surface_normalsB);
-      // Eigen::Matrix3f tmp = _ptsB.transpose()*_ptsB + _surface_normalsB.transpose()*_surface_normalsB;
-      
-      Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
-      // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
-      fprintf(stderr, "rotation matrix\n");
-      for (int i = 0; i < rotation.rows(); ++i)
-      {
-        for (int j = 0; j < rotation.cols(); ++j)
-        {
-          std::cout << rotation(i, j) << " ";
-        }
-        std::cout << std::endl;
-      }
-      frameA->_pose_in_model.block<3, 3>(0, 0) = rotation;
     }
   }
-  ////////////////////////////////////
 
   const int H = _newframe->_H;
   const int W = _newframe->_W;
@@ -530,6 +447,15 @@ void Bundler::optimizeGPU()
   {
     const auto &f = _local_frames[i];
     f->_pose_in_model = poses[i];
+    // std::cout << "rot after optim" << std::endl;
+    // for (int i = 0; i < f->_pose_in_model.rows(); ++i)
+    // {
+    //   for (int j = 0; j < f->_pose_in_model.cols(); ++j)
+    //   {
+    //     std::cout << f->_pose_in_model(i, j) << " ";
+    //   }
+    //   std::cout << std::endl;
+    // }
   }
 
 }

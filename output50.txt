@@ -1,0 +1,3538 @@
+---- Before everything - GPU Memory Usage: 2399.19 MB
+cam K=
+380.248       0 314.214
+      0 379.827 240.598
+      0       0       1
+ob_in_cam0
+ 0.104501  0.703525 -0.702945  0.196172
+ 0.876877  0.268298  0.398877   0.19759
+ 0.469219 -0.658079 -0.588868  0.924751
+        0         0         0         1
+
+data has 449 images
+Connected to port 5555
+----- Before data_loader - GPU Memory Usage: 2399.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0001.png
+---- After data_loader - GPU Memory Usage: 2413.19 MB
+
+
+New frame 0001
+zmq start waiting for reply
+zmq got reply
+---- After everything - GPU Memory Usage: 2413.19 MB
+----- Before data_loader - GPU Memory Usage: 2413.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0002.png
+---- After data_loader - GPU Memory Usage: 2423.19 MB
+
+
+New frame 0002
+zmq start waiting for reply
+zmq got reply
+finding corres between 0002(id=1) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+validRows 854
+iter 0 currentLoss 1.23444
+iter 1 currentLoss 1.11458
+iter 2 currentLoss 0.95548
+iter 3 currentLoss 0.775661
+iter 4 currentLoss 0.599109
+iter 5 currentLoss 0.460516
+iter 6 currentLoss 0.404617
+iter 7 currentLoss 0.442669
+iter 8 currentLoss 0.527349
+iter 9 currentLoss 0.612872
+iter 10 currentLoss 0.676926
+iter 11 currentLoss 0.711003
+iter 12 currentLoss 0.713687
+iter 13 currentLoss 0.687837
+iter 14 currentLoss 0.63936
+iter 15 currentLoss 0.576641
+iter 16 currentLoss 0.510246
+iter 17 currentLoss 0.452414
+iter 18 currentLoss 0.41497
+iter 19 currentLoss 0.404384
+iter 20 currentLoss 0.417333
+iter 21 currentLoss 0.44322
+iter 22 currentLoss 0.470898
+iter 23 currentLoss 0.492495
+iter 24 currentLoss 0.503843
+iter 25 currentLoss 0.503767
+iter 26 currentLoss 0.493343
+iter 27 currentLoss 0.475299
+iter 28 currentLoss 0.453484
+iter 29 currentLoss 0.432248
+iter 30 currentLoss 0.415629
+iter 31 currentLoss 0.406372
+iter 32 currentLoss 0.405158
+iter 33 currentLoss 0.41057
+iter 34 currentLoss 0.419858
+iter 35 currentLoss 0.430009
+iter 36 currentLoss 0.438539
+iter 37 currentLoss 0.443862
+iter 38 currentLoss 0.44534
+iter 39 currentLoss 0.443156
+iter 40 currentLoss 0.4381
+iter 41 currentLoss 0.431324
+iter 42 currentLoss 0.424085
+iter 43 currentLoss 0.417493
+iter 44 currentLoss 0.412317
+iter 45 currentLoss 0.408888
+iter 46 currentLoss 0.407114
+iter 47 currentLoss 0.406599
+iter 48 currentLoss 0.406818
+iter 49 currentLoss 0.407278
+ori_rot
+0.106226 0.876363 0.469792 
+0.702982 0.267954 -0.6588 
+-0.703231 0.400237 -0.587603 
+our rotation matrix
+0.134793 0.802547 0.961064 
+1.04809 -0.159189 -0.710606 
+-1.13551 0.0186532 -0.5861 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0002 
+OptimizerGPU begin, global_corres#=861
+global_corres=861
+maxNumResiduals / maxNumberOfImages = 5661 / 2 = 2830
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 861 = 1722
+m_solver->solve Time difference = 6.542[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627672 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.60364 
+0 0 0 1 
+rot after optim
+0.106174 0.876608 0.469346 -0.628066 
+0.70309 0.267588 -0.658833 0.418554 
+-0.703129 0.399944 -0.587924 0.602655 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2487.19 MB
+----- Before data_loader - GPU Memory Usage: 2487.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0003.png
+---- After data_loader - GPU Memory Usage: 2497.19 MB
+
+
+New frame 0003
+zmq start waiting for reply
+zmq got reply
+finding corres between 0003(id=2) and 0002(id=1)
+start multi pair ransac GPU, pairs#=1
+validRows 844
+iter 0 currentLoss 1.2416
+iter 1 currentLoss 1.11939
+iter 2 currentLoss 0.957502
+iter 3 currentLoss 0.775322
+iter 4 currentLoss 0.598288
+iter 5 currentLoss 0.463468
+iter 6 currentLoss 0.4164
+iter 7 currentLoss 0.46269
+iter 8 currentLoss 0.55152
+iter 9 currentLoss 0.638268
+iter 10 currentLoss 0.701671
+iter 11 currentLoss 0.733736
+iter 12 currentLoss 0.733401
+iter 13 currentLoss 0.703887
+iter 14 currentLoss 0.651541
+iter 15 currentLoss 0.585313
+iter 16 currentLoss 0.516522
+iter 17 currentLoss 0.45829
+iter 18 currentLoss 0.42306
+iter 19 currentLoss 0.416849
+iter 20 currentLoss 0.434851
+iter 21 currentLoss 0.465185
+iter 22 currentLoss 0.496214
+iter 23 currentLoss 0.520048
+iter 24 currentLoss 0.532645
+iter 25 currentLoss 0.532964
+iter 26 currentLoss 0.522177
+iter 27 currentLoss 0.503058
+iter 28 currentLoss 0.479436
+iter 29 currentLoss 0.455601
+iter 30 currentLoss 0.435552
+iter 31 currentLoss 0.422119
+iter 32 currentLoss 0.416253
+iter 33 currentLoss 0.416915
+iter 34 currentLoss 0.421714
+iter 35 currentLoss 0.427889
+iter 36 currentLoss 0.43312
+iter 37 currentLoss 0.435949
+iter 38 currentLoss 0.435866
+iter 39 currentLoss 0.433183
+iter 40 currentLoss 0.428803
+iter 41 currentLoss 0.423933
+iter 42 currentLoss 0.419773
+iter 43 currentLoss 0.417236
+iter 44 currentLoss 0.416757
+iter 45 currentLoss 0.418244
+iter 46 currentLoss 0.421174
+iter 47 currentLoss 0.424784
+iter 48 currentLoss 0.428282
+iter 49 currentLoss 0.43102
+ori_rot
+0.103119 0.87575 0.471623 
+0.708372 0.268199 -0.6529 
+-0.698266 0.401411 -0.592701 
+our rotation matrix
+0.107836 0.749642 0.906692 
+1.00323 -0.129448 -0.673213 
+-1.03854 0.114038 -0.634136 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0003 
+finding corres between 0003(id=2) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=869
+global_corres=869
+maxNumResiduals / maxNumberOfImages = 5669 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 869 = 1738
+m_solver->solve Time difference = 6.134[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627672 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603639 
+0 0 0 1 
+rot after optim
+0.104122 0.876256 0.470462 -0.628578 
+0.704162 0.269107 -0.657068 0.416287 
+-0.702364 0.399696 -0.589006 0.603501 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2497.19 MB
+----- Before data_loader - GPU Memory Usage: 2497.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0004.png
+---- After data_loader - GPU Memory Usage: 2507.19 MB
+
+
+New frame 0004
+zmq start waiting for reply
+zmq got reply
+finding corres between 0004(id=3) and 0003(id=2)
+start multi pair ransac GPU, pairs#=1
+validRows 852
+iter 0 currentLoss 1.23474
+iter 1 currentLoss 1.11489
+iter 2 currentLoss 0.955991
+iter 3 currentLoss 0.776771
+iter 4 currentLoss 0.6015
+iter 5 currentLoss 0.465
+iter 6 currentLoss 0.410936
+iter 7 currentLoss 0.448786
+iter 8 currentLoss 0.531824
+iter 9 currentLoss 0.615261
+iter 10 currentLoss 0.677089
+iter 11 currentLoss 0.708916
+iter 12 currentLoss 0.709448
+iter 13 currentLoss 0.681727
+iter 14 currentLoss 0.631928
+iter 15 currentLoss 0.568815
+iter 16 currentLoss 0.503481
+iter 17 currentLoss 0.44871
+iter 18 currentLoss 0.416392
+iter 19 currentLoss 0.411941
+iter 20 currentLoss 0.430386
+iter 21 currentLoss 0.460246
+iter 22 currentLoss 0.490414
+iter 23 currentLoss 0.513376
+iter 24 currentLoss 0.525282
+iter 25 currentLoss 0.525167
+iter 26 currentLoss 0.514209
+iter 27 currentLoss 0.495145
+iter 28 currentLoss 0.471752
+iter 29 currentLoss 0.448265
+iter 30 currentLoss 0.428638
+iter 31 currentLoss 0.415668
+iter 32 currentLoss 0.410285
+iter 33 currentLoss 0.411438
+iter 34 currentLoss 0.41673
+iter 35 currentLoss 0.423389
+iter 36 currentLoss 0.42908
+iter 37 currentLoss 0.432315
+iter 38 currentLoss 0.43253
+iter 39 currentLoss 0.429975
+iter 40 currentLoss 0.425485
+iter 41 currentLoss 0.420212
+iter 42 currentLoss 0.415329
+iter 43 currentLoss 0.411771
+iter 44 currentLoss 0.410038
+iter 45 currentLoss 0.410142
+iter 46 currentLoss 0.411675
+iter 47 currentLoss 0.413981
+iter 48 currentLoss 0.416353
+iter 49 currentLoss 0.418202
+ori_rot
+0.104076 0.875607 0.471678 
+0.706906 0.268478 -0.654372 
+-0.699608 0.401537 -0.59103 
+our rotation matrix
+0.0889628 0.762866 0.899748 
+1.02457 -0.13088 -0.682247 
+-1.07739 0.0919513 -0.59979 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0004 
+finding corres between 0004(id=3) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=859
+global_corres=859
+maxNumResiduals / maxNumberOfImages = 5659 / 2 = 2829
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 859 = 1718
+m_solver->solve Time difference = 6.184[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603639 
+0 0 0 1 
+rot after optim
+0.105914 0.875226 0.471975 -0.630106 
+0.704251 0.269064 -0.656989 0.416249 
+-0.702006 0.401974 -0.587882 0.601922 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2507.19 MB
+----- Before data_loader - GPU Memory Usage: 2507.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0005.png
+---- After data_loader - GPU Memory Usage: 2517.19 MB
+
+
+New frame 0005
+zmq start waiting for reply
+zmq got reply
+finding corres between 0005(id=4) and 0004(id=3)
+start multi pair ransac GPU, pairs#=1
+validRows 836
+iter 0 currentLoss 1.2348
+iter 1 currentLoss 1.11483
+iter 2 currentLoss 0.955573
+iter 3 currentLoss 0.775557
+iter 4 currentLoss 0.598757
+iter 5 currentLoss 0.459872
+iter 6 currentLoss 0.403757
+iter 7 currentLoss 0.441795
+iter 8 currentLoss 0.526525
+iter 9 currentLoss 0.612047
+iter 10 currentLoss 0.676034
+iter 11 currentLoss 0.709992
+iter 12 currentLoss 0.712522
+iter 13 currentLoss 0.686502
+iter 14 currentLoss 0.637865
+iter 15 currentLoss 0.575023
+iter 16 currentLoss 0.50859
+iter 17 currentLoss 0.450863
+iter 18 currentLoss 0.413713
+iter 19 currentLoss 0.403572
+iter 20 currentLoss 0.416981
+iter 21 currentLoss 0.443226
+iter 22 currentLoss 0.471126
+iter 23 currentLoss 0.492824
+iter 24 currentLoss 0.504178
+iter 25 currentLoss 0.50404
+iter 26 currentLoss 0.493504
+iter 27 currentLoss 0.475312
+iter 28 currentLoss 0.453321
+iter 29 currentLoss 0.431893
+iter 30 currentLoss 0.415075
+iter 31 currentLoss 0.405624
+iter 32 currentLoss 0.404229
+iter 33 currentLoss 0.409477
+iter 34 currentLoss 0.418619
+iter 35 currentLoss 0.428638
+iter 36 currentLoss 0.437049
+iter 37 currentLoss 0.442271
+iter 38 currentLoss 0.443671
+iter 39 currentLoss 0.441439
+iter 40 currentLoss 0.436372
+iter 41 currentLoss 0.42963
+iter 42 currentLoss 0.422467
+iter 43 currentLoss 0.415991
+iter 44 currentLoss 0.410959
+iter 45 currentLoss 0.407686
+iter 46 currentLoss 0.406064
+iter 47 currentLoss 0.405681
+iter 48 currentLoss 0.406
+iter 49 currentLoss 0.406524
+ori_rot
+0.10717 0.876877 0.468616 
+0.699768 0.268298 -0.662073 
+-0.706285 0.398877 -0.584857 
+our rotation matrix
+0.135444 0.797074 0.960944 
+1.04993 -0.156677 -0.71324 
+-1.13182 0.0225174 -0.585098 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0005 
+finding corres between 0005(id=4) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=874
+global_corres=874
+maxNumResiduals / maxNumberOfImages = 5674 / 2 = 2837
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 874 = 1748
+m_solver->solve Time difference = 6.046[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627672 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603639 
+0 0 0 1 
+rot after optim
+0.104881 0.877252 0.468433 -0.627092 
+0.704891 0.266693 -0.65727 0.416888 
+-0.701519 0.399129 -0.590395 0.604754 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2517.19 MB
+----- Before data_loader - GPU Memory Usage: 2517.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0006.png
+---- After data_loader - GPU Memory Usage: 2527.19 MB
+
+
+New frame 0006
+zmq start waiting for reply
+zmq got reply
+finding corres between 0006(id=5) and 0005(id=4)
+start multi pair ransac GPU, pairs#=1
+validRows 850
+iter 0 currentLoss 1.22906
+iter 1 currentLoss 1.10655
+iter 2 currentLoss 0.944072
+iter 3 currentLoss 0.760835
+iter 4 currentLoss 0.582153
+iter 5 currentLoss 0.445749
+iter 6 currentLoss 0.399828
+iter 7 currentLoss 0.450318
+iter 8 currentLoss 0.542951
+iter 9 currentLoss 0.632173
+iter 10 currentLoss 0.697095
+iter 11 currentLoss 0.73005
+iter 12 currentLoss 0.730112
+iter 13 currentLoss 0.700513
+iter 14 currentLoss 0.647518
+iter 15 currentLoss 0.579923
+iter 16 currentLoss 0.508876
+iter 17 currentLoss 0.447503
+iter 18 currentLoss 0.408757
+iter 19 currentLoss 0.399682
+iter 20 currentLoss 0.416115
+iter 21 currentLoss 0.445957
+iter 22 currentLoss 0.477054
+iter 23 currentLoss 0.50116
+iter 24 currentLoss 0.51405
+iter 25 currentLoss 0.514601
+iter 26 currentLoss 0.503958
+iter 27 currentLoss 0.484902
+iter 28 currentLoss 0.46131
+iter 29 currentLoss 0.437564
+iter 30 currentLoss 0.417782
+iter 31 currentLoss 0.404893
+iter 32 currentLoss 0.399856
+iter 33 currentLoss 0.401537
+iter 34 currentLoss 0.40739
+iter 35 currentLoss 0.414505
+iter 36 currentLoss 0.420463
+iter 37 currentLoss 0.42375
+iter 38 currentLoss 0.423832
+iter 39 currentLoss 0.421023
+iter 40 currentLoss 0.416253
+iter 41 currentLoss 0.410777
+iter 42 currentLoss 0.405867
+iter 43 currentLoss 0.402523
+iter 44 currentLoss 0.401268
+iter 45 currentLoss 0.40208
+iter 46 currentLoss 0.404479
+iter 47 currentLoss 0.407713
+iter 48 currentLoss 0.410983
+iter 49 currentLoss 0.413622
+ori_rot
+0.10737 0.876886 0.468554 
+0.701749 0.267004 -0.660498 
+-0.704287 0.399725 -0.586685 
+our rotation matrix
+0.0970847 0.754353 0.91626 
+0.997194 -0.0776333 -0.73127 
+-1.069 0.0624066 -0.559238 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0006 
+finding corres between 0006(id=5) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=866
+global_corres=866
+maxNumResiduals / maxNumberOfImages = 5666 / 2 = 2833
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 866 = 1732
+m_solver->solve Time difference = 6.08[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627672 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603639 
+0 0 0 1 
+rot after optim
+0.105796 0.877876 0.467056 -0.626011 
+0.703211 0.266037 -0.659331 0.419276 
+-0.703065 0.398194 -0.589186 0.604141 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2529.19 MB
+----- Before data_loader - GPU Memory Usage: 2529.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0007.png
+---- After data_loader - GPU Memory Usage: 2539.19 MB
+
+
+New frame 0007
+zmq start waiting for reply
+zmq got reply
+finding corres between 0007(id=6) and 0006(id=5)
+start multi pair ransac GPU, pairs#=1
+validRows 840
+iter 0 currentLoss 1.23862
+iter 1 currentLoss 1.11724
+iter 2 currentLoss 0.956535
+iter 3 currentLoss 0.775845
+iter 4 currentLoss 0.60054
+iter 5 currentLoss 0.467319
+iter 6 currentLoss 0.420584
+iter 7 currentLoss 0.465597
+iter 8 currentLoss 0.552919
+iter 9 currentLoss 0.638606
+iter 10 currentLoss 0.701438
+iter 11 currentLoss 0.733366
+iter 12 currentLoss 0.733271
+iter 13 currentLoss 0.704328
+iter 14 currentLoss 0.65283
+iter 15 currentLoss 0.587652
+iter 16 currentLoss 0.519966
+iter 17 currentLoss 0.462624
+iter 18 currentLoss 0.427678
+iter 19 currentLoss 0.420907
+iter 20 currentLoss 0.437718
+iter 21 currentLoss 0.46668
+iter 22 currentLoss 0.496466
+iter 23 currentLoss 0.519321
+iter 24 currentLoss 0.531244
+iter 25 currentLoss 0.531203
+iter 26 currentLoss 0.520381
+iter 27 currentLoss 0.501557
+iter 28 currentLoss 0.478561
+iter 29 currentLoss 0.45566
+iter 30 currentLoss 0.436792
+iter 31 currentLoss 0.424668
+iter 32 currentLoss 0.42009
+iter 33 currentLoss 0.421893
+iter 34 currentLoss 0.427616
+iter 35 currentLoss 0.434484
+iter 36 currentLoss 0.440194
+iter 37 currentLoss 0.443309
+iter 38 currentLoss 0.443325
+iter 39 currentLoss 0.440548
+iter 40 currentLoss 0.43587
+iter 41 currentLoss 0.430485
+iter 42 currentLoss 0.425597
+iter 43 currentLoss 0.422146
+iter 44 currentLoss 0.420621
+iter 45 currentLoss 0.421007
+iter 46 currentLoss 0.422861
+iter 47 currentLoss 0.425493
+iter 48 currentLoss 0.42817
+iter 49 currentLoss 0.430281
+ori_rot
+0.102958 0.877432 0.468522 
+0.706286 0.26718 -0.655572 
+-0.7004 0.398407 -0.592209 
+our rotation matrix
+0.114664 0.769746 0.932532 
+1.00593 -0.13057 -0.658549 
+-1.04403 0.09382 -0.637027 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0007 
+finding corres between 0007(id=6) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=865
+global_corres=865
+maxNumResiduals / maxNumberOfImages = 5665 / 2 = 2832
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 865 = 1730
+m_solver->solve Time difference = 6.064[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603638 
+0 0 0 1 
+rot after optim
+0.104051 0.876231 0.470525 -0.628626 
+0.70474 0.26887 -0.656545 0.415875 
+-0.701794 0.399912 -0.589538 0.603958 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0008.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0008
+zmq start waiting for reply
+zmq got reply
+finding corres between 0008(id=7) and 0007(id=6)
+start multi pair ransac GPU, pairs#=1
+validRows 837
+iter 0 currentLoss 1.23382
+iter 1 currentLoss 1.11404
+iter 2 currentLoss 0.9552
+iter 3 currentLoss 0.776
+iter 4 currentLoss 0.600651
+iter 5 currentLoss 0.463922
+iter 6 currentLoss 0.409572
+iter 7 currentLoss 0.447312
+iter 8 currentLoss 0.530375
+iter 9 currentLoss 0.613865
+iter 10 currentLoss 0.67575
+iter 11 currentLoss 0.707638
+iter 12 currentLoss 0.70823
+iter 13 currentLoss 0.680562
+iter 14 currentLoss 0.630795
+iter 15 currentLoss 0.567684
+iter 16 currentLoss 0.50231
+iter 17 currentLoss 0.447468
+iter 18 currentLoss 0.41509
+iter 19 currentLoss 0.410637
+iter 20 currentLoss 0.429152
+iter 21 currentLoss 0.459124
+iter 22 currentLoss 0.489419
+iter 23 currentLoss 0.512504
+iter 24 currentLoss 0.524522
+iter 25 currentLoss 0.524497
+iter 26 currentLoss 0.513598
+iter 27 currentLoss 0.49455
+iter 28 currentLoss 0.471122
+iter 29 currentLoss 0.447544
+iter 30 currentLoss 0.427774
+iter 31 currentLoss 0.41463
+iter 32 currentLoss 0.409068
+iter 33 currentLoss 0.410065
+iter 34 currentLoss 0.415237
+iter 35 currentLoss 0.421818
+iter 36 currentLoss 0.427468
+iter 37 currentLoss 0.430691
+iter 38 currentLoss 0.430917
+iter 39 currentLoss 0.428389
+iter 40 currentLoss 0.423939
+iter 41 currentLoss 0.418716
+iter 42 currentLoss 0.413894
+iter 43 currentLoss 0.410403
+iter 44 currentLoss 0.408746
+iter 45 currentLoss 0.408929
+iter 46 currentLoss 0.410541
+iter 47 currentLoss 0.412923
+iter 48 currentLoss 0.415362
+iter 49 currentLoss 0.417264
+ori_rot
+0.103994 0.876489 0.470056 
+0.705434 0.268159 -0.656089 
+-0.701105 0.399823 -0.590418 
+our rotation matrix
+0.0896299 0.771335 0.90976 
+0.996768 -0.110079 -0.72205 
+-1.05215 0.0724899 -0.576539 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0008 
+finding corres between 0008(id=7) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=871
+global_corres=871
+maxNumResiduals / maxNumberOfImages = 5671 / 2 = 2835
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 871 = 1742
+m_solver->solve Time difference = 6.202[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603638 
+0 0 0 1 
+rot after optim
+0.105316 0.876424 0.469882 -0.628366 
+0.70383 0.26811 -0.65783 0.41732 
+-0.702518 0.399997 -0.588618 0.603196 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2531.19 MB
+----- Before data_loader - GPU Memory Usage: 2531.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0009.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0009
+zmq start waiting for reply
+zmq got reply
+finding corres between 0009(id=8) and 0008(id=7)
+start multi pair ransac GPU, pairs#=1
+validRows 848
+iter 0 currentLoss 1.23493
+iter 1 currentLoss 1.11505
+iter 2 currentLoss 0.956112
+iter 3 currentLoss 0.776827
+iter 4 currentLoss 0.601457
+iter 5 currentLoss 0.46482
+iter 6 currentLoss 0.410627
+iter 7 currentLoss 0.448445
+iter 8 currentLoss 0.531518
+iter 9 currentLoss 0.615001
+iter 10 currentLoss 0.676868
+iter 11 currentLoss 0.708722
+iter 12 currentLoss 0.709268
+iter 13 currentLoss 0.681547
+iter 14 currentLoss 0.631733
+iter 15 currentLoss 0.568593
+iter 16 currentLoss 0.503226
+iter 17 currentLoss 0.44843
+iter 18 currentLoss 0.416121
+iter 19 currentLoss 0.411726
+iter 20 currentLoss 0.430265
+iter 21 currentLoss 0.460232
+iter 22 currentLoss 0.490505
+iter 23 currentLoss 0.51356
+iter 24 currentLoss 0.525543
+iter 25 currentLoss 0.525485
+iter 26 currentLoss 0.514558
+iter 27 currentLoss 0.495495
+iter 28 currentLoss 0.472068
+iter 29 currentLoss 0.448509
+iter 30 currentLoss 0.428774
+iter 31 currentLoss 0.415671
+iter 32 currentLoss 0.410146
+iter 33 currentLoss 0.411169
+iter 34 currentLoss 0.416352
+iter 35 currentLoss 0.422933
+iter 36 currentLoss 0.428575
+iter 37 currentLoss 0.431784
+iter 38 currentLoss 0.431997
+iter 39 currentLoss 0.429459
+iter 40 currentLoss 0.425004
+iter 41 currentLoss 0.419783
+iter 42 currentLoss 0.414968
+iter 43 currentLoss 0.411488
+iter 44 currentLoss 0.409842
+iter 45 currentLoss 0.410035
+iter 46 currentLoss 0.411654
+iter 47 currentLoss 0.414038
+iter 48 currentLoss 0.416476
+iter 49 currentLoss 0.418374
+ori_rot
+0.104531 0.87642 0.470065 
+0.703229 0.269083 -0.658076 
+-0.703237 0.399352 -0.588196 
+our rotation matrix
+0.0911896 0.771834 0.90917 
+0.995698 -0.111308 -0.723697 
+-1.05329 0.0726353 -0.574964 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0009 
+finding corres between 0009(id=8) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=868
+global_corres=868
+maxNumResiduals / maxNumberOfImages = 5668 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 868 = 1736
+m_solver->solve Time difference = 6.031[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603638 
+0 0 0 1 
+rot after optim
+0.104395 0.876597 0.469765 -0.628171 
+0.703546 0.268762 -0.657868 0.417291 
+-0.70294 0.399179 -0.588669 0.603495 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0010.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0010
+zmq start waiting for reply
+zmq got reply
+finding corres between 0010(id=9) and 0009(id=8)
+start multi pair ransac GPU, pairs#=1
+validRows 848
+iter 0 currentLoss 1.23411
+iter 1 currentLoss 1.11436
+iter 2 currentLoss 0.95557
+iter 3 currentLoss 0.776467
+iter 4 currentLoss 0.601295
+iter 5 currentLoss 0.464853
+iter 6 currentLoss 0.410791
+iter 7 currentLoss 0.448624
+iter 8 currentLoss 0.531673
+iter 9 currentLoss 0.615158
+iter 10 currentLoss 0.677068
+iter 11 currentLoss 0.709003
+iter 12 currentLoss 0.709656
+iter 13 currentLoss 0.682052
+iter 14 currentLoss 0.632347
+iter 15 currentLoss 0.56928
+iter 16 currentLoss 0.503916
+iter 17 currentLoss 0.449017
+iter 18 currentLoss 0.416484
+iter 19 currentLoss 0.411797
+iter 20 currentLoss 0.43007
+iter 21 currentLoss 0.459861
+iter 22 currentLoss 0.490051
+iter 23 currentLoss 0.513099
+iter 24 currentLoss 0.525129
+iter 25 currentLoss 0.525153
+iter 26 currentLoss 0.514327
+iter 27 currentLoss 0.49537
+iter 28 currentLoss 0.472042
+iter 29 currentLoss 0.448564
+iter 30 currentLoss 0.428889
+iter 31 currentLoss 0.415823
+iter 32 currentLoss 0.410321
+iter 33 currentLoss 0.41136
+iter 34 currentLoss 0.416562
+iter 35 currentLoss 0.423169
+iter 36 currentLoss 0.428844
+iter 37 currentLoss 0.43209
+iter 38 currentLoss 0.432335
+iter 39 currentLoss 0.429819
+iter 40 currentLoss 0.425371
+iter 41 currentLoss 0.420137
+iter 42 currentLoss 0.415288
+iter 43 currentLoss 0.411759
+iter 44 currentLoss 0.410053
+iter 45 currentLoss 0.410186
+iter 46 currentLoss 0.411753
+iter 47 currentLoss 0.414097
+iter 48 currentLoss 0.416511
+iter 49 currentLoss 0.4184
+ori_rot
+0.108504 0.874361 0.47299 
+0.701906 0.269547 -0.659297 
+-0.703957 0.403531 -0.584472 
+our rotation matrix
+0.0908336 0.771813 0.90965 
+0.996152 -0.110404 -0.723957 
+-1.05362 0.0713217 -0.574902 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0010 
+finding corres between 0010(id=9) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=869
+global_corres=869
+maxNumResiduals / maxNumberOfImages = 5669 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 869 = 1738
+m_solver->solve Time difference = 6.023[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603638 
+0 0 0 1 
+rot after optim
+0.10703 0.874558 0.472961 -0.631156 
+0.703223 0.269694 -0.657831 0.417139 
+-0.702866 0.403005 -0.586144 0.60032 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2531.19 MB
+----- Before data_loader - GPU Memory Usage: 2531.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0011.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0011
+zmq start waiting for reply
+zmq got reply
+finding corres between 0011(id=10) and 0010(id=9)
+start multi pair ransac GPU, pairs#=1
+validRows 850
+iter 0 currentLoss 1.23789
+iter 1 currentLoss 1.11643
+iter 2 currentLoss 0.955614
+iter 3 currentLoss 0.774789
+iter 4 currentLoss 0.59937
+iter 5 currentLoss 0.466211
+iter 6 currentLoss 0.419958
+iter 7 currentLoss 0.465707
+iter 8 currentLoss 0.553647
+iter 9 currentLoss 0.639794
+iter 10 currentLoss 0.702978
+iter 11 currentLoss 0.735175
+iter 12 currentLoss 0.735272
+iter 13 currentLoss 0.70643
+iter 14 currentLoss 0.654918
+iter 15 currentLoss 0.589567
+iter 16 currentLoss 0.521498
+iter 17 currentLoss 0.463519
+iter 18 currentLoss 0.42772
+iter 19 currentLoss 0.420068
+iter 20 currentLoss 0.436192
+iter 21 currentLoss 0.464739
+iter 22 currentLoss 0.494332
+iter 23 currentLoss 0.51714
+iter 24 currentLoss 0.529103
+iter 25 currentLoss 0.529152
+iter 26 currentLoss 0.518448
+iter 27 currentLoss 0.49976
+iter 28 currentLoss 0.476918
+iter 29 currentLoss 0.454201
+iter 30 currentLoss 0.435553
+iter 31 currentLoss 0.423688
+iter 32 currentLoss 0.4194
+iter 33 currentLoss 0.421501
+iter 34 currentLoss 0.427507
+iter 35 currentLoss 0.434623
+iter 36 currentLoss 0.44053
+iter 37 currentLoss 0.443777
+iter 38 currentLoss 0.443853
+iter 39 currentLoss 0.441057
+iter 40 currentLoss 0.436279
+iter 41 currentLoss 0.430717
+iter 42 currentLoss 0.425589
+iter 43 currentLoss 0.421854
+iter 44 currentLoss 0.420031
+iter 45 currentLoss 0.42013
+iter 46 currentLoss 0.421732
+iter 47 currentLoss 0.424162
+iter 48 currentLoss 0.426691
+iter 49 currentLoss 0.42871
+ori_rot
+0.10463 0.876017 0.470795 
+0.706269 0.267834 -0.655324 
+-0.700169 0.401074 -0.590679 
+our rotation matrix
+0.111672 0.763865 0.937364 
+1.01016 -0.129588 -0.662703 
+-1.04654 0.0961055 -0.635079 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0011 
+finding corres between 0011(id=10) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=865
+global_corres=865
+maxNumResiduals / maxNumberOfImages = 5665 / 2 = 2832
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 865 = 1730
+m_solver->solve Time difference = 6.193[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603638 
+0 0 0 1 
+rot after optim
+0.104967 0.876403 0.47 -0.628274 
+0.70405 0.268293 -0.65752 0.416928 
+-0.70235 0.399921 -0.588869 0.603292 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0012.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0012
+zmq start waiting for reply
+zmq got reply
+finding corres between 0012(id=11) and 0011(id=10)
+start multi pair ransac GPU, pairs#=1
+validRows 850
+iter 0 currentLoss 1.23758
+iter 1 currentLoss 1.11615
+iter 2 currentLoss 0.95538
+iter 3 currentLoss 0.774628
+iter 4 currentLoss 0.599321
+iter 5 currentLoss 0.46632
+iter 6 currentLoss 0.420216
+iter 7 currentLoss 0.466005
+iter 8 currentLoss 0.553903
+iter 9 currentLoss 0.639984
+iter 10 currentLoss 0.703101
+iter 11 currentLoss 0.735239
+iter 12 currentLoss 0.735289
+iter 13 currentLoss 0.706415
+iter 14 currentLoss 0.654894
+iter 15 currentLoss 0.589561
+iter 16 currentLoss 0.521539
+iter 17 currentLoss 0.463638
+iter 18 currentLoss 0.427929
+iter 19 currentLoss 0.420349
+iter 20 currentLoss 0.436504
+iter 21 currentLoss 0.465042
+iter 22 currentLoss 0.494604
+iter 23 currentLoss 0.517371
+iter 24 currentLoss 0.529291
+iter 25 currentLoss 0.529305
+iter 26 currentLoss 0.518577
+iter 27 currentLoss 0.499882
+iter 28 currentLoss 0.477052
+iter 29 currentLoss 0.454362
+iter 30 currentLoss 0.435754
+iter 31 currentLoss 0.423933
+iter 32 currentLoss 0.419683
+iter 33 currentLoss 0.42181
+iter 34 currentLoss 0.427826
+iter 35 currentLoss 0.434939
+iter 36 currentLoss 0.440835
+iter 37 currentLoss 0.444069
+iter 38 currentLoss 0.444131
+iter 39 currentLoss 0.441326
+iter 40 currentLoss 0.436544
+iter 41 currentLoss 0.430986
+iter 42 currentLoss 0.425866
+iter 43 currentLoss 0.422143
+iter 44 currentLoss 0.420331
+iter 45 currentLoss 0.420439
+iter 46 currentLoss 0.422046
+iter 47 currentLoss 0.424476
+iter 48 currentLoss 0.427002
+iter 49 currentLoss 0.429016
+ori_rot
+0.105579 0.875782 0.471018 
+0.704112 0.268637 -0.657313 
+-0.702196 0.401048 -0.588286 
+our rotation matrix
+0.108911 0.767209 0.934774 
+1.01121 -0.130231 -0.660306 
+-1.04513 0.0925108 -0.63757 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0012 
+finding corres between 0012(id=11) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=868
+global_corres=868
+maxNumResiduals / maxNumberOfImages = 5668 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 868 = 1736
+m_solver->solve Time difference = 6.162[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603637 
+0 0 0 1 
+rot after optim
+0.10658 0.876707 0.469069 -0.6279 
+0.70224 0.267609 -0.659731 0.419485 
+-0.703918 0.399713 -0.587137 0.602105 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0013.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0013
+zmq start waiting for reply
+zmq got reply
+finding corres between 0013(id=12) and 0012(id=11)
+start multi pair ransac GPU, pairs#=1
+validRows 843
+iter 0 currentLoss 1.23233
+iter 1 currentLoss 1.10815
+iter 2 currentLoss 0.943485
+iter 3 currentLoss 0.757924
+iter 4 currentLoss 0.577636
+iter 5 currentLoss 0.442381
+iter 6 currentLoss 0.40261
+iter 7 currentLoss 0.461026
+iter 8 currentLoss 0.559717
+iter 9 currentLoss 0.653276
+iter 10 currentLoss 0.721369
+iter 11 currentLoss 0.756555
+iter 12 currentLoss 0.757959
+iter 13 currentLoss 0.728772
+iter 14 currentLoss 0.675144
+iter 15 currentLoss 0.605658
+iter 16 currentLoss 0.53112
+iter 17 currentLoss 0.464279
+iter 18 currentLoss 0.418199
+iter 19 currentLoss 0.4013
+iter 20 currentLoss 0.411463
+iter 21 currentLoss 0.437486
+iter 22 currentLoss 0.466809
+iter 23 currentLoss 0.490452
+iter 24 currentLoss 0.503622
+iter 25 currentLoss 0.504851
+iter 26 currentLoss 0.495111
+iter 27 currentLoss 0.477132
+iter 28 currentLoss 0.454833
+iter 29 currentLoss 0.432684
+iter 30 currentLoss 0.414889
+iter 31 currentLoss 0.404369
+iter 32 currentLoss 0.401953
+iter 33 currentLoss 0.406283
+iter 34 currentLoss 0.41459
+iter 35 currentLoss 0.423798
+iter 36 currentLoss 0.431378
+iter 37 currentLoss 0.435745
+iter 38 currentLoss 0.436312
+iter 39 currentLoss 0.433357
+iter 40 currentLoss 0.427803
+iter 41 currentLoss 0.420943
+iter 42 currentLoss 0.414147
+iter 43 currentLoss 0.408577
+iter 44 currentLoss 0.404965
+iter 45 currentLoss 0.403505
+iter 46 currentLoss 0.403899
+iter 47 currentLoss 0.405517
+iter 48 currentLoss 0.407612
+iter 49 currentLoss 0.409514
+ori_rot
+0.104342 0.877504 0.468082 
+0.70573 0.266293 -0.656531 
+-0.700755 0.398843 -0.591495 
+our rotation matrix
+0.145536 0.771512 0.969204 
+0.983095 -0.157287 -0.69063 
+-1.07117 0.111296 -0.608312 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0013 
+finding corres between 0013(id=12) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=872
+global_corres=872
+maxNumResiduals / maxNumberOfImages = 5672 / 2 = 2836
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 872 = 1744
+m_solver->solve Time difference = 6.047[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603637 
+0 0 0 1 
+rot after optim
+0.103972 0.877389 0.468379 -0.626871 
+0.705112 0.267101 -0.656867 0.416424 
+-0.701432 0.398556 -0.590887 0.605247 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0014.png
+---- After data_loader - GPU Memory Usage: 2541.19 MB
+
+
+New frame 0014
+zmq start waiting for reply
+zmq got reply
+finding corres between 0014(id=13) and 0013(id=12)
+start multi pair ransac GPU, pairs#=1
+validRows 848
+iter 0 currentLoss 1.24112
+iter 1 currentLoss 1.11462
+iter 2 currentLoss 0.947246
+iter 3 currentLoss 0.759574
+iter 4 currentLoss 0.579555
+iter 5 currentLoss 0.44989
+iter 6 currentLoss 0.421025
+iter 7 currentLoss 0.488339
+iter 8 currentLoss 0.591731
+iter 9 currentLoss 0.687529
+iter 10 currentLoss 0.756292
+iter 11 currentLoss 0.790905
+iter 12 currentLoss 0.790692
+iter 13 currentLoss 0.759041
+iter 14 currentLoss 0.702349
+iter 15 currentLoss 0.629502
+iter 16 currentLoss 0.551686
+iter 17 currentLoss 0.482102
+iter 18 currentLoss 0.434292
+iter 19 currentLoss 0.416969
+iter 20 currentLoss 0.42789
+iter 21 currentLoss 0.45539
+iter 22 currentLoss 0.486432
+iter 23 currentLoss 0.5117
+iter 24 currentLoss 0.526207
+iter 25 currentLoss 0.528385
+iter 26 currentLoss 0.51915
+iter 27 currentLoss 0.501192
+iter 28 currentLoss 0.478372
+iter 29 currentLoss 0.455093
+iter 30 currentLoss 0.435507
+iter 31 currentLoss 0.422586
+iter 32 currentLoss 0.41735
+iter 33 currentLoss 0.418735
+iter 34 currentLoss 0.424254
+iter 35 currentLoss 0.431029
+iter 36 currentLoss 0.436642
+iter 37 currentLoss 0.439581
+iter 38 currentLoss 0.439328
+iter 39 currentLoss 0.436241
+iter 40 currentLoss 0.43132
+iter 41 currentLoss 0.425904
+iter 42 currentLoss 0.421344
+iter 43 currentLoss 0.41869
+iter 44 currentLoss 0.418465
+iter 45 currentLoss 0.420591
+iter 46 currentLoss 0.424491
+iter 47 currentLoss 0.42929
+iter 48 currentLoss 0.434065
+iter 49 currentLoss 0.438034
+ori_rot
+0.104512 0.878242 0.466657 
+0.703823 0.266201 -0.658613 
+-0.702646 0.397277 -0.590305 
+our rotation matrix
+0.132471 0.730395 0.936449 
+0.988104 -0.0816205 -0.734188 
+-1.01531 0.106626 -0.578981 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0014 
+finding corres between 0014(id=13) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=875
+global_corres=875
+maxNumResiduals / maxNumberOfImages = 5675 / 2 = 2837
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 875 = 1750
+m_solver->solve Time difference = 6.118[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603637 
+0 0 0 1 
+rot after optim
+0.105636 0.877641 0.467534 -0.626357 
+0.702422 0.266943 -0.659806 0.419664 
+-0.703877 0.398106 -0.588276 0.603539 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2535.19 MB
+----- Before data_loader - GPU Memory Usage: 2535.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0015.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0015
+zmq start waiting for reply
+zmq got reply
+finding corres between 0015(id=14) and 0014(id=13)
+start multi pair ransac GPU, pairs#=1
+validRows 841
+iter 0 currentLoss 1.23437
+iter 1 currentLoss 1.1082
+iter 2 currentLoss 0.941402
+iter 3 currentLoss 0.754718
+iter 4 currentLoss 0.576455
+iter 5 currentLoss 0.449808
+iter 6 currentLoss 0.424443
+iter 7 currentLoss 0.493546
+iter 8 currentLoss 0.597216
+iter 9 currentLoss 0.692717
+iter 10 currentLoss 0.76102
+iter 11 currentLoss 0.795174
+iter 12 currentLoss 0.794581
+iter 13 currentLoss 0.762682
+iter 14 currentLoss 0.7059
+iter 15 currentLoss 0.633123
+iter 16 currentLoss 0.555475
+iter 17 currentLoss 0.485991
+iter 18 currentLoss 0.437916
+iter 19 currentLoss 0.419708
+iter 20 currentLoss 0.429202
+iter 21 currentLoss 0.455064
+iter 22 currentLoss 0.484523
+iter 23 currentLoss 0.50839
+iter 24 currentLoss 0.521749
+iter 25 currentLoss 0.523097
+iter 26 currentLoss 0.513427
+iter 27 currentLoss 0.495516
+iter 28 currentLoss 0.473307
+iter 29 currentLoss 0.451243
+iter 30 currentLoss 0.433424
+iter 31 currentLoss 0.422634
+iter 32 currentLoss 0.419598
+iter 33 currentLoss 0.422959
+iter 34 currentLoss 0.430036
+iter 35 currentLoss 0.437886
+iter 36 currentLoss 0.444115
+iter 37 currentLoss 0.447272
+iter 38 currentLoss 0.446898
+iter 39 currentLoss 0.443402
+iter 40 currentLoss 0.437813
+iter 41 currentLoss 0.431498
+iter 42 currentLoss 0.425837
+iter 43 currentLoss 0.421917
+iter 44 currentLoss 0.42032
+iter 45 currentLoss 0.421039
+iter 46 currentLoss 0.423568
+iter 47 currentLoss 0.4271
+iter 48 currentLoss 0.430765
+iter 49 currentLoss 0.433821
+ori_rot
+0.105572 0.875969 0.470673 
+0.704606 0.2681 -0.657003 
+-0.701702 0.401 -0.588909 
+our rotation matrix
+0.156012 0.746222 0.953716 
+0.957371 -0.0980926 -0.687536 
+-1.03264 0.101748 -0.634481 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0015 
+finding corres between 0015(id=14) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=864
+global_corres=864
+maxNumResiduals / maxNumberOfImages = 5664 / 2 = 2832
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 864 = 1728
+m_solver->solve Time difference = 5.996[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603637 
+0 0 0 1 
+rot after optim
+0.106253 0.876608 0.469327 -0.628067 
+0.703418 0.267339 -0.658584 0.4183 
+-0.702789 0.40011 -0.588216 0.60289 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0016.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0016
+zmq start waiting for reply
+zmq got reply
+finding corres between 0016(id=15) and 0015(id=14)
+start multi pair ransac GPU, pairs#=1
+validRows 825
+iter 0 currentLoss 1.23521
+iter 1 currentLoss 1.11557
+iter 2 currentLoss 0.956895
+iter 3 currentLoss 0.777839
+iter 4 currentLoss 0.602511
+iter 5 currentLoss 0.465448
+iter 6 currentLoss 0.410167
+iter 7 currentLoss 0.44683
+iter 8 currentLoss 0.529224
+iter 9 currentLoss 0.612412
+iter 10 currentLoss 0.67422
+iter 11 currentLoss 0.706168
+iter 12 currentLoss 0.706916
+iter 13 currentLoss 0.679467
+iter 14 currentLoss 0.629965
+iter 15 currentLoss 0.567147
+iter 16 currentLoss 0.502084
+iter 17 currentLoss 0.447555
+iter 18 currentLoss 0.41546
+iter 19 currentLoss 0.411227
+iter 20 currentLoss 0.429891
+iter 21 currentLoss 0.459976
+iter 22 currentLoss 0.49038
+iter 23 currentLoss 0.513584
+iter 24 currentLoss 0.525728
+iter 25 currentLoss 0.525824
+iter 26 currentLoss 0.515021
+iter 27 currentLoss 0.496025
+iter 28 currentLoss 0.472579
+iter 29 currentLoss 0.448897
+iter 30 currentLoss 0.428932
+iter 31 currentLoss 0.415519
+iter 32 currentLoss 0.409657
+iter 33 currentLoss 0.41037
+iter 34 currentLoss 0.415315
+iter 35 currentLoss 0.421745
+iter 36 currentLoss 0.42732
+iter 37 currentLoss 0.430533
+iter 38 currentLoss 0.4308
+iter 39 currentLoss 0.428346
+iter 40 currentLoss 0.423991
+iter 41 currentLoss 0.41887
+iter 42 currentLoss 0.414149
+iter 43 currentLoss 0.410753
+iter 44 currentLoss 0.409179
+iter 45 currentLoss 0.409438
+iter 46 currentLoss 0.411117
+iter 47 currentLoss 0.413558
+iter 48 currentLoss 0.41605
+iter 49 currentLoss 0.417996
+ori_rot
+0.104955 0.87708 0.468739 
+0.703559 0.267634 -0.658315 
+-0.702844 0.398878 -0.588987 
+our rotation matrix
+0.0927044 0.772201 0.90864 
+0.994907 -0.11201 -0.724578 
+-1.05343 0.0729709 -0.573985 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0016 
+finding corres between 0016(id=15) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=862
+global_corres=862
+maxNumResiduals / maxNumberOfImages = 5662 / 2 = 2831
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 862 = 1724
+m_solver->solve Time difference = 6.174[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603637 
+0 0 0 1 
+rot after optim
+0.105238 0.876788 0.469219 -0.627842 
+0.703998 0.267566 -0.657872 0.41738 
+-0.702362 0.399563 -0.589099 0.603495 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0017.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0017
+zmq start waiting for reply
+zmq got reply
+finding corres between 0017(id=16) and 0016(id=15)
+start multi pair ransac GPU, pairs#=1
+validRows 847
+iter 0 currentLoss 1.23397
+iter 1 currentLoss 1.11434
+iter 2 currentLoss 0.955699
+iter 3 currentLoss 0.776726
+iter 4 currentLoss 0.601596
+iter 5 currentLoss 0.464987
+iter 6 currentLoss 0.410478
+iter 7 currentLoss 0.447853
+iter 8 currentLoss 0.530654
+iter 9 currentLoss 0.614061
+iter 10 currentLoss 0.675999
+iter 11 currentLoss 0.708033
+iter 12 currentLoss 0.70883
+iter 13 currentLoss 0.681394
+iter 14 currentLoss 0.631857
+iter 15 currentLoss 0.568935
+iter 16 currentLoss 0.503666
+iter 17 currentLoss 0.448789
+iter 18 currentLoss 0.416205
+iter 19 currentLoss 0.411431
+iter 20 currentLoss 0.429636
+iter 21 currentLoss 0.45941
+iter 22 currentLoss 0.489637
+iter 23 currentLoss 0.512763
+iter 24 currentLoss 0.524897
+iter 25 currentLoss 0.525033
+iter 26 currentLoss 0.514309
+iter 27 currentLoss 0.495425
+iter 28 currentLoss 0.472125
+iter 29 currentLoss 0.448619
+iter 30 currentLoss 0.428858
+iter 31 currentLoss 0.415666
+iter 32 currentLoss 0.410022
+iter 33 currentLoss 0.410934
+iter 34 currentLoss 0.416046
+iter 35 currentLoss 0.422605
+iter 36 currentLoss 0.428273
+iter 37 currentLoss 0.431541
+iter 38 currentLoss 0.431828
+iter 39 currentLoss 0.429361
+iter 40 currentLoss 0.424957
+iter 41 currentLoss 0.419757
+iter 42 currentLoss 0.41493
+iter 43 currentLoss 0.411411
+iter 44 currentLoss 0.409708
+iter 45 currentLoss 0.409841
+iter 46 currentLoss 0.41141
+iter 47 currentLoss 0.413762
+iter 48 currentLoss 0.416191
+iter 49 currentLoss 0.4181
+ori_rot
+0.106606 0.876491 0.469465 
+0.70201 0.268021 -0.659808 
+-0.704143 0.399909 -0.586733 
+our rotation matrix
+0.0913031 0.772428 0.909007 
+0.996107 -0.112008 -0.723475 
+-1.05344 0.072089 -0.575295 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0017 
+finding corres between 0017(id=16) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=871
+global_corres=871
+maxNumResiduals / maxNumberOfImages = 5671 / 2 = 2835
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 871 = 1742
+m_solver->solve Time difference = 6.016[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603636 
+0 0 0 1 
+rot after optim
+0.106738 0.876562 0.469304 -0.62799 
+0.700809 0.268499 -0.66089 0.420444 
+-0.705318 0.399434 -0.585643 0.600798 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2535.19 MB
+----- Before data_loader - GPU Memory Usage: 2535.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0018.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0018
+zmq start waiting for reply
+zmq got reply
+finding corres between 0018(id=17) and 0017(id=16)
+start multi pair ransac GPU, pairs#=1
+validRows 842
+iter 0 currentLoss 1.23032
+iter 1 currentLoss 1.11095
+iter 2 currentLoss 0.952576
+iter 3 currentLoss 0.773697
+iter 4 currentLoss 0.598243
+iter 5 currentLoss 0.460631
+iter 6 currentLoss 0.404807
+iter 7 currentLoss 0.441602
+iter 8 currentLoss 0.524458
+iter 9 currentLoss 0.608109
+iter 10 currentLoss 0.670376
+iter 11 currentLoss 0.702817
+iter 12 currentLoss 0.704093
+iter 13 currentLoss 0.677165
+iter 14 currentLoss 0.628089
+iter 15 currentLoss 0.565464
+iter 16 currentLoss 0.500161
+iter 17 currentLoss 0.444746
+iter 18 currentLoss 0.411072
+iter 19 currentLoss 0.404868
+iter 20 currentLoss 0.421645
+iter 21 currentLoss 0.450177
+iter 22 currentLoss 0.479375
+iter 23 currentLoss 0.501664
+iter 24 currentLoss 0.513143
+iter 25 currentLoss 0.512814
+iter 26 currentLoss 0.501842
+iter 27 currentLoss 0.482978
+iter 28 currentLoss 0.460034
+iter 29 currentLoss 0.437298
+iter 30 currentLoss 0.418764
+iter 31 currentLoss 0.407216
+iter 32 currentLoss 0.40348
+iter 33 currentLoss 0.406342
+iter 34 currentLoss 0.41324
+iter 35 currentLoss 0.421287
+iter 36 currentLoss 0.42808
+iter 37 currentLoss 0.43209
+iter 38 currentLoss 0.432727
+iter 39 currentLoss 0.430217
+iter 40 currentLoss 0.425382
+iter 41 currentLoss 0.419379
+iter 42 currentLoss 0.413419
+iter 43 currentLoss 0.408511
+iter 44 currentLoss 0.405269
+iter 45 currentLoss 0.403836
+iter 46 currentLoss 0.403929
+iter 47 currentLoss 0.404995
+iter 48 currentLoss 0.406399
+iter 49 currentLoss 0.407592
+ori_rot
+0.10544 0.876621 0.469488 
+0.702876 0.268279 -0.65878 
+-0.703454 0.399453 -0.587869 
+our rotation matrix
+0.0958028 0.796691 0.94512 
+0.99764 -0.115265 -0.714308 
+-1.08302 0.0463443 -0.564353 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0018 
+finding corres between 0018(id=17) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=871
+global_corres=871
+maxNumResiduals / maxNumberOfImages = 5671 / 2 = 2835
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 871 = 1742
+m_solver->solve Time difference = 6.284[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603636 
+0 0 0 1 
+rot after optim
+0.106177 0.875946 0.47058 -0.628991 
+0.703315 0.268386 -0.658268 0.41774 
+-0.702904 0.400859 -0.58757 0.602139 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2535.19 MB
+----- Before data_loader - GPU Memory Usage: 2535.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0019.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0019
+zmq start waiting for reply
+zmq got reply
+finding corres between 0019(id=18) and 0018(id=17)
+start multi pair ransac GPU, pairs#=1
+validRows 848
+iter 0 currentLoss 1.2343
+iter 1 currentLoss 1.11493
+iter 2 currentLoss 0.956646
+iter 3 currentLoss 0.778052
+iter 4 currentLoss 0.603201
+iter 5 currentLoss 0.466464
+iter 6 currentLoss 0.41102
+iter 7 currentLoss 0.447051
+iter 8 currentLoss 0.528849
+iter 9 currentLoss 0.611667
+iter 10 currentLoss 0.673327
+iter 11 currentLoss 0.70533
+iter 12 currentLoss 0.706318
+iter 13 currentLoss 0.679277
+iter 14 currentLoss 0.630313
+iter 15 currentLoss 0.568098
+iter 16 currentLoss 0.503566
+iter 17 currentLoss 0.44926
+iter 18 currentLoss 0.416799
+iter 19 currentLoss 0.411515
+iter 20 currentLoss 0.428686
+iter 21 currentLoss 0.457178
+iter 22 currentLoss 0.486098
+iter 23 currentLoss 0.508021
+iter 24 currentLoss 0.519136
+iter 25 currentLoss 0.518502
+iter 26 currentLoss 0.507329
+iter 27 currentLoss 0.488395
+iter 28 currentLoss 0.465528
+iter 29 currentLoss 0.443
+iter 30 currentLoss 0.424757
+iter 31 currentLoss 0.413503
+iter 32 currentLoss 0.409989
+iter 33 currentLoss 0.412959
+iter 34 currentLoss 0.419854
+iter 35 currentLoss 0.427819
+iter 36 currentLoss 0.43449
+iter 37 currentLoss 0.438374
+iter 38 currentLoss 0.438909
+iter 39 currentLoss 0.436338
+iter 40 currentLoss 0.43149
+iter 41 currentLoss 0.425516
+iter 42 currentLoss 0.419613
+iter 43 currentLoss 0.414769
+iter 44 currentLoss 0.411576
+iter 45 currentLoss 0.410159
+iter 46 currentLoss 0.410229
+iter 47 currentLoss 0.411236
+iter 48 currentLoss 0.412555
+iter 49 currentLoss 0.413653
+ori_rot
+0.106313 0.878189 0.466349 
+0.701745 0.26601 -0.660902 
+-0.704451 0.39752 -0.587985 
+our rotation matrix
+0.0962423 0.793954 0.942323 
+1.0077 -0.147069 -0.732796 
+-1.06997 0.0596938 -0.570943 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0019 
+finding corres between 0019(id=18) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=869
+global_corres=869
+maxNumResiduals / maxNumberOfImages = 5669 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 869 = 1738
+m_solver->solve Time difference = 6.041[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603636 
+0 0 0 1 
+rot after optim
+0.106131 0.878277 0.466225 -0.625446 
+0.701636 0.266092 -0.660986 0.421127 
+-0.704587 0.397271 -0.58799 0.603654 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2535.19 MB
+----- Before data_loader - GPU Memory Usage: 2535.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0020.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0020
+zmq start waiting for reply
+zmq got reply
+finding corres between 0020(id=19) and 0019(id=18)
+start multi pair ransac GPU, pairs#=1
+validRows 848
+iter 0 currentLoss 1.23732
+iter 1 currentLoss 1.116
+iter 2 currentLoss 0.955338
+iter 3 currentLoss 0.774654
+iter 4 currentLoss 0.599274
+iter 5 currentLoss 0.465913
+iter 6 currentLoss 0.419164
+iter 7 currentLoss 0.464418
+iter 8 currentLoss 0.552047
+iter 9 currentLoss 0.638015
+iter 10 currentLoss 0.701109
+iter 11 currentLoss 0.733284
+iter 12 currentLoss 0.733417
+iter 13 currentLoss 0.704659
+iter 14 currentLoss 0.65327
+iter 15 currentLoss 0.588075
+iter 16 currentLoss 0.520183
+iter 17 currentLoss 0.462396
+iter 18 currentLoss 0.42679
+iter 19 currentLoss 0.419304
+iter 20 currentLoss 0.435539
+iter 21 currentLoss 0.464137
+iter 22 currentLoss 0.493741
+iter 23 currentLoss 0.51654
+iter 24 currentLoss 0.528486
+iter 25 currentLoss 0.528519
+iter 26 currentLoss 0.517799
+iter 27 currentLoss 0.499094
+iter 28 currentLoss 0.476234
+iter 29 currentLoss 0.453493
+iter 30 currentLoss 0.434816
+iter 31 currentLoss 0.422922
+iter 32 currentLoss 0.418609
+iter 33 currentLoss 0.420694
+iter 34 currentLoss 0.426694
+iter 35 currentLoss 0.433814
+iter 36 currentLoss 0.439733
+iter 37 currentLoss 0.442998
+iter 38 currentLoss 0.443095
+iter 39 currentLoss 0.44032
+iter 40 currentLoss 0.435558
+iter 41 currentLoss 0.430007
+iter 42 currentLoss 0.424881
+iter 43 currentLoss 0.421139
+iter 44 currentLoss 0.4193
+iter 45 currentLoss 0.419378
+iter 46 currentLoss 0.420955
+iter 47 currentLoss 0.423361
+iter 48 currentLoss 0.42587
+iter 49 currentLoss 0.427874
+ori_rot
+0.104564 0.876673 0.469587 
+0.705139 0.267616 -0.656628 
+-0.701317 0.399784 -0.590193 
+our rotation matrix
+0.111751 0.771502 0.930829 
+1.01213 -0.133754 -0.661094 
+-1.04738 0.0899829 -0.634298 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0020 
+finding corres between 0020(id=19) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=871
+global_corres=871
+maxNumResiduals / maxNumberOfImages = 5671 / 2 = 2835
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 871 = 1742
+m_solver->solve Time difference = 6.31[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603636 
+0 0 0 1 
+rot after optim
+0.10467 0.875977 0.470858 -0.628971 
+0.706068 0.26797 -0.655484 0.414767 
+-0.700365 0.401068 -0.590451 0.604115 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2533.19 MB
+----- Before data_loader - GPU Memory Usage: 2533.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0021.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0021
+zmq start waiting for reply
+zmq got reply
+finding corres between 0021(id=20) and 0020(id=19)
+start multi pair ransac GPU, pairs#=1
+validRows 844
+iter 0 currentLoss 1.23522
+iter 1 currentLoss 1.11554
+iter 2 currentLoss 0.956841
+iter 3 currentLoss 0.777801
+iter 4 currentLoss 0.602595
+iter 5 currentLoss 0.465859
+iter 6 currentLoss 0.411094
+iter 7 currentLoss 0.448157
+iter 8 currentLoss 0.530741
+iter 9 currentLoss 0.614016
+iter 10 currentLoss 0.675865
+iter 11 currentLoss 0.707828
+iter 12 currentLoss 0.708569
+iter 13 currentLoss 0.681097
+iter 14 currentLoss 0.631555
+iter 15 currentLoss 0.568679
+iter 16 currentLoss 0.50353
+iter 17 currentLoss 0.448868
+iter 18 currentLoss 0.416579
+iter 19 currentLoss 0.412108
+iter 20 currentLoss 0.430548
+iter 21 currentLoss 0.460462
+iter 22 currentLoss 0.490753
+iter 23 currentLoss 0.513892
+iter 24 currentLoss 0.526005
+iter 25 currentLoss 0.526099
+iter 26 currentLoss 0.51532
+iter 27 currentLoss 0.496375
+iter 28 currentLoss 0.473009
+iter 29 currentLoss 0.449434
+iter 30 currentLoss 0.429599
+iter 31 currentLoss 0.416327
+iter 32 currentLoss 0.410599
+iter 33 currentLoss 0.411428
+iter 34 currentLoss 0.416461
+iter 35 currentLoss 0.422953
+iter 36 currentLoss 0.428566
+iter 37 currentLoss 0.431796
+iter 38 currentLoss 0.432063
+iter 39 currentLoss 0.429595
+iter 40 currentLoss 0.425213
+iter 41 currentLoss 0.420053
+iter 42 currentLoss 0.415284
+iter 43 currentLoss 0.411833
+iter 44 currentLoss 0.410201
+iter 45 currentLoss 0.410402
+iter 46 currentLoss 0.412029
+iter 47 currentLoss 0.414426
+iter 48 currentLoss 0.416884
+iter 49 currentLoss 0.418807
+ori_rot
+0.107601 0.876027 0.470104 
+0.700055 0.26899 -0.661489 
+-0.705936 0.400275 -0.584323 
+our rotation matrix
+0.0894731 0.770894 0.910494 
+0.998145 -0.111767 -0.720939 
+-1.05178 0.0739671 -0.577955 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0021 
+finding corres between 0021(id=20) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=864
+global_corres=864
+maxNumResiduals / maxNumberOfImages = 5664 / 2 = 2832
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 864 = 1728
+m_solver->solve Time difference = 6.094[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603636 
+0 0 0 1 
+rot after optim
+0.107939 0.875735 0.470571 -0.629256 
+0.701488 0.268315 -0.660243 0.419806 
+-0.704459 0.401366 -0.585356 0.60002 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2535.19 MB
+----- Before data_loader - GPU Memory Usage: 2535.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0022.png
+---- After data_loader - GPU Memory Usage: 2543.19 MB
+
+
+New frame 0022
+zmq start waiting for reply
+zmq got reply
+finding corres between 0022(id=21) and 0021(id=20)
+start multi pair ransac GPU, pairs#=1
+validRows 852
+iter 0 currentLoss 1.23475
+iter 1 currentLoss 1.11494
+iter 2 currentLoss 0.956072
+iter 3 currentLoss 0.77687
+iter 4 currentLoss 0.601559
+iter 5 currentLoss 0.464889
+iter 6 currentLoss 0.410492
+iter 7 currentLoss 0.448016
+iter 8 currentLoss 0.530841
+iter 9 currentLoss 0.614133
+iter 10 currentLoss 0.675851
+iter 11 currentLoss 0.707593
+iter 12 currentLoss 0.708064
+iter 13 currentLoss 0.68031
+iter 14 currentLoss 0.630514
+iter 15 currentLoss 0.567457
+iter 16 currentLoss 0.502255
+iter 17 currentLoss 0.447719
+iter 18 currentLoss 0.415746
+iter 19 currentLoss 0.411685
+iter 20 currentLoss 0.43047
+iter 21 currentLoss 0.460569
+iter 22 currentLoss 0.490883
+iter 23 currentLoss 0.513922
+iter 24 currentLoss 0.525857
+iter 25 currentLoss 0.525736
+iter 26 currentLoss 0.514745
+iter 27 currentLoss 0.49562
+iter 28 currentLoss 0.472136
+iter 29 currentLoss 0.448525
+iter 30 currentLoss 0.42874
+iter 31 currentLoss 0.415585
+iter 32 currentLoss 0.410004
+iter 33 currentLoss 0.410967
+iter 34 currentLoss 0.416089
+iter 35 currentLoss 0.422611
+iter 36 currentLoss 0.4282
+iter 37 currentLoss 0.43137
+iter 38 currentLoss 0.43156
+iter 39 currentLoss 0.429019
+iter 40 currentLoss 0.424582
+iter 41 currentLoss 0.4194
+iter 42 currentLoss 0.414641
+iter 43 currentLoss 0.411228
+iter 44 currentLoss 0.409652
+iter 45 currentLoss 0.40991
+iter 46 currentLoss 0.411583
+iter 47 currentLoss 0.414005
+iter 48 currentLoss 0.416466
+iter 49 currentLoss 0.418372
+ori_rot
+0.103295 0.87821 0.466987 
+0.709251 0.264131 -0.653604 
+-0.697347 0.398725 -0.595589 
+our rotation matrix
+0.0960697 0.770513 0.909628 
+0.992352 -0.110639 -0.727693 
+-1.0547 0.0744937 -0.570561 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0022 
+finding corres between 0022(id=21) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=872
+global_corres=872
+maxNumResiduals / maxNumberOfImages = 5672 / 2 = 2836
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 872 = 1744
+m_solver->solve Time difference = 6.01[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603635 
+0 0 0 1 
+rot after optim
+0.104977 0.877982 0.467042 -0.626035 
+0.703918 0.266142 -0.658535 0.418295 
+-0.702481 0.39789 -0.590088 0.60483 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0023.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0023
+zmq start waiting for reply
+zmq got reply
+finding corres between 0023(id=22) and 0022(id=21)
+start multi pair ransac GPU, pairs#=1
+validRows 847
+iter 0 currentLoss 1.23461
+iter 1 currentLoss 1.11479
+iter 2 currentLoss 0.955924
+iter 3 currentLoss 0.77673
+iter 4 currentLoss 0.601457
+iter 5 currentLoss 0.464878
+iter 6 currentLoss 0.410625
+iter 7 currentLoss 0.44826
+iter 8 currentLoss 0.531127
+iter 9 currentLoss 0.614422
+iter 10 currentLoss 0.676125
+iter 11 currentLoss 0.707842
+iter 12 currentLoss 0.708283
+iter 13 currentLoss 0.680499
+iter 14 currentLoss 0.630676
+iter 15 currentLoss 0.5676
+iter 16 currentLoss 0.502387
+iter 17 currentLoss 0.447851
+iter 18 currentLoss 0.415884
+iter 19 currentLoss 0.411826
+iter 20 currentLoss 0.430605
+iter 21 currentLoss 0.46069
+iter 22 currentLoss 0.490984
+iter 23 currentLoss 0.514
+iter 24 currentLoss 0.525912
+iter 25 currentLoss 0.525771
+iter 26 currentLoss 0.514765
+iter 27 currentLoss 0.495635
+iter 28 currentLoss 0.472157
+iter 29 currentLoss 0.448563
+iter 30 currentLoss 0.428805
+iter 31 currentLoss 0.415684
+iter 32 currentLoss 0.410137
+iter 33 currentLoss 0.411126
+iter 34 currentLoss 0.416265
+iter 35 currentLoss 0.422794
+iter 36 currentLoss 0.428383
+iter 37 currentLoss 0.431547
+iter 38 currentLoss 0.431728
+iter 39 currentLoss 0.429177
+iter 40 currentLoss 0.424733
+iter 41 currentLoss 0.419545
+iter 42 currentLoss 0.414783
+iter 43 currentLoss 0.411369
+iter 44 currentLoss 0.409794
+iter 45 currentLoss 0.410052
+iter 46 currentLoss 0.411724
+iter 47 currentLoss 0.414145
+iter 48 currentLoss 0.416603
+iter 49 currentLoss 0.418505
+ori_rot
+0.108529 0.876417 0.469165 
+0.6952 0.270437 -0.666003 
+-0.710576 0.398444 -0.579935 
+our rotation matrix
+0.0912392 0.77455 0.906109 
+0.995244 -0.112682 -0.722932 
+-1.05246 0.0709308 -0.575425 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0023 
+finding corres between 0023(id=22) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=871
+global_corres=871
+maxNumResiduals / maxNumberOfImages = 5671 / 2 = 2835
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 871 = 1742
+m_solver->solve Time difference = 6.334[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603635 
+0 0 0 1 
+rot after optim
+0.105047 0.876652 0.469518 -0.628057 
+0.704655 0.267536 -0.657179 0.416665 
+-0.70173 0.399883 -0.589634 0.603984 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0024.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0024
+zmq start waiting for reply
+zmq got reply
+finding corres between 0024(id=23) and 0023(id=22)
+start multi pair ransac GPU, pairs#=1
+validRows 830
+iter 0 currentLoss 1.24
+iter 1 currentLoss 1.11781
+iter 2 currentLoss 0.955984
+iter 3 currentLoss 0.773914
+iter 4 currentLoss 0.597099
+iter 5 currentLoss 0.462721
+iter 6 currentLoss 0.416334
+iter 7 currentLoss 0.463166
+iter 8 currentLoss 0.552217
+iter 9 currentLoss 0.638995
+iter 10 currentLoss 0.702336
+iter 11 currentLoss 0.734298
+iter 12 currentLoss 0.733842
+iter 13 currentLoss 0.704203
+iter 14 currentLoss 0.65174
+iter 15 currentLoss 0.585412
+iter 16 currentLoss 0.516541
+iter 17 currentLoss 0.458259
+iter 18 currentLoss 0.423008
+iter 19 currentLoss 0.416796
+iter 20 currentLoss 0.434797
+iter 21 currentLoss 0.465118
+iter 22 currentLoss 0.49612
+iter 23 currentLoss 0.519919
+iter 24 currentLoss 0.532479
+iter 25 currentLoss 0.532766
+iter 26 currentLoss 0.521962
+iter 27 currentLoss 0.502846
+iter 28 currentLoss 0.479251
+iter 29 currentLoss 0.455466
+iter 30 currentLoss 0.435484
+iter 31 currentLoss 0.422122
+iter 32 currentLoss 0.416315
+iter 33 currentLoss 0.417013
+iter 34 currentLoss 0.421821
+iter 35 currentLoss 0.427982
+iter 36 currentLoss 0.433184
+iter 37 currentLoss 0.435982
+iter 38 currentLoss 0.435874
+iter 39 currentLoss 0.43318
+iter 40 currentLoss 0.428813
+iter 41 currentLoss 0.42398
+iter 42 currentLoss 0.419881
+iter 43 currentLoss 0.417424
+iter 44 currentLoss 0.417035
+iter 45 currentLoss 0.418613
+iter 46 currentLoss 0.421628
+iter 47 currentLoss 0.42531
+iter 48 currentLoss 0.428867
+iter 49 currentLoss 0.431649
+ori_rot
+0.106335 0.878233 0.466262 
+0.700911 0.266401 -0.66163 
+-0.705278 0.397162 -0.587236 
+our rotation matrix
+0.109874 0.748478 0.906992 
+1.00558 -0.128035 -0.668198 
+-1.03437 0.116485 -0.63648 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0024 
+finding corres between 0024(id=23) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=862
+global_corres=862
+maxNumResiduals / maxNumberOfImages = 5662 / 2 = 2831
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 862 = 1724
+m_solver->solve Time difference = 6.033[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603635 
+0 0 0 1 
+rot after optim
+0.10582 0.878246 0.466354 -0.6254 
+0.702899 0.265672 -0.659811 0.419847 
+-0.703374 0.397621 -0.589205 0.604222 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0025.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0025
+zmq start waiting for reply
+zmq got reply
+finding corres between 0025(id=24) and 0024(id=23)
+start multi pair ransac GPU, pairs#=1
+validRows 842
+iter 0 currentLoss 1.23827
+iter 1 currentLoss 1.11088
+iter 2 currentLoss 0.942409
+iter 3 currentLoss 0.753741
+iter 4 currentLoss 0.573466
+iter 5 currentLoss 0.445677
+iter 6 currentLoss 0.421598
+iter 7 currentLoss 0.493495
+iter 8 currentLoss 0.599468
+iter 9 currentLoss 0.69642
+iter 10 currentLoss 0.765448
+iter 11 currentLoss 0.799719
+iter 12 currentLoss 0.798715
+iter 13 currentLoss 0.765949
+iter 14 currentLoss 0.707917
+iter 15 currentLoss 0.633601
+iter 16 currentLoss 0.554266
+iter 17 currentLoss 0.483213
+iter 18 currentLoss 0.434129
+iter 19 currentLoss 0.415899
+iter 20 currentLoss 0.426308
+iter 21 currentLoss 0.45352
+iter 22 currentLoss 0.484299
+iter 23 currentLoss 0.509228
+iter 24 currentLoss 0.52331
+iter 25 currentLoss 0.525025
+iter 26 currentLoss 0.515368
+iter 27 currentLoss 0.497123
+iter 28 currentLoss 0.474255
+iter 29 currentLoss 0.451247
+iter 30 currentLoss 0.432278
+iter 31 currentLoss 0.420255
+iter 32 currentLoss 0.416041
+iter 33 currentLoss 0.418382
+iter 34 currentLoss 0.424639
+iter 35 currentLoss 0.431867
+iter 36 currentLoss 0.437649
+iter 37 currentLoss 0.440521
+iter 38 currentLoss 0.440032
+iter 39 currentLoss 0.436611
+iter 40 currentLoss 0.431325
+iter 41 currentLoss 0.425568
+iter 42 currentLoss 0.42073
+iter 43 currentLoss 0.417878
+iter 44 currentLoss 0.41753
+iter 45 currentLoss 0.419587
+iter 46 currentLoss 0.423443
+iter 47 currentLoss 0.428201
+iter 48 currentLoss 0.432922
+iter 49 currentLoss 0.436821
+ori_rot
+0.10002 0.877692 0.468671 
+0.711651 0.266091 -0.65019 
+-0.695376 0.398562 -0.597997 
+our rotation matrix
+0.151908 0.728209 0.92675 
+0.956405 -0.0995751 -0.70086 
+-1.02641 0.120975 -0.633458 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0025 
+finding corres between 0025(id=24) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=874
+global_corres=874
+maxNumResiduals / maxNumberOfImages = 5674 / 2 = 2837
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 874 = 1748
+m_solver->solve Time difference = 6.108[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603635 
+0 0 0 1 
+rot after optim
+0.103244 0.877481 0.468367 -0.62673 
+0.705613 0.267265 -0.656262 0.415697 
+-0.701035 0.398241 -0.591568 0.605835 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0026.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0026
+zmq start waiting for reply
+zmq got reply
+finding corres between 0026(id=25) and 0025(id=24)
+start multi pair ransac GPU, pairs#=1
+validRows 851
+iter 0 currentLoss 1.23477
+iter 1 currentLoss 1.11524
+iter 2 currentLoss 0.956724
+iter 3 currentLoss 0.77788
+iter 4 currentLoss 0.602822
+iter 5 currentLoss 0.466075
+iter 6 currentLoss 0.411023
+iter 7 currentLoss 0.447683
+iter 8 currentLoss 0.529985
+iter 9 currentLoss 0.613118
+iter 10 currentLoss 0.674929
+iter 11 currentLoss 0.706932
+iter 12 currentLoss 0.707773
+iter 13 currentLoss 0.680443
+iter 14 currentLoss 0.631067
+iter 15 currentLoss 0.56836
+iter 16 currentLoss 0.503357
+iter 17 currentLoss 0.448786
+iter 18 currentLoss 0.416505
+iter 19 currentLoss 0.411962
+iter 20 currentLoss 0.430295
+iter 21 currentLoss 0.460113
+iter 22 currentLoss 0.49034
+iter 23 currentLoss 0.513453
+iter 24 currentLoss 0.525574
+iter 25 currentLoss 0.525701
+iter 26 currentLoss 0.514973
+iter 27 currentLoss 0.496085
+iter 28 currentLoss 0.472773
+iter 29 currentLoss 0.449244
+iter 30 currentLoss 0.429441
+iter 31 currentLoss 0.41619
+iter 32 currentLoss 0.410476
+iter 33 currentLoss 0.411319
+iter 34 currentLoss 0.416374
+iter 35 currentLoss 0.422895
+iter 36 currentLoss 0.428546
+iter 37 currentLoss 0.431817
+iter 38 currentLoss 0.432122
+iter 39 currentLoss 0.429683
+iter 40 currentLoss 0.425311
+iter 41 currentLoss 0.420142
+iter 42 currentLoss 0.41534
+iter 43 currentLoss 0.411836
+iter 44 currentLoss 0.410137
+iter 45 currentLoss 0.410264
+iter 46 currentLoss 0.41182
+iter 47 currentLoss 0.414156
+iter 48 currentLoss 0.416569
+iter 49 currentLoss 0.418465
+ori_rot
+0.103653 0.878748 0.465895 
+0.706461 0.264679 -0.656398 
+-0.700121 0.397174 -0.593366 
+our rotation matrix
+0.0883953 0.774964 0.909467 
+0.999583 -0.112076 -0.721749 
+-1.05018 0.0692137 -0.576522 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0026 
+finding corres between 0026(id=25) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=867
+global_corres=867
+maxNumResiduals / maxNumberOfImages = 5667 / 2 = 2833
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 867 = 1734
+m_solver->solve Time difference = 6.281[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603635 
+0 0 0 1 
+rot after optim
+0.104878 0.878037 0.466959 -0.625939 
+0.705518 0.265235 -0.657187 0.416966 
+-0.700888 0.398373 -0.591654 0.60579 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0027.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0027
+zmq start waiting for reply
+zmq got reply
+finding corres between 0027(id=26) and 0026(id=25)
+start multi pair ransac GPU, pairs#=1
+validRows 841
+iter 0 currentLoss 1.2359
+iter 1 currentLoss 1.11616
+iter 2 currentLoss 0.957384
+iter 3 currentLoss 0.778249
+iter 4 currentLoss 0.602917
+iter 5 currentLoss 0.465981
+iter 6 currentLoss 0.410919
+iter 7 currentLoss 0.447697
+iter 8 currentLoss 0.530067
+iter 9 currentLoss 0.613157
+iter 10 currentLoss 0.674822
+iter 11 currentLoss 0.706601
+iter 12 currentLoss 0.707168
+iter 13 currentLoss 0.679553
+iter 14 currentLoss 0.629924
+iter 15 currentLoss 0.567057
+iter 16 currentLoss 0.502063
+iter 17 currentLoss 0.447749
+iter 18 currentLoss 0.415991
+iter 19 currentLoss 0.412109
+iter 20 currentLoss 0.431026
+iter 21 currentLoss 0.461225
+iter 22 currentLoss 0.491628
+iter 23 currentLoss 0.514753
+iter 24 currentLoss 0.526772
+iter 25 currentLoss 0.526728
+iter 26 currentLoss 0.515791
+iter 27 currentLoss 0.496688
+iter 28 currentLoss 0.473178
+iter 29 currentLoss 0.449481
+iter 30 currentLoss 0.429548
+iter 31 currentLoss 0.416197
+iter 32 currentLoss 0.410401
+iter 33 currentLoss 0.411162
+iter 34 currentLoss 0.416123
+iter 35 currentLoss 0.422536
+iter 36 currentLoss 0.428069
+iter 37 currentLoss 0.431228
+iter 38 currentLoss 0.431442
+iter 39 currentLoss 0.428949
+iter 40 currentLoss 0.424577
+iter 41 currentLoss 0.419466
+iter 42 currentLoss 0.414779
+iter 43 currentLoss 0.411437
+iter 44 currentLoss 0.409925
+iter 45 currentLoss 0.410242
+iter 46 currentLoss 0.411967
+iter 47 currentLoss 0.414436
+iter 48 currentLoss 0.416936
+iter 49 currentLoss 0.418874
+ori_rot
+0.106096 0.877024 0.468587 
+0.701204 0.268137 -0.660618 
+-0.705022 0.398664 -0.586524 
+our rotation matrix
+0.0902839 0.774937 0.906582 
+0.996959 -0.114128 -0.721026 
+-1.05133 0.0714839 -0.577458 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0027 
+finding corres between 0027(id=26) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=863
+global_corres=863
+maxNumResiduals / maxNumberOfImages = 5663 / 2 = 2831
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 863 = 1726
+m_solver->solve Time difference = 5.967[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603634 
+0 0 0 1 
+rot after optim
+0.104296 0.877573 0.467962 -0.62665 
+0.702842 0.26787 -0.658983 0.41854 
+-0.703658 0.397633 -0.588857 0.603984 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0028.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0028
+zmq start waiting for reply
+zmq got reply
+finding corres between 0028(id=27) and 0027(id=26)
+start multi pair ransac GPU, pairs#=1
+validRows 850
+iter 0 currentLoss 1.23458
+iter 1 currentLoss 1.11476
+iter 2 currentLoss 0.955891
+iter 3 currentLoss 0.776691
+iter 4 currentLoss 0.601406
+iter 5 currentLoss 0.464812
+iter 6 currentLoss 0.410548
+iter 7 currentLoss 0.44819
+iter 8 currentLoss 0.53107
+iter 9 currentLoss 0.614377
+iter 10 currentLoss 0.67609
+iter 11 currentLoss 0.707814
+iter 12 currentLoss 0.70826
+iter 13 currentLoss 0.680479
+iter 14 currentLoss 0.630656
+iter 15 currentLoss 0.567575
+iter 16 currentLoss 0.502352
+iter 17 currentLoss 0.447801
+iter 18 currentLoss 0.415816
+iter 19 currentLoss 0.411744
+iter 20 currentLoss 0.430516
+iter 21 currentLoss 0.460601
+iter 22 currentLoss 0.490898
+iter 23 currentLoss 0.513918
+iter 24 currentLoss 0.525836
+iter 25 currentLoss 0.525699
+iter 26 currentLoss 0.514696
+iter 27 currentLoss 0.495568
+iter 28 currentLoss 0.472089
+iter 29 currentLoss 0.448493
+iter 30 currentLoss 0.428732
+iter 31 currentLoss 0.415608
+iter 32 currentLoss 0.410058
+iter 33 currentLoss 0.411047
+iter 34 currentLoss 0.416188
+iter 35 currentLoss 0.422719
+iter 36 currentLoss 0.42831
+iter 37 currentLoss 0.431476
+iter 38 currentLoss 0.431658
+iter 39 currentLoss 0.429108
+iter 40 currentLoss 0.424663
+iter 41 currentLoss 0.419474
+iter 42 currentLoss 0.414709
+iter 43 currentLoss 0.411293
+iter 44 currentLoss 0.409715
+iter 45 currentLoss 0.409971
+iter 46 currentLoss 0.411641
+iter 47 currentLoss 0.414061
+iter 48 currentLoss 0.416519
+iter 49 currentLoss 0.418422
+ori_rot
+0.105563 0.877409 0.467985 
+0.702665 0.267192 -0.659447 
+-0.703647 0.39845 -0.588319 
+our rotation matrix
+0.0912353 0.773573 0.907031 
+0.994684 -0.110559 -0.724086 
+-1.05332 0.070208 -0.574239 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0028 
+finding corres between 0028(id=27) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=875
+global_corres=875
+maxNumResiduals / maxNumberOfImages = 5675 / 2 = 2837
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 875 = 1750
+m_solver->solve Time difference = 6.215[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603634 
+0 0 0 1 
+rot after optim
+0.106469 0.876754 0.469006 -0.627914 
+0.702986 0.267207 -0.659098 0.418818 
+-0.703189 0.399879 -0.587896 0.602636 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0029.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0029
+zmq start waiting for reply
+zmq got reply
+finding corres between 0029(id=28) and 0028(id=27)
+start multi pair ransac GPU, pairs#=1
+validRows 854
+iter 0 currentLoss 1.23487
+iter 1 currentLoss 1.11507
+iter 2 currentLoss 0.956233
+iter 3 currentLoss 0.777072
+iter 4 currentLoss 0.601828
+iter 5 currentLoss 0.465252
+iter 6 currentLoss 0.41093
+iter 7 currentLoss 0.448458
+iter 8 currentLoss 0.531262
+iter 9 currentLoss 0.61455
+iter 10 currentLoss 0.676286
+iter 11 currentLoss 0.708063
+iter 12 currentLoss 0.708581
+iter 13 currentLoss 0.680882
+iter 14 currentLoss 0.631142
+iter 15 currentLoss 0.56813
+iter 16 currentLoss 0.50294
+iter 17 currentLoss 0.448353
+iter 18 currentLoss 0.416233
+iter 19 currentLoss 0.411943
+iter 20 currentLoss 0.430473
+iter 21 currentLoss 0.460345
+iter 22 currentLoss 0.490477
+iter 23 currentLoss 0.513378
+iter 24 currentLoss 0.525216
+iter 25 currentLoss 0.525037
+iter 26 currentLoss 0.514027
+iter 27 currentLoss 0.494929
+iter 28 currentLoss 0.471525
+iter 29 currentLoss 0.448051
+iter 30 currentLoss 0.42846
+iter 31 currentLoss 0.415544
+iter 32 currentLoss 0.410223
+iter 33 currentLoss 0.411435
+iter 34 currentLoss 0.416776
+iter 35 currentLoss 0.423473
+iter 36 currentLoss 0.42919
+iter 37 currentLoss 0.43244
+iter 38 currentLoss 0.432663
+iter 39 currentLoss 0.430107
+iter 40 currentLoss 0.42561
+iter 41 currentLoss 0.420322
+iter 42 currentLoss 0.415417
+iter 43 currentLoss 0.411827
+iter 44 currentLoss 0.410054
+iter 45 currentLoss 0.410112
+iter 46 currentLoss 0.411596
+iter 47 currentLoss 0.413854
+iter 48 currentLoss 0.416184
+iter 49 currentLoss 0.417998
+ori_rot
+0.101045 0.877714 0.468409 
+0.710181 0.266087 -0.651798 
+-0.69673 0.398516 -0.59645 
+our rotation matrix
+0.0923904 0.764727 0.898718 
+1.02706 -0.135047 -0.681595 
+-1.07877 0.0929454 -0.597814 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0029 
+finding corres between 0029(id=28) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=867
+global_corres=867
+maxNumResiduals / maxNumberOfImages = 5667 / 2 = 2833
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 867 = 1734
+m_solver->solve Time difference = 6.15[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603634 
+0 0 0 1 
+rot after optim
+0.104475 0.876707 0.469541 -0.628004 
+0.70442 0.268048 -0.657224 0.416656 
+-0.702052 0.399418 -0.589566 0.60406 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0030.png
+---- After data_loader - GPU Memory Usage: 2545.19 MB
+
+
+New frame 0030
+zmq start waiting for reply
+zmq got reply
+finding corres between 0030(id=29) and 0029(id=28)
+start multi pair ransac GPU, pairs#=1
+validRows 848
+iter 0 currentLoss 1.23607
+iter 1 currentLoss 1.11484
+iter 2 currentLoss 0.954199
+iter 3 currentLoss 0.773269
+iter 4 currentLoss 0.597081
+iter 5 currentLoss 0.462005
+iter 6 currentLoss 0.413112
+iter 7 currentLoss 0.457197
+iter 8 currentLoss 0.544527
+iter 9 currentLoss 0.630447
+iter 10 currentLoss 0.693531
+iter 11 currentLoss 0.725691
+iter 12 currentLoss 0.725786
+iter 13 currentLoss 0.696958
+iter 14 currentLoss 0.645467
+iter 15 currentLoss 0.580169
+iter 16 currentLoss 0.512286
+iter 17 currentLoss 0.45485
+iter 18 currentLoss 0.420231
+iter 19 currentLoss 0.414423
+iter 20 currentLoss 0.432673
+iter 21 currentLoss 0.463203
+iter 22 currentLoss 0.494461
+iter 23 currentLoss 0.518601
+iter 24 currentLoss 0.531576
+iter 25 currentLoss 0.532307
+iter 26 currentLoss 0.521908
+iter 27 currentLoss 0.503074
+iter 28 currentLoss 0.479552
+iter 29 currentLoss 0.455563
+iter 30 currentLoss 0.435076
+iter 31 currentLoss 0.420963
+iter 32 currentLoss 0.414284
+iter 33 currentLoss 0.414144
+iter 34 currentLoss 0.41827
+iter 35 currentLoss 0.423966
+iter 36 currentLoss 0.428925
+iter 37 currentLoss 0.431668
+iter 38 currentLoss 0.431648
+iter 39 currentLoss 0.429136
+iter 40 currentLoss 0.424994
+iter 41 currentLoss 0.420396
+iter 42 currentLoss 0.416514
+iter 43 currentLoss 0.414244
+iter 44 currentLoss 0.414012
+iter 45 currentLoss 0.415722
+iter 46 currentLoss 0.41885
+iter 47 currentLoss 0.422634
+iter 48 currentLoss 0.426278
+iter 49 currentLoss 0.429127
+ori_rot
+0.106615 0.877636 0.46732 
+0.701273 0.266817 -0.661078 
+-0.704875 0.398199 -0.587016 
+our rotation matrix
+0.0898994 0.750081 0.906186 
+1.01722 -0.0927552 -0.702567 
+-1.02795 0.0819712 -0.601494 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0030 
+finding corres between 0030(id=29) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=873
+global_corres=873
+maxNumResiduals / maxNumberOfImages = 5673 / 2 = 2836
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 873 = 1746
+m_solver->solve Time difference = 6.135[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603634 
+0 0 0 1 
+rot after optim
+0.106194 0.878137 0.466474 -0.625696 
+0.702867 0.265545 -0.659897 0.419835 
+-0.70335 0.397946 -0.589014 0.60395 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2539.19 MB
+----- Before data_loader - GPU Memory Usage: 2539.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0031.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0031
+zmq start waiting for reply
+zmq got reply
+finding corres between 0031(id=30) and 0030(id=29)
+start multi pair ransac GPU, pairs#=1
+validRows 846
+iter 0 currentLoss 1.2341
+iter 1 currentLoss 1.11362
+iter 2 currentLoss 0.953828
+iter 3 currentLoss 0.773541
+iter 4 currentLoss 0.597252
+iter 5 currentLoss 0.460498
+iter 6 currentLoss 0.408236
+iter 7 currentLoss 0.449449
+iter 8 currentLoss 0.535486
+iter 9 currentLoss 0.621143
+iter 10 currentLoss 0.684585
+iter 11 currentLoss 0.717528
+iter 12 currentLoss 0.718698
+iter 13 currentLoss 0.691102
+iter 14 currentLoss 0.640838
+iter 15 currentLoss 0.576568
+iter 16 currentLoss 0.509272
+iter 17 currentLoss 0.451739
+iter 18 currentLoss 0.41625
+iter 19 currentLoss 0.409078
+iter 20 currentLoss 0.425975
+iter 21 currentLoss 0.455488
+iter 22 currentLoss 0.48613
+iter 23 currentLoss 0.509995
+iter 24 currentLoss 0.522956
+iter 25 currentLoss 0.523857
+iter 26 currentLoss 0.513741
+iter 27 currentLoss 0.495249
+iter 28 currentLoss 0.472095
+iter 29 currentLoss 0.448494
+iter 30 currentLoss 0.428443
+iter 31 currentLoss 0.414851
+iter 32 currentLoss 0.408803
+iter 33 currentLoss 0.409394
+iter 34 currentLoss 0.41431
+iter 35 currentLoss 0.420792
+iter 36 currentLoss 0.426466
+iter 37 currentLoss 0.429785
+iter 38 currentLoss 0.430132
+iter 39 currentLoss 0.427715
+iter 40 currentLoss 0.423351
+iter 41 currentLoss 0.418192
+iter 42 currentLoss 0.413432
+iter 43 currentLoss 0.410033
+iter 44 currentLoss 0.408524
+iter 45 currentLoss 0.408932
+iter 46 currentLoss 0.410847
+iter 47 currentLoss 0.413589
+iter 48 currentLoss 0.416417
+iter 49 currentLoss 0.418694
+ori_rot
+0.1068 0.877769 0.467028 
+0.702523 0.265774 -0.660171 
+-0.703602 0.398603 -0.588268 
+our rotation matrix
+0.0854992 0.775159 0.938292 
+1.01722 -0.115309 -0.709021 
+-1.03477 0.0612565 -0.602558 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0031 
+finding corres between 0031(id=30) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=868
+global_corres=868
+maxNumResiduals / maxNumberOfImages = 5668 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 868 = 1736
+m_solver->solve Time difference = 6.248[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603634 
+0 0 0 1 
+rot after optim
+0.106019 0.877403 0.467892 -0.626806 
+0.704097 0.266022 -0.658391 0.418081 
+-0.702145 0.399243 -0.589574 0.603947 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2539.19 MB
+----- Before data_loader - GPU Memory Usage: 2539.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0032.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0032
+zmq start waiting for reply
+zmq got reply
+finding corres between 0032(id=31) and 0031(id=30)
+start multi pair ransac GPU, pairs#=1
+validRows 838
+iter 0 currentLoss 1.22442
+iter 1 currentLoss 1.10073
+iter 2 currentLoss 0.936976
+iter 3 currentLoss 0.753054
+iter 4 currentLoss 0.575625
+iter 5 currentLoss 0.444883
+iter 6 currentLoss 0.409529
+iter 7 currentLoss 0.468967
+iter 8 currentLoss 0.566193
+iter 9 currentLoss 0.657433
+iter 10 currentLoss 0.722959
+iter 11 currentLoss 0.755578
+iter 12 currentLoss 0.754601
+iter 13 currentLoss 0.723421
+iter 14 currentLoss 0.668438
+iter 15 currentLoss 0.59856
+iter 16 currentLoss 0.525008
+iter 17 currentLoss 0.460942
+iter 18 currentLoss 0.419409
+iter 19 currentLoss 0.407776
+iter 20 currentLoss 0.422305
+iter 21 currentLoss 0.450996
+iter 22 currentLoss 0.481493
+iter 23 currentLoss 0.505304
+iter 24 currentLoss 0.518056
+iter 25 currentLoss 0.518569
+iter 26 currentLoss 0.507998
+iter 27 currentLoss 0.489172
+iter 28 currentLoss 0.466016
+iter 29 currentLoss 0.442933
+iter 30 currentLoss 0.423992
+iter 31 currentLoss 0.411997
+iter 32 currentLoss 0.40774
+iter 33 currentLoss 0.409949
+iter 34 currentLoss 0.416018
+iter 35 currentLoss 0.423057
+iter 36 currentLoss 0.428711
+iter 37 currentLoss 0.43155
+iter 38 currentLoss 0.43113
+iter 39 currentLoss 0.42785
+iter 40 currentLoss 0.422716
+iter 41 currentLoss 0.41704
+iter 42 currentLoss 0.412124
+iter 43 currentLoss 0.408965
+iter 44 currentLoss 0.408048
+iter 45 currentLoss 0.409289
+iter 46 currentLoss 0.41214
+iter 47 currentLoss 0.415787
+iter 48 currentLoss 0.419385
+iter 49 currentLoss 0.422238
+ori_rot
+0.106156 0.876911 0.468785 
+0.704132 0.266586 -0.658127 
+-0.702089 0.39995 -0.589161 
+our rotation matrix
+0.127092 0.739774 0.907959 
+0.973876 -0.0977424 -0.70744 
+-1.05879 0.105652 -0.596189 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0032 
+finding corres between 0032(id=31) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=861
+global_corres=861
+maxNumResiduals / maxNumberOfImages = 5661 / 2 = 2830
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 861 = 1722
+m_solver->solve Time difference = 6.29[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603633 
+0 0 0 1 
+rot after optim
+0.105819 0.877332 0.468071 -0.626908 
+0.703884 0.266403 -0.658465 0.418143 
+-0.702388 0.399145 -0.58935 0.603904 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0033.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0033
+zmq start waiting for reply
+zmq got reply
+finding corres between 0033(id=32) and 0032(id=31)
+start multi pair ransac GPU, pairs#=1
+validRows 844
+iter 0 currentLoss 1.23693
+iter 1 currentLoss 1.11282
+iter 2 currentLoss 0.948159
+iter 3 currentLoss 0.762404
+iter 4 currentLoss 0.581351
+iter 5 currentLoss 0.443976
+iter 6 currentLoss 0.400489
+iter 7 currentLoss 0.455749
+iter 8 currentLoss 0.552753
+iter 9 currentLoss 0.645431
+iter 10 currentLoss 0.713036
+iter 11 currentLoss 0.747985
+iter 12 currentLoss 0.749364
+iter 13 currentLoss 0.720364
+iter 14 currentLoss 0.667159
+iter 15 currentLoss 0.598373
+iter 16 currentLoss 0.524865
+iter 17 currentLoss 0.459428
+iter 18 currentLoss 0.41504
+iter 19 currentLoss 0.399769
+iter 20 currentLoss 0.411036
+iter 21 currentLoss 0.437474
+iter 22 currentLoss 0.46667
+iter 23 currentLoss 0.489857
+iter 24 currentLoss 0.502416
+iter 25 currentLoss 0.502999
+iter 26 currentLoss 0.492671
+iter 27 currentLoss 0.474238
+iter 28 currentLoss 0.451683
+iter 29 currentLoss 0.429535
+iter 30 currentLoss 0.412017
+iter 31 currentLoss 0.40202
+iter 32 currentLoss 0.400274
+iter 33 currentLoss 0.405297
+iter 34 currentLoss 0.414216
+iter 35 currentLoss 0.423899
+iter 36 currentLoss 0.4318
+iter 37 currentLoss 0.43634
+iter 38 currentLoss 0.43694
+iter 39 currentLoss 0.433888
+iter 40 currentLoss 0.428111
+iter 41 currentLoss 0.4209
+iter 42 currentLoss 0.413627
+iter 43 currentLoss 0.407463
+iter 44 currentLoss 0.403161
+iter 45 currentLoss 0.400949
+iter 46 currentLoss 0.400571
+iter 47 currentLoss 0.401442
+iter 48 currentLoss 0.402856
+iter 49 currentLoss 0.40418
+ori_rot
+0.107529 0.877218 0.467895 
+0.701717 0.266426 -0.660765 
+-0.704294 0.399381 -0.58691 
+our rotation matrix
+0.145448 0.786535 0.981567 
+0.991792 -0.149787 -0.684362 
+-1.0818 0.0600195 -0.638936 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0033 
+finding corres between 0033(id=32) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=886
+global_corres=886
+maxNumResiduals / maxNumberOfImages = 5686 / 2 = 2843
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 886 = 1772
+m_solver->solve Time difference = 6.194[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603633 
+0 0 0 1 
+rot after optim
+0.106886 0.877317 0.467857 -0.627048 
+0.702078 0.266597 -0.660312 0.420322 
+-0.704033 0.39905 -0.58745 0.602592 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2541.19 MB
+----- Before data_loader - GPU Memory Usage: 2541.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0034.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0034
+zmq start waiting for reply
+zmq got reply
+finding corres between 0034(id=33) and 0033(id=32)
+start multi pair ransac GPU, pairs#=1
+validRows 852
+iter 0 currentLoss 1.22838
+iter 1 currentLoss 1.10617
+iter 2 currentLoss 0.944176
+iter 3 currentLoss 0.761664
+iter 4 currentLoss 0.584085
+iter 5 currentLoss 0.44922
+iter 6 currentLoss 0.404556
+iter 7 currentLoss 0.455137
+iter 8 currentLoss 0.54737
+iter 9 currentLoss 0.636266
+iter 10 currentLoss 0.701028
+iter 11 currentLoss 0.733961
+iter 12 currentLoss 0.73411
+iter 13 currentLoss 0.704683
+iter 14 currentLoss 0.651928
+iter 15 currentLoss 0.584625
+iter 16 currentLoss 0.513888
+iter 17 currentLoss 0.45276
+iter 18 currentLoss 0.414054
+iter 19 currentLoss 0.404731
+iter 20 currentLoss 0.420762
+iter 21 currentLoss 0.450264
+iter 22 currentLoss 0.481197
+iter 23 currentLoss 0.505319
+iter 24 currentLoss 0.518368
+iter 25 currentLoss 0.519174
+iter 26 currentLoss 0.508835
+iter 27 currentLoss 0.490081
+iter 28 currentLoss 0.466736
+iter 29 currentLoss 0.443122
+iter 30 currentLoss 0.423302
+iter 31 currentLoss 0.410182
+iter 32 currentLoss 0.40475
+iter 33 currentLoss 0.405949
+iter 34 currentLoss 0.411318
+iter 35 currentLoss 0.418018
+iter 36 currentLoss 0.42366
+iter 37 currentLoss 0.426742
+iter 38 currentLoss 0.426723
+iter 39 currentLoss 0.423901
+iter 40 currentLoss 0.41919
+iter 41 currentLoss 0.413826
+iter 42 currentLoss 0.409064
+iter 43 currentLoss 0.405887
+iter 44 currentLoss 0.4048
+iter 45 currentLoss 0.40577
+iter 46 currentLoss 0.408307
+iter 47 currentLoss 0.41165
+iter 48 currentLoss 0.414995
+iter 49 currentLoss 0.417664
+ori_rot
+0.104473 0.87616 0.470561 
+0.704924 0.268526 -0.656487 
+-0.701546 0.400296 -0.589573 
+our rotation matrix
+0.102191 0.764281 0.928547 
+0.959281 -0.097359 -0.69984 
+-1.02274 0.0868241 -0.621541 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0034 
+finding corres between 0034(id=33) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=882
+global_corres=882
+maxNumResiduals / maxNumberOfImages = 5682 / 2 = 2841
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 882 = 1764
+m_solver->solve Time difference = 6.332[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603633 
+0 0 0 1 
+rot after optim
+0.105276 0.876392 0.46995 -0.628435 
+0.704214 0.267967 -0.657477 0.417005 
+-0.702139 0.400162 -0.588957 0.603402 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2539.19 MB
+----- Before data_loader - GPU Memory Usage: 2539.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0035.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0035
+zmq start waiting for reply
+zmq got reply
+finding corres between 0035(id=34) and 0034(id=33)
+start multi pair ransac GPU, pairs#=1
+validRows 833
+iter 0 currentLoss 1.23461
+iter 1 currentLoss 1.11473
+iter 2 currentLoss 0.9558
+iter 3 currentLoss 0.776603
+iter 4 currentLoss 0.601545
+iter 5 currentLoss 0.465726
+iter 6 currentLoss 0.412966
+iter 7 currentLoss 0.452173
+iter 8 currentLoss 0.536262
+iter 9 currentLoss 0.620581
+iter 10 currentLoss 0.683214
+iter 11 currentLoss 0.715766
+iter 12 currentLoss 0.7169
+iter 13 currentLoss 0.689594
+iter 14 currentLoss 0.639941
+iter 15 currentLoss 0.5766
+iter 16 currentLoss 0.51053
+iter 17 currentLoss 0.454402
+iter 18 currentLoss 0.420194
+iter 19 currentLoss 0.413781
+iter 20 currentLoss 0.430783
+iter 21 currentLoss 0.459957
+iter 22 currentLoss 0.490088
+iter 23 currentLoss 0.513448
+iter 24 currentLoss 0.525999
+iter 25 currentLoss 0.526627
+iter 26 currentLoss 0.516397
+iter 27 currentLoss 0.497955
+iter 28 currentLoss 0.475005
+iter 29 currentLoss 0.451735
+iter 30 currentLoss 0.432088
+iter 31 currentLoss 0.418901
+iter 32 currentLoss 0.413196
+iter 33 currentLoss 0.41403
+iter 34 currentLoss 0.419092
+iter 35 currentLoss 0.425651
+iter 36 currentLoss 0.431364
+iter 37 currentLoss 0.43471
+iter 38 currentLoss 0.435084
+iter 39 currentLoss 0.432695
+iter 40 currentLoss 0.428346
+iter 41 currentLoss 0.423174
+iter 42 currentLoss 0.418352
+iter 43 currentLoss 0.414828
+iter 44 currentLoss 0.413129
+iter 45 currentLoss 0.413291
+iter 46 currentLoss 0.414926
+iter 47 currentLoss 0.417383
+iter 48 currentLoss 0.419948
+iter 49 currentLoss 0.422009
+ori_rot
+0.105513 0.877087 0.468599 
+0.703534 0.267191 -0.65852 
+-0.702786 0.399157 -0.588868 
+our rotation matrix
+0.0915918 0.775504 0.941552 
+1.0158 -0.112388 -0.718168 
+-1.03174 0.0547963 -0.599643 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0035 
+finding corres between 0035(id=34) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=857
+global_corres=857
+maxNumResiduals / maxNumberOfImages = 5657 / 2 = 2828
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 857 = 1714
+m_solver->solve Time difference = 6.098[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603633 
+0 0 0 1 
+rot after optim
+0.105406 0.876978 0.468828 -0.627463 
+0.70402 0.267154 -0.658015 0.417622 
+-0.702314 0.399423 -0.589251 0.603625 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2539.19 MB
+----- Before data_loader - GPU Memory Usage: 2539.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0036.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0036
+zmq start waiting for reply
+zmq got reply
+finding corres between 0036(id=35) and 0035(id=34)
+start multi pair ransac GPU, pairs#=1
+validRows 840
+iter 0 currentLoss 1.23052
+iter 1 currentLoss 1.10971
+iter 2 currentLoss 0.949439
+iter 3 currentLoss 0.768537
+iter 4 currentLoss 0.591605
+iter 5 currentLoss 0.454665
+iter 6 currentLoss 0.40374
+iter 7 currentLoss 0.44748
+iter 8 currentLoss 0.535637
+iter 9 currentLoss 0.622716
+iter 10 currentLoss 0.687102
+iter 11 currentLoss 0.720665
+iter 12 currentLoss 0.722197
+iter 13 currentLoss 0.694708
+iter 14 currentLoss 0.644259
+iter 15 currentLoss 0.579419
+iter 16 currentLoss 0.511031
+iter 17 currentLoss 0.451759
+iter 18 currentLoss 0.41396
+iter 19 currentLoss 0.404367
+iter 20 currentLoss 0.419288
+iter 21 currentLoss 0.447447
+iter 22 currentLoss 0.477224
+iter 23 currentLoss 0.500545
+iter 24 currentLoss 0.51317
+iter 25 currentLoss 0.513895
+iter 26 currentLoss 0.503765
+iter 27 currentLoss 0.485457
+iter 28 currentLoss 0.462748
+iter 29 currentLoss 0.439931
+iter 30 currentLoss 0.421048
+iter 31 currentLoss 0.408978
+iter 32 currentLoss 0.404675
+iter 33 currentLoss 0.407036
+iter 34 currentLoss 0.413559
+iter 35 currentLoss 0.421365
+iter 36 currentLoss 0.428021
+iter 37 currentLoss 0.431963
+iter 38 currentLoss 0.432578
+iter 39 currentLoss 0.430079
+iter 40 currentLoss 0.4253
+iter 41 currentLoss 0.419421
+iter 42 currentLoss 0.413683
+iter 43 currentLoss 0.409123
+iter 44 currentLoss 0.406363
+iter 45 currentLoss 0.40553
+iter 46 currentLoss 0.406303
+iter 47 currentLoss 0.408076
+iter 48 currentLoss 0.410147
+iter 49 currentLoss 0.411906
+ori_rot
+0.106734 0.876517 0.469388 
+0.703129 0.267247 -0.65893 
+-0.703006 0.400371 -0.58778 
+our rotation matrix
+0.101744 0.802669 0.982692 
+0.964402 -0.136446 -0.690319 
+-1.026 0.0915199 -0.603958 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0036 
+finding corres between 0036(id=35) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=869
+global_corres=869
+maxNumResiduals / maxNumberOfImages = 5669 / 2 = 2834
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 869 = 1738
+m_solver->solve Time difference = 6.083[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603633 
+0 0 0 1 
+rot after optim
+0.107168 0.876149 0.469976 -0.628596 
+0.703391 0.267266 -0.658642 0.418208 
+-0.702678 0.401162 -0.587633 0.601821 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2537.19 MB
+----- Before data_loader - GPU Memory Usage: 2537.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0037.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0037
+zmq start waiting for reply
+zmq got reply
+finding corres between 0037(id=36) and 0036(id=35)
+start multi pair ransac GPU, pairs#=1
+validRows 841
+iter 0 currentLoss 1.23168
+iter 1 currentLoss 1.11152
+iter 2 currentLoss 0.952324
+iter 3 currentLoss 0.773092
+iter 4 currentLoss 0.598683
+iter 5 currentLoss 0.465039
+iter 6 currentLoss 0.416294
+iter 7 currentLoss 0.459253
+iter 8 currentLoss 0.545568
+iter 9 currentLoss 0.631157
+iter 10 currentLoss 0.69458
+iter 11 currentLoss 0.727636
+iter 12 currentLoss 0.729055
+iter 13 currentLoss 0.701829
+iter 14 currentLoss 0.652015
+iter 15 currentLoss 0.588178
+iter 16 currentLoss 0.521087
+iter 17 currentLoss 0.463148
+iter 18 currentLoss 0.426189
+iter 19 currentLoss 0.416432
+iter 20 currentLoss 0.430242
+iter 21 currentLoss 0.456882
+iter 22 currentLoss 0.485191
+iter 23 currentLoss 0.507311
+iter 24 currentLoss 0.519079
+iter 25 currentLoss 0.519321
+iter 26 currentLoss 0.509101
+iter 27 currentLoss 0.491115
+iter 28 currentLoss 0.469139
+iter 29 currentLoss 0.44742
+iter 30 currentLoss 0.429886
+iter 31 currentLoss 0.419233
+iter 32 currentLoss 0.416214
+iter 33 currentLoss 0.419591
+iter 34 currentLoss 0.426827
+iter 35 currentLoss 0.435078
+iter 36 currentLoss 0.441978
+iter 37 currentLoss 0.44602
+iter 38 currentLoss 0.446625
+iter 39 currentLoss 0.444024
+iter 40 currentLoss 0.439045
+iter 41 currentLoss 0.432853
+iter 42 currentLoss 0.426677
+iter 43 currentLoss 0.421547
+iter 44 currentLoss 0.4181
+iter 45 currentLoss 0.416501
+iter 46 currentLoss 0.416486
+iter 47 currentLoss 0.417506
+iter 48 currentLoss 0.418919
+iter 49 currentLoss 0.42016
+ori_rot
+0.103251 0.876706 0.469814 
+0.706514 0.267831 -0.65506 
+-0.700126 0.399566 -0.591751 
+our rotation matrix
+0.139731 0.788523 0.956936 
+0.984043 -0.138329 -0.712533 
+-1.04719 0.049006 -0.627747 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0037 
+finding corres between 0037(id=36) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=857
+global_corres=857
+maxNumResiduals / maxNumberOfImages = 5657 / 2 = 2828
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 857 = 1714
+m_solver->solve Time difference = 6.188[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603633 
+0 0 0 1 
+rot after optim
+0.104952 0.876764 0.469328 -0.627695 
+0.703256 0.268249 -0.658387 0.417748 
+-0.703147 0.399157 -0.588436 0.603088 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2539.19 MB
+----- Before data_loader - GPU Memory Usage: 2539.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0038.png
+---- After data_loader - GPU Memory Usage: 2547.19 MB
+
+
+New frame 0038
+zmq start waiting for reply
+zmq got reply
+finding corres between 0038(id=37) and 0037(id=36)
+start multi pair ransac GPU, pairs#=1
+validRows 855
+iter 0 currentLoss 1.22981
+iter 1 currentLoss 1.10984
+iter 2 currentLoss 0.950913
+iter 3 currentLoss 0.772038
+iter 4 currentLoss 0.59809
+iter 5 currentLoss 0.465033
+iter 6 currentLoss 0.416841
+iter 7 currentLoss 0.46002
+iter 8 currentLoss 0.546299
+iter 9 currentLoss 0.631795
+iter 10 currentLoss 0.695147
+iter 11 currentLoss 0.728174
+iter 12 currentLoss 0.729611
+iter 13 currentLoss 0.702441
+iter 14 currentLoss 0.652709
+iter 15 currentLoss 0.588962
+iter 16 currentLoss 0.521939
+iter 17 currentLoss 0.464
+iter 18 currentLoss 0.426928
+iter 19 currentLoss 0.416944
+iter 20 currentLoss 0.430479
+iter 21 currentLoss 0.456873
+iter 22 currentLoss 0.485003
+iter 23 currentLoss 0.507015
+iter 24 currentLoss 0.518739
+iter 25 currentLoss 0.518995
+iter 26 currentLoss 0.508837
+iter 27 currentLoss 0.490954
+iter 28 currentLoss 0.469113
+iter 29 currentLoss 0.447551
+iter 30 currentLoss 0.43018
+iter 31 currentLoss 0.419677
+iter 32 currentLoss 0.416782
+iter 33 currentLoss 0.42025
+iter 34 currentLoss 0.427546
+iter 35 currentLoss 0.435835
+iter 36 currentLoss 0.442759
+iter 37 currentLoss 0.446815
+iter 38 currentLoss 0.447428
+iter 39 currentLoss 0.444829
+iter 40 currentLoss 0.439843
+iter 41 currentLoss 0.433634
+iter 42 currentLoss 0.427428
+iter 43 currentLoss 0.422255
+iter 44 currentLoss 0.418757
+iter 45 currentLoss 0.417102
+iter 46 currentLoss 0.417031
+iter 47 currentLoss 0.418001
+iter 48 currentLoss 0.419376
+iter 49 currentLoss 0.420592
+ori_rot
+0.106946 0.876869 0.468682 
+0.701345 0.267595 -0.660688 
+-0.704754 0.399366 -0.586369 
+our rotation matrix
+0.137182 0.78947 0.955516 
+0.98426 -0.136148 -0.711538 
+-1.04645 0.0467372 -0.628089 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0038 
+finding corres between 0038(id=37) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=865
+global_corres=865
+maxNumResiduals / maxNumberOfImages = 5665 / 2 = 2832
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 865 = 1730
+m_solver->solve Time difference = 6.136[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603632 
+0 0 0 1 
+rot after optim
+0.105427 0.875929 0.47078 -0.629029 
+0.705329 0.267858 -0.656326 0.415657 
+-0.700997 0.401249 -0.589578 0.603378 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2543.19 MB
+----- Before data_loader - GPU Memory Usage: 2543.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0039.png
+---- After data_loader - GPU Memory Usage: 2549.19 MB
+
+
+New frame 0039
+zmq start waiting for reply
+zmq got reply
+finding corres between 0039(id=38) and 0038(id=37)
+start multi pair ransac GPU, pairs#=1
+validRows 856
+iter 0 currentLoss 1.2334
+iter 1 currentLoss 1.10531
+iter 2 currentLoss 0.935901
+iter 3 currentLoss 0.746197
+iter 4 currentLoss 0.565214
+iter 5 currentLoss 0.438339
+iter 6 currentLoss 0.418226
+iter 7 currentLoss 0.494665
+iter 8 currentLoss 0.603618
+iter 9 currentLoss 0.702297
+iter 10 currentLoss 0.772269
+iter 11 currentLoss 0.806941
+iter 12 currentLoss 0.805911
+iter 13 currentLoss 0.772739
+iter 14 currentLoss 0.713923
+iter 15 currentLoss 0.6384
+iter 16 currentLoss 0.557348
+iter 17 currentLoss 0.48398
+iter 18 currentLoss 0.432084
+iter 19 currentLoss 0.411053
+iter 20 currentLoss 0.419312
+iter 21 currentLoss 0.44519
+iter 22 currentLoss 0.475208
+iter 23 currentLoss 0.499675
+iter 24 currentLoss 0.513439
+iter 25 currentLoss 0.514921
+iter 26 currentLoss 0.505123
+iter 27 currentLoss 0.486882
+iter 28 currentLoss 0.464245
+iter 29 currentLoss 0.441791
+iter 30 currentLoss 0.423757
+iter 31 currentLoss 0.413021
+iter 32 currentLoss 0.410304
+iter 33 currentLoss 0.414137
+iter 34 currentLoss 0.421693
+iter 35 currentLoss 0.429901
+iter 36 currentLoss 0.436299
+iter 37 currentLoss 0.439416
+iter 38 currentLoss 0.43882
+iter 39 currentLoss 0.434969
+iter 40 currentLoss 0.428969
+iter 41 currentLoss 0.422269
+iter 42 currentLoss 0.416328
+iter 43 currentLoss 0.412292
+iter 44 currentLoss 0.410768
+iter 45 currentLoss 0.411729
+iter 46 currentLoss 0.41462
+iter 47 currentLoss 0.418567
+iter 48 currentLoss 0.422636
+iter 49 currentLoss 0.426034
+ori_rot
+0.105242 0.875493 0.471631 
+0.70567 0.268417 -0.655731 
+-0.700681 0.401826 -0.58956 
+our rotation matrix
+0.157041 0.723441 0.939238 
+0.960731 -0.0898723 -0.742161 
+-1.05515 0.102917 -0.588996 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0039 
+finding corres between 0039(id=38) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=875
+global_corres=875
+maxNumResiduals / maxNumberOfImages = 5675 / 2 = 2837
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 875 = 1750
+m_solver->solve Time difference = 6.312[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603632 
+0 0 0 1 
+rot after optim
+0.105058 0.875159 0.472291 -0.630183 
+0.705062 0.269376 -0.655991 0.415129 
+-0.70132 0.401911 -0.588742 0.602546 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2541.19 MB
+----- Before data_loader - GPU Memory Usage: 2541.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0040.png
+---- After data_loader - GPU Memory Usage: 2549.19 MB
+
+
+New frame 0040
+zmq start waiting for reply
+zmq got reply
+finding corres between 0040(id=39) and 0039(id=38)
+start multi pair ransac GPU, pairs#=1
+validRows 840
+iter 0 currentLoss 1.23112
+iter 1 currentLoss 1.10739
+iter 2 currentLoss 0.94355
+iter 3 currentLoss 0.759376
+iter 4 currentLoss 0.581271
+iter 5 currentLoss 0.448786
+iter 6 currentLoss 0.410309
+iter 7 currentLoss 0.467008
+iter 8 currentLoss 0.562832
+iter 9 currentLoss 0.653494
+iter 10 currentLoss 0.718854
+iter 11 currentLoss 0.75153
+iter 12 currentLoss 0.750755
+iter 13 currentLoss 0.719887
+iter 14 currentLoss 0.66532
+iter 15 currentLoss 0.595978
+iter 16 currentLoss 0.523113
+iter 17 currentLoss 0.459915
+iter 18 currentLoss 0.419383
+iter 19 currentLoss 0.408699
+iter 20 currentLoss 0.423916
+iter 21 currentLoss 0.452999
+iter 22 currentLoss 0.48367
+iter 23 currentLoss 0.507528
+iter 24 currentLoss 0.52025
+iter 25 currentLoss 0.520686
+iter 26 currentLoss 0.510002
+iter 27 currentLoss 0.491028
+iter 28 currentLoss 0.467694
+iter 29 currentLoss 0.444406
+iter 30 currentLoss 0.42525
+iter 31 currentLoss 0.413052
+iter 32 currentLoss 0.408635
+iter 33 currentLoss 0.410751
+iter 34 currentLoss 0.416802
+iter 35 currentLoss 0.423894
+iter 36 currentLoss 0.429654
+iter 37 currentLoss 0.432637
+iter 38 currentLoss 0.432377
+iter 39 currentLoss 0.429256
+iter 40 currentLoss 0.424261
+iter 41 currentLoss 0.418691
+iter 42 currentLoss 0.413835
+iter 43 currentLoss 0.410689
+iter 44 currentLoss 0.409741
+iter 45 currentLoss 0.410921
+iter 46 currentLoss 0.413698
+iter 47 currentLoss 0.417276
+iter 48 currentLoss 0.420826
+iter 49 currentLoss 0.423664
+ori_rot
+0.106065 0.875462 0.471503 
+0.705844 0.267702 -0.655835 
+-0.700381 0.402369 -0.589546 
+our rotation matrix
+0.126421 0.74056 0.920453 
+0.986562 -0.128991 -0.678793 
+-1.04635 0.123732 -0.636309 
+total keyframes=1, already chosen _local_frames=1, want to select 15
+#_local_frames=2
+0001 0040 
+finding corres between 0040(id=39) and 0001(id=0)
+start multi pair ransac GPU, pairs#=1
+OptimizerGPU begin, global_corres#=859
+global_corres=859
+maxNumResiduals / maxNumberOfImages = 5659 / 2 = 2829
+m_maxNumberOfImages*m_maxCorrPerImage = 2 x 859 = 1718
+m_solver->solve Time difference = 6.074[ms]
+rot after optim
+0.104501 0.876877 0.469219 -0.627673 
+0.703525 0.268298 -0.658079 0.417535 
+-0.702945 0.398877 -0.588868 0.603632 
+0 0 0 1 
+rot after optim
+0.106615 0.876238 0.469936 -0.628535 
+0.704859 0.266745 -0.657283 0.416824 
+-0.70129 0.401314 -0.589185 0.602945 
+0 0 0 1 
+---- After everything - GPU Memory Usage: 2539.19 MB
+----- Before data_loader - GPU Memory Usage: 2539.19 MB
+color file: /home/kausik/Documents/BundleTrack2.0/Data/old_dataset/rgb/0041.png
+---- After data_loader - GPU Memory Usage: 2549.19 MB
+
+
+New frame 0041
+zmq start waiting for reply
+/home/kausik/Documents/BundleTrack2.0/scripts/../build/bundle_track_ycbineoat /tmp/config_custom.yml

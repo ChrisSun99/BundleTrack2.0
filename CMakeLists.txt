@@ -43,6 +43,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/src/cuda/mLib/include
   ${PROJECT_SOURCE_DIR}/src/Thirdparty/cppzmq
   ${PROJECT_SOURCE_DIR}/src/Thirdparty
+  # ${PROJECT_SOURCE_DIR}/src/Thirdparty/qpOASES/include
 )
 
 file(GLOB MY_SRC ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/cuda/*.cpp ${PROJECT_SOURCE_DIR}/src/cuda/Solver/*.cpp)
