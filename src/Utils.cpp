@@ -357,10 +357,22 @@ Eigen::Vector3f rotationMatrixToEulerAngles(const Eigen::Matrix3f& rotation)
     float r32 = rotation(2, 1);
     float r33 = rotation(2, 2);
 
-    // Calculate Euler angles
-    euler_angles(0) = atan2(r32, r33); // Roll (around x-axis)
-    euler_angles(1) = asin(-r31);      // Pitch (around y-axis)
-    euler_angles(2) = atan2(r21, r11); // Yaw (around z-axis)
+    // Check for singularity case
+    if (std::abs(r31 - 1.0f) < 1e-3) { // close to 1
+        euler_angles(0) = 0.0f; // Set roll to zero
+        euler_angles(1) = -M_PI_2; // -90 degrees pitch
+        euler_angles(2) = atan2(-r23, r22); // Calculate yaw
+    }
+    else if (std::abs(r31 + 1.0f) < 1e-3) { // close to -1
+        euler_angles(0) = 0.0f; // Set roll to zero
+        euler_angles(1) = M_PI_2; // 90 degrees pitch
+        euler_angles(2) = atan2(-r23, r22); // Calculate yaw
+    }
+    else {
+        euler_angles(0) = atan2(r32, r33); // Calculate roll
+        euler_angles(1) = asin(-r31); // Calculate pitch
+        euler_angles(2) = atan2(r21, r11); // Calculate yaw
+    }
 
     return euler_angles;
 }

@@ -156,6 +156,8 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     frame->_pose_in_model = offset * frame->_pose_in_model;
     frame->_pose_inited = true;
 
+    std::cout << "frame->_pose_in_model after procrustes " << frame->_pose_in_model << std::endl;
+
     ////////////////////////////////////
     const auto &matches = _fm->_matches[{frame,last_frame}];
     std::vector<std::vector<float>> ptsA;
@@ -164,7 +166,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     std::vector<std::vector<float>> surface_normalsB;
     assert(frame->_id > last_frame->_id);
     // Eigen::Matrix4f pose(Eigen::Matrix4f::Identity());
-    std::cout << "Ininlier num: " << _fm->countInlierCorres(frame,last_frame) << std::endl;
+    std::cout << "Inlier num: " << _fm->countInlierCorres(frame,last_frame) << std::endl;
     if (_fm->countInlierCorres(frame,last_frame)>=5) {
       for (int k=0;k<matches.size();k++)
       {
@@ -187,10 +189,53 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     Eigen::MatrixXf _ptsB = Utils::convertToEigenMatrix(ptsB);
     Eigen::MatrixXf _surface_normalsA = Utils::convertToEigenMatrix(surface_normalsA);
     Eigen::MatrixXf _surface_normalsB = Utils::convertToEigenMatrix(surface_normalsB);
-    
-    Eigen::Matrix3f rotation = optimizeGradientDescent(_ptsB, _ptsA, _surface_normalsB, _surface_normalsA);
-    // Eigen::Matrix3f rotation = optimizeQuadratic(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
-    // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
+
+    // filter out rows with NaN or all-zero values
+    std::vector<int> validRows;
+    for (int j = 0; j < _ptsA.rows(); ++j) {
+      // std::cout << "A.row(j) " << A.row(j) << std::endl; 
+      bool hasNaN = _ptsA.row(j).hasNaN() || _ptsB.row(j).hasNaN() || _surface_normalsA.row(j).hasNaN() || _surface_normalsB.row(j).hasNaN();
+      bool allZero = _ptsA.row(j).isZero() || _ptsB.row(j).isZero() || _surface_normalsA.row(j).isZero() || _surface_normalsB.row(j).isZero();
+      bool invalid1 = (_ptsA.row(j).array() < -2.0f).any() || (_ptsA.row(j).array() > 2.0f).any() || (_ptsB.row(j).array() < -2.0f).any() || (_ptsB.row(j).array() > 2.0f).any();
+      bool invalid2 = (_surface_normalsA.row(j).array() < -M_PI).any() || (_surface_normalsA.row(j).array() > M_PI).any() || (_surface_normalsB.row(j).array() < -M_PI).any() || (_surface_normalsB.row(j).array() > M_PI).any();
+
+      if (!hasNaN && !allZero && !invalid1 && !invalid2) {
+        validRows.push_back(j);
+      }
+    }
+
+    Eigen::Matrix3f rotation;
+    std::cout << "validRows " << validRows.size() << std::endl;
+    if (validRows.size() == 0) {
+      std::cout << "A:\n" << _ptsA << std::endl;
+      std::cout << "B:\n" << _ptsB << std::endl;
+      std::cout << "N:\n" << _surface_normalsA << std::endl;
+      std::cout << "M:\n" << _surface_normalsB << std::endl;
+      rotation = Eigen::Matrix3f::Identity();
+    } else {
+      int filteredRowCount = validRows.size();
+      Eigen::MatrixXf filteredA(filteredRowCount, _ptsA.cols());
+      Eigen::MatrixXf filteredB(filteredRowCount, _ptsB.cols());
+      Eigen::MatrixXf filteredN(filteredRowCount, _surface_normalsA.cols());
+      Eigen::MatrixXf filteredM(filteredRowCount, _surface_normalsB.cols());
+
+      for (int j = 0; j < filteredRowCount; ++j) {
+        filteredA.row(j) = _ptsA.row(validRows[j]);
+        filteredB.row(j) = _ptsB.row(validRows[j]);
+        filteredN.row(j) = _surface_normalsA.row(validRows[j]);
+        filteredM.row(j) = _surface_normalsB.row(validRows[j]);
+      }
+
+      // normalize filteredA and filteredB before gradient descent finds a rotation matrix
+      Eigen::Vector3f meanA = filteredA.colwise().mean();
+      Eigen::Vector3f meanB = filteredB.colwise().mean();
+      filteredA = filteredA.rowwise() - meanA.transpose();
+      filteredB = filteredB.rowwise() - meanB.transpose();
+      
+      rotation = optimizeGradientDescent(filteredB, filteredA, filteredN, filteredM);
+      // Eigen::Matrix3f rotation = optimizeQuadratic(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
+      // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
+    }
 
     Eigen::Matrix3f prev_rot_with_cam = last_frame->_pose_in_model.block<3,3>(0,0);
     Eigen::Matrix3f ori_rot = frame->_pose_in_model.block<3, 3>(0, 0);
@@ -218,6 +263,7 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     }
 
     frame->_pose_in_model.block<3, 3>(0, 0) = rotation * prev_rot_with_cam;
+    std::cout << "frame->_pose_in_model after gradient descent " << frame->_pose_in_model << std::endl;
     float rot_diff = Utils::calculateRotationError(ori_rot, frame->_pose_in_model.block<3, 3>(0, 0));
     fprintf(stderr, "Printing rot diff %f!!!!!!!\n", rot_diff);
     ////////////////////////////////////

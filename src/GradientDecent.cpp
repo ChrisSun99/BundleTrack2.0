@@ -53,67 +53,41 @@ Eigen::Matrix3f optimizeGradientDescent(const Eigen::MatrixXf& A,
     Eigen::Matrix3f R = Eigen::Matrix3f::Identity();
     Eigen::Matrix3f prevGradient = Eigen::Matrix3f::Zero();
     double prevLoss = 0.0;
-    int current_lr = learning_rate;
+    double current_lr = learning_rate;
 
-    // Filter out rows with NaN or all-zero values
-    std::vector<int> validRows;
+    assert(A.array().isNaN().any() == 0);
+    assert(B.array().isNaN().any() == 0);
+    assert(N.array().isNaN().any() == 0);
+    assert(M.array().isNaN().any() == 0);
 
-    for (int j = 0; j < A.rows(); ++j) {
-      // std::cout << "A.row(j) " << A.row(j) << std::endl; 
-      bool hasNaN = A.row(j).hasNaN() || B.row(j).hasNaN() || N.row(j).hasNaN() || M.row(j).hasNaN();
-      bool allZero = A.row(j).isZero() || B.row(j).isZero() || N.row(j).isZero() || M.row(j).isZero();
-      bool invalid1 = (A.row(j).array() < 0.0f).any() || (A.row(j).array() > 1.0f).any() || (B.row(j).array() < 0.0f).any() || (B.row(j).array() > 1.0f).any();
-      bool invalid2 = (N.row(j).array() < -M_PI).any() || (N.row(j).array() > M_PI).any() || (M.row(j).array() < -M_PI).any() || (M.row(j).array() > M_PI).any();
-      // std::cout << "hasNaN " << hasNaN << " allZero " << allZero << " invalid1 " << invalid1 << " invalid2 " << invalid2 << std::endl; 
-
-      if (!hasNaN && !allZero && !invalid1 && !invalid2) {
-        // std::cout << "valid A " << A.row(j) << " invalid1 " << (A.row(j).array() > 1.0f).any() << std::endl; 
-        // std::cout << "valid B " << B.row(j) << " invalid1 " << (B.row(j).array() > 1.0f).any() << std::endl; 
-        // std::cout << "valid N " << N.row(j) << " invalid2 " << (N.row(j).array() > 1.0f).any() << std::endl; 
-        // std::cout << "valid M " << M.row(j) << " invalid2 " << (M.row(j).array() > 1.0f).any() << std::endl; 
-        validRows.push_back(j);
-      }
-    }
-    std::cout << "validRows " << validRows.size() << std::endl;
-    if (validRows.size() == 0) {
-      return R;
-    }
-
-    int filteredRowCount = validRows.size();
-    Eigen::MatrixXf filteredA(filteredRowCount, A.cols());
-    Eigen::MatrixXf filteredB(filteredRowCount, B.cols());
-    Eigen::MatrixXf filteredN(filteredRowCount, N.cols());
-    Eigen::MatrixXf filteredM(filteredRowCount, M.cols());
-
-    for (int j = 0; j < filteredRowCount; ++j) {
-      filteredA.row(j) = A.row(validRows[j]);
-      filteredB.row(j) = B.row(validRows[j]);
-      filteredN.row(j) = N.row(validRows[j]);
-      filteredM.row(j) = M.row(validRows[j]);
-    }
-
-    assert(filteredA.array().isNaN().any() == 0);
-    assert(filteredB.array().isNaN().any() == 0);
-    assert(filteredN.array().isNaN().any() == 0);
-    assert(filteredM.array().isNaN().any() == 0);
-
+  Eigen::Matrix3f velocity;
+  bool lr_scheduler = true;
   for (int i = 0; i < num_iterations; i++) {
-    if (i > 0.7 * num_iterations) {
+    if (i > (0.7*num_iterations) && lr_scheduler) {
         current_lr *= 0.1;
+        lr_scheduler = false;
     }
+
     // Compute gradient
-    Eigen::Matrix3f gradient = computeGradient(filteredA, filteredB, filteredN, filteredM, R);
+    Eigen::Matrix3f gradient = computeGradient(A, B, N, M, R);
     // std::cout << "gradient min " << gradient.minCoeff() << " max " << gradient.maxCoeff() << std::endl;
 
     // Update R with momentum
-    Eigen::Matrix3f delta = current_lr * gradient + momentum * prevGradient;
-    // std::cout << "delta min " << delta.minCoeff() << " max " << delta.maxCoeff() << std::endl;
-    R -= delta;
-    prevGradient = delta;
+    if (i == 0) {
+      velocity = gradient;
+    } else {
+      velocity = momentum * velocity + gradient;  // It was the previous velocity on RHS from last iter
+    }
+    // std::cout << "velocity min " << velocity.minCoeff() << " max " << velocity.maxCoeff() << std::endl;
+    gradient = velocity;
+    R = R - current_lr * gradient;
+    // std::cout << "current R " << R << std::endl;
 
     // Compute current loss
-    double currentLoss = objectiveFunction(filteredA, filteredB, filteredN, filteredM, R);
-    std::cout << "iter " << i << " currentLoss " << currentLoss << std::endl;
+    double currentLoss = objectiveFunction(A, B, N, M, R);
+    if (i % 10 == 0) {
+      std::cout << "iter " << i << " lr " << current_lr << " currentLoss " << currentLoss << std::endl;
+    }
 
     // Check for convergence
     if (std::abs(currentLoss - prevLoss) < epsilon) {

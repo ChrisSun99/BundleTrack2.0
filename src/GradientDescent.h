@@ -3,11 +3,11 @@
 
 #include "FeatureManager.h"
 
-const double lambda = 0;  // Regularization parameter
-const double learning_rate = 0.1;  // Learning rate
+const double lambda = 0.1;  // Regularization parameter
+const double learning_rate = 0.0001;  // Learning rate
 const double momentum = 0.9;  // Momentum
-const double epsilon = 1e-10;  // Stop criterion threshold
-const int num_iterations = 100;
+const double epsilon = 1e-4;  // Stop criterion threshold
+const int num_iterations = 50;
 
 Eigen::Matrix3f generateRandomRotationMatrix();
 double objectiveFunction(const Eigen::MatrixXf& A,

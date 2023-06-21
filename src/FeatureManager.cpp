@@ -661,7 +661,7 @@ void SiftManager::runRansacBetween(std::shared_ptr<Frame> frameA, std::shared_pt
 
 void SiftManager::runRansacMultiPairGPU(const std::vector<std::pair<std::shared_ptr<Frame>, std::shared_ptr<Frame>>> &pairs)
 {
-  printf("start multi pair ransac GPU, pairs#=%d\n", pairs.size());
+  // printf("start multi pair ransac GPU, pairs#=%d\n", pairs.size());
 
   const int num_sample = (*yml)["ransac"]["num_sample"].as<int>();
   const int max_iter = (*yml)["ransac"]["max_iter"].as<int>();
