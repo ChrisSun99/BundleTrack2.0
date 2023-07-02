@@ -205,6 +205,10 @@ void solveRigidTransformBetweenPoints(const Eigen::MatrixXf &points1, const Eige
   }
   pose.block(0,0,3,3) = R;
   pose.block(0,3,3,1) = mean2 - R * mean1;
+  // TODO: This translation is still affected by R. Find R from GD and update the translation again.
+  std::cout << "mean2 " << mean2 << std::endl;
+  std::cout << "R * mean1 " << R * mean1 << std::endl;
+  std::cout << "mean2 - R * mean1 " << mean2 - R * mean1 << std::endl; 
   if (!isMatrixFinite(pose))
   {
     pose.setIdentity();

@@ -165,13 +165,14 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
     std::vector<std::vector<float>> surface_normalsA;
     std::vector<std::vector<float>> surface_normalsB;
     assert(frame->_id > last_frame->_id);
-    // Eigen::Matrix4f pose(Eigen::Matrix4f::Identity());
-    std::cout << "Inlier num: " << _fm->countInlierCorres(frame,last_frame) << std::endl;
+    
+    // std::cout << "Inlier num: " << _fm->countInlierCorres(frame,last_frame) << std::endl;
     if (_fm->countInlierCorres(frame,last_frame)>=5) {
       for (int k=0;k<matches.size();k++)
       {
         const auto &match = matches[k];
         if (!match._isinlier) continue;
+        // src: ptsA, dst: ptsB
         std::vector<float> ptA{match._ptA_cam.x,match._ptA_cam.y,match._ptA_cam.z};
         std::vector<float> ptB{match._ptB_cam.x,match._ptB_cam.y,match._ptB_cam.z};
         std::vector<float> surface_normalA{match._ptA_cam.normal_x,match._ptA_cam.normal_y,match._ptA_cam.normal_z};
@@ -232,12 +233,15 @@ void Bundler::processNewFrame(std::shared_ptr<Frame> frame)
       filteredA = filteredA.rowwise() - meanA.transpose();
       filteredB = filteredB.rowwise() - meanB.transpose();
       
-      rotation = optimizeGradientDescent(filteredB, filteredA, filteredN, filteredM);
+      // original bundletrack procrustus algoriothm optimizes ||ptB - R * ptA||
+      rotation = optimizeGradientDescent(filteredB, filteredA, filteredM, filteredN);
+      frame->_pose_in_model.block(0,3,3,1) = meanA - rotation * meanB;
+      std::cout << "gradient descent meanA - rotation * meanB " << meanA - rotation * meanB << std::endl; 
       // Eigen::Matrix3f rotation = optimizeQuadratic(_ptsA, _ptsB, _surface_normalsA, _surface_normalsB);
       // Eigen::Matrix3f rotation = estimateRotation(_surface_normalsB, _surface_normalsA);
     }
 
-    Eigen::Matrix3f prev_rot_with_cam = last_frame->_pose_in_model.block<3,3>(0,0);
+    Eigen::Matrix3f prev_rot_with_cam = last_frame->_pose_in_model.block<3,3>(0, 0);
     Eigen::Matrix3f ori_rot = frame->_pose_in_model.block<3, 3>(0, 0);
     std::cout << "ori_rot" << std::endl;
     for (int i = 0; i < ori_rot.rows(); ++i)
